@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@theme {
+  --color-primary: #3730a3;
+  --color-primary-hover: #312e81;
+  --color-primary-light: #eef2ff;
+  --color-accent: #ea580c;
+  --color-accent-hover: #c2410c;
+  --color-accent-light: #fff7ed;
+  --color-success: #059669;
+  --color-success-light: #ecfdf5;
+  --color-warning: #d97706;
+  --color-warning-light: #fffbeb;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-radius: 12px;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom utility for 12px card radius as requested */
+.rounded-card {
+  border-radius: 12px;
+}
+
+/* Print Optimization for Formula Sheet */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .formula-sheet-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .formula-card-print {
+    break-inside: avoid;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 12px !important;
+  }
+
+  header, nav, aside, footer, .bottom-nav {
+    display: none !important;
+  }
+}
