@@ -156,7 +156,26 @@ export function SleeveDeckCatalogue() {
 
   return (
     <section id="catalogue" className="relative py-20 md:py-28 bg-black text-white overflow-hidden border-brutal-b">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+      {/* Sukuna Background Banner */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
+        <img
+          src="/images/sukuna-banner.jpeg"
+          alt="Sukuna Banner"
+          className="w-full h-full object-cover object-center opacity-35 md:opacity-45 filter contrast-125"
+        />
+        {/* Brutalist Dark Vignette / Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/35 to-black" />
+        {/* Subtle Orange Grid Pattern Overlay */}
+        <div
+          className="absolute inset-0 opacity-15"
+          style={{
+            backgroundImage: `linear-gradient(#FF4D00 1px, transparent 1px), linear-gradient(90deg, #FF4D00 1px, transparent 1px)`,
+            backgroundSize: "40px 40px",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           <div className="font-meta text-xs text-[#FF4D00] font-bold tracking-widest uppercase mb-2">
