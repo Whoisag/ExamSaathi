@@ -156,15 +156,19 @@ export function SleeveDeckCatalogue() {
 
   return (
     <section id="catalogue" className="relative py-20 md:py-28 bg-black text-white overflow-hidden border-brutal-b">
-      {/* Sukuna Background Banner */}
+      {/* Video Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-        <img
-          src="/images/sukuna-banner.jpeg"
-          alt="Sukuna Banner"
-          className="w-full h-full object-cover object-center opacity-35 md:opacity-45 filter contrast-125"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center opacity-40 md:opacity-50"
+        >
+          <source src="/videos/topic-catalogue-bg.mp4" type="video/mp4" />
+        </video>
         {/* Brutalist Dark Vignette / Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/35 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black" />
         {/* Subtle Orange Grid Pattern Overlay */}
         <div
           className="absolute inset-0 opacity-15"
