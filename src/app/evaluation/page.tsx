@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { AppShell } from "@/components/layout/AppShell";
+import Link from "next/link";
+import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
 import {
   BarChart,
   Bar,
@@ -9,7 +10,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import {
@@ -17,168 +17,268 @@ import {
   MOCK_EVAL_CHART_DATA,
   EvaluationMetricRow,
 } from "@/data/mock";
-import { TableSkeleton, ChartSkeleton } from "@/components/ui/Skeleton";
-import { EmptyState } from "@/components/ui/EmptyState";
-import {
-  Award,
-  BarChart2,
-  Table as TableIcon,
-  CheckCircle,
-  TrendingUp,
-  RefreshCw,
-  Eye,
-  Info,
-} from "lucide-react";
+import { Award, BarChart2, Table as TableIcon, CheckCircle, RefreshCw, Eye, ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function EvaluationPage() {
-  // State switches for testing
   const [showEmptyState, setShowEmptyState] = useState(false);
   const [simulateLoading, setSimulateLoading] = useState(false);
 
   const handleToggleLoading = () => {
     setSimulateLoading(true);
-    setTimeout(() => setSimulateLoading(false), 1000);
+    setTimeout(() => setSimulateLoading(false), 600);
   };
 
   const metricsData: EvaluationMetricRow[] = showEmptyState ? [] : MOCK_EVALUATION_METRICS;
   const chartData = showEmptyState ? [] : MOCK_EVAL_CHART_DATA;
 
   return (
-    <AppShell
-      title="Model Evaluation & Empirical Validation"
-      subtitle="Rigorous backtesting benchmarks on past examination papers: Mean Absolute Error (MAE), Spearman Rank Correlation (ρ), and Precision@K."
-      breadcrumbs={[{ label: "Model Evaluation" }]}
-      actionSlot={
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#FF4D00] selection:text-white font-sans">
+      <BrutalistHeader />
+
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8 md:py-12">
+        {/* Top Breadcrumb & Header Banner */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between border-brutal-b pb-6 mb-8 gap-4">
+          <div>
+            <div className="font-meta text-xs text-[#FF4D00] font-bold mb-1">
+              // EMPIRICAL VALIDATION // HOLDOUT BACKTEST AUDIT
+            </div>
+            <h1 className="font-headline text-3xl sm:text-5xl text-black tracking-tight">
+              MODEL EVALUATION & BENCHMARKS
+            </h1>
+            <p className="text-sm text-neutral-600 mt-2 max-w-2xl font-medium">
+              Rigorous backtesting benchmarks across 15+ years of NTA and CBSE shift papers:
+              Mean Absolute Error (MAE), Spearman Rank Correlation (ρ), and Precision@K.
+            </p>
+          </div>
+
+          {/* Action Controls */}
+          <div className="flex items-center gap-2">
             <button
               onClick={handleToggleLoading}
               disabled={simulateLoading}
-              className="px-2.5 py-1 rounded-lg text-slate-700 hover:bg-white transition-all font-medium flex items-center gap-1"
+              className="border-brutal px-3 py-2 font-meta text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
-              <RefreshCw className={`w-3 h-3 text-[#3730A3] ${simulateLoading ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">Skeleton</span>
+              <RefreshCw className={`w-3.5 h-3.5 ${simulateLoading ? "animate-spin text-[#FF4D00]" : ""}`} />
+              <span>TEST SKELETON</span>
             </button>
             <button
               onClick={() => setShowEmptyState(!showEmptyState)}
-              className={`px-2.5 py-1 rounded-lg transition-all font-medium flex items-center gap-1 ${
+              className={`border-brutal px-3.5 py-2 font-meta text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer ${
                 showEmptyState
-                  ? "bg-[#EA580C] text-white font-bold"
-                  : "text-slate-700 hover:bg-white"
+                  ? "bg-[#FF4D00] text-black"
+                  : "bg-black text-white hover:bg-neutral-800"
               }`}
             >
-              <Eye className="w-3 h-3" />
-              <span>{showEmptyState ? "Show Populated" : "Show Empty Tables"}</span>
+              <Eye className="w-3.5 h-3.5" />
+              <span>{showEmptyState ? "SHOW POPULATED" : "SHOW EMPTY STATE"}</span>
             </button>
           </div>
         </div>
-      }
-    >
-      <div className="space-y-8">
-        {/* Metric Cards Banner */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-[12px] p-5 border border-slate-200 shadow-2xs space-y-1.5">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold uppercase tracking-wider">Mean Absolute Error</span>
-              <span className="text-xs font-mono font-bold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                Low Error
+
+        {/* 3 Brutalist Metric Highlight Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+          {/* MAE */}
+          <div className="border-brutal bg-white p-6 relative">
+            <div className="flex items-center justify-between border-brutal-b pb-2 mb-3">
+              <span className="font-meta text-xs font-bold text-neutral-600">
+                MEAN ABSOLUTE ERROR
+              </span>
+              <span className="bg-black text-white font-meta text-[10px] px-2 py-0.5 font-bold">
+                LOW ERROR
               </span>
             </div>
-            <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">
-              {showEmptyState ? "—" : "0.48 Qs"}
+            <div className="font-headline text-4xl sm:text-5xl text-black">
+              0.48 <span className="text-xl text-[#FF4D00]">QS</span>
+            </div>
+            <p className="font-meta text-xs text-neutral-500 mt-2">
+              Average prediction error within ±0.5 questions per chapter.
             </p>
-            <p className="text-xs text-slate-500">Average error within ±0.5 questions per topic</p>
           </div>
 
-          <div className="bg-white rounded-[12px] p-5 border border-slate-200 shadow-2xs space-y-1.5">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold uppercase tracking-wider">Spearman Rank Correlation</span>
-              <span className="text-xs font-mono font-bold text-[#3730A3] bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
-                Strong Rank
+          {/* Spearman Rank */}
+          <div className="border-brutal bg-white p-6 relative">
+            <div className="flex items-center justify-between border-brutal-b pb-2 mb-3">
+              <span className="font-meta text-xs font-bold text-neutral-600">
+                SPEARMAN RANK CORRELATION
+              </span>
+              <span className="bg-[#FF4D00] text-black font-meta text-[10px] px-2 py-0.5 font-bold border border-black">
+                STRONG RANK
               </span>
             </div>
-            <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">
-              {showEmptyState ? "—" : "ρ = 0.85"}
+            <div className="font-headline text-4xl sm:text-5xl text-black">
+              ρ = 0.85
+            </div>
+            <p className="font-meta text-xs text-neutral-500 mt-2">
+              Predicted topic priority order strongly correlates with actual papers.
             </p>
-            <p className="text-xs text-slate-500">Predicted topic priority strongly correlates with reality</p>
           </div>
 
-          <div className="bg-white rounded-[12px] p-5 border border-slate-200 shadow-2xs space-y-1.5">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold uppercase tracking-wider">Precision@5 (High-Yield)</span>
-              <span className="text-xs font-mono font-bold text-[#EA580C] bg-orange-50 px-2 py-0.5 rounded border border-orange-200">
-                Top Accuracy
+          {/* Precision@5 */}
+          <div className="border-brutal bg-white p-6 relative">
+            <div className="flex items-center justify-between border-brutal-b pb-2 mb-3">
+              <span className="font-meta text-xs font-bold text-neutral-600">
+                PRECISION@5 (HIGH-YIELD)
+              </span>
+              <span className="bg-black text-[#FF4D00] font-meta text-[10px] px-2 py-0.5 font-bold">
+                TOP ACCURACY
               </span>
             </div>
-            <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">
-              {showEmptyState ? "—" : "88.0%"}
+            <div className="font-headline text-4xl sm:text-5xl text-[#FF4D00]">
+              88.0%
+            </div>
+            <p className="font-meta text-xs text-neutral-500 mt-2">
+              Top 5 predicted subtopics appeared consistently across test shifts.
             </p>
-            <p className="text-xs text-slate-500">Top 5 predicted topics appeared in test shifts</p>
           </div>
         </div>
 
-        {/* Section 1: Evaluation Metrics Table */}
-        <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200 shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
+        {/* Backtest Bar Chart */}
+        <div className="border-brutal bg-white p-6 sm:p-8 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-brutal-b pb-3 mb-6 gap-2">
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-                <TableIcon className="w-4 h-4 text-[#3730A3]" />
-                Historical Backtest Benchmark Table
+              <span className="font-meta text-xs text-[#FF4D00] font-bold block">
+                // CROSS-SESSION HOLDOUT EVALUATION
+              </span>
+              <h3 className="font-headline text-xl sm:text-2xl text-black">
+                VALIDATED ERROR & ACCURACY BY EXAM TRACK
               </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Evaluation results on holdout examination sets (models trained strictly on data prior to test year)
-              </p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-[#3730A3]">
-              {metricsData.length} Test Batches
+
+            <div className="flex items-center gap-4 font-meta text-xs">
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-3 bg-[#FF4D00] border border-black"></span>
+                <span>MAE (LOWER IS BETTER)</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-3 bg-black border border-black"></span>
+                <span>SPEARMAN RHO (0-1.0)</span>
+              </span>
+            </div>
+          </div>
+
+          {simulateLoading ? (
+            <div className="h-64 bg-neutral-100 animate-pulse flex items-end gap-4 p-6">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex-1 bg-neutral-300 h-32"></div>
+              ))}
+            </div>
+          ) : showEmptyState ? (
+            <div className="border-brutal bg-neutral-50 p-12 text-center">
+              <span className="font-headline text-xl text-black block mb-2">
+                BENCHMARK DATA CLEARED
+              </span>
+              <p className="font-meta text-xs text-neutral-500 mb-4">
+                Empty state active for validation testing.
+              </p>
+              <button
+                onClick={() => setShowEmptyState(false)}
+                className="bg-black text-white px-4 py-2 border-brutal font-meta text-xs hover:bg-[#FF4D00] hover:text-black cursor-pointer"
+              >
+                RESTORE BENCHMARK DATA
+              </button>
+            </div>
+          ) : (
+            <div className="w-full" style={{ height: 260 }}>
+              <ResponsiveContainer width="100%" height={260} minWidth={0} minHeight={260}>
+                <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="2 2" stroke="#e5e5e5" />
+                  <XAxis
+                    dataKey="exam"
+                    stroke="#000000"
+                    tick={{ fill: "#000000", fontSize: 11, fontFamily: "var(--font-space-mono)" }}
+                  />
+                  <YAxis
+                    stroke="#000000"
+                    tick={{ fill: "#000000", fontSize: 11, fontFamily: "var(--font-space-mono)" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#000000",
+                      border: "2px solid #000000",
+                      borderRadius: "0px",
+                      color: "#FFFFFF",
+                      fontFamily: "var(--font-space-mono)",
+                      fontSize: "12px",
+                    }}
+                  />
+                  <Bar dataKey="mae" fill="#FF4D00" stroke="#000000" strokeWidth={2} name="MAE (Questions)" isAnimationActive={false} />
+                  <Bar dataKey="spearman" fill="#000000" stroke="#000000" strokeWidth={2} name="Spearman Rho" isAnimationActive={false} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
+
+        {/* Backtest Benchmark Table */}
+        <div className="border-brutal bg-white p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-brutal-b pb-4 mb-6 gap-2">
+            <div>
+              <span className="font-meta text-xs text-[#FF4D00] font-bold block">
+                // HOLDOUT DATASET BENCHMARK REPOSITORY
+              </span>
+              <h3 className="font-headline text-xl sm:text-2xl text-black">
+                HISTORICAL BACKTEST BENCHMARK TABLE
+              </h3>
+            </div>
+            <span className="bg-black text-white font-meta text-xs px-3 py-1 font-bold self-start sm:self-auto">
+              {metricsData.length} TEST BATCHES
             </span>
           </div>
 
           {simulateLoading ? (
-            <TableSkeleton rows={5} />
-          ) : metricsData.length === 0 ? (
-            <EmptyState
-              icon={<TableIcon className="w-6 h-6 text-slate-400" />}
-              title="Empty Evaluation Table"
-              description="No benchmark test results have been recorded yet. Click 'Show Populated' to view sample backtest results or populate with real model JSON."
-              actionText="Load Benchmark Data"
-              onAction={() => setShowEmptyState(false)}
-            />
+            <div className="space-y-2 animate-pulse">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-12 bg-neutral-100 border border-neutral-200"></div>
+              ))}
+            </div>
+          ) : showEmptyState ? (
+            <div className="border-brutal bg-neutral-50 p-12 text-center">
+              <span className="font-headline text-xl text-black block mb-2">
+                NO TEST BATCHES FOUND
+              </span>
+              <p className="font-meta text-xs text-neutral-500 mb-4">
+                Toggle the controls above to reload verified empirical benchmarks.
+              </p>
+            </div>
           ) : (
-            <div className="overflow-x-auto rounded-lg border border-slate-200">
-              <table className="w-full text-left text-xs min-w-[620px]">
-                <thead className="bg-slate-50 text-[11px] font-bold text-slate-600 uppercase border-b border-slate-200">
-                  <tr>
-                    <th className="py-3 px-4">Evaluation Dataset</th>
-                    <th className="py-3 px-3">Sample Size</th>
-                    <th className="py-3 px-3 text-center">MAE (Questions)</th>
-                    <th className="py-3 px-3 text-center">Spearman (ρ)</th>
-                    <th className="py-3 px-3 text-center">Precision@3</th>
-                    <th className="py-3 px-3 text-center">Precision@5</th>
-                    <th className="py-3 px-4 text-right">Status</th>
+            <div className="overflow-x-auto border-brutal">
+              <table className="w-full text-left border-collapse text-xs sm:text-sm font-sans">
+                <thead>
+                  <tr className="bg-black text-white font-meta text-xs border-b-2 border-black">
+                    <th className="p-3.5 border-r border-neutral-700">EVALUATION DATASET</th>
+                    <th className="p-3.5 border-r border-neutral-700">SAMPLE SIZE</th>
+                    <th className="p-3.5 border-r border-neutral-700 text-center">MAE (QUESTIONS)</th>
+                    <th className="p-3.5 border-r border-neutral-700 text-center">SPEARMAN (ρ)</th>
+                    <th className="p-3.5 border-r border-neutral-700 text-center">PRECISION@3</th>
+                    <th className="p-3.5 border-r border-neutral-700 text-center">PRECISION@5</th>
+                    <th className="p-3.5 text-center">STATUS</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y-2 divide-neutral-200 bg-white">
                   {metricsData.map((row, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-4 font-bold text-slate-900">{row.examYear}</td>
-                      <td className="py-3 px-3 text-slate-600 font-mono text-[11px]">{row.sampleSize}</td>
-                      <td className="py-3 px-3 text-center font-mono font-bold text-[#059669]">
+                    <tr key={idx} className="hover:bg-neutral-50 font-meta">
+                      <td className="p-3.5 font-bold text-black border-r border-neutral-200">
+                        {row.examYear}
+                      </td>
+                      <td className="p-3.5 text-neutral-600 border-r border-neutral-200">
+                        {row.sampleSize}
+                      </td>
+                      <td className="p-3.5 font-bold text-[#FF4D00] text-center border-r border-neutral-200">
                         {row.mae.toFixed(2)}
                       </td>
-                      <td className="py-3 px-3 text-center font-mono font-bold text-[#3730A3]">
+                      <td className="p-3.5 font-bold text-black text-center border-r border-neutral-200">
                         {row.spearmanRho.toFixed(2)}
                       </td>
-                      <td className="py-3 px-3 text-center font-mono font-semibold text-slate-800">
+                      <td className="p-3.5 text-center font-bold text-black border-r border-neutral-200">
                         {row.precisionAt3}%
                       </td>
-                      <td className="py-3 px-3 text-center font-mono font-semibold text-slate-800">
+                      <td className="p-3.5 text-center font-bold text-black border-r border-neutral-200">
                         {row.precisionAt5}%
                       </td>
-                      <td className="py-3 px-4 text-right">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                          <CheckCircle className="w-3 h-3" />
-                          {row.status}
+                      <td className="p-3.5 text-center">
+                        <span className="bg-neutral-100 text-black border border-black px-2 py-0.5 text-[11px] font-bold inline-flex items-center gap-1">
+                          <CheckCircle className="w-3 h-3 text-[#FF4D00]" />
+                          <span>{row.status.toUpperCase()}</span>
                         </span>
                       </td>
                     </tr>
@@ -188,88 +288,12 @@ export default function EvaluationPage() {
             </div>
           )}
         </div>
+      </main>
 
-        {/* Section 2: Recharts Comparison Chart */}
-        <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200 shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
-            <div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-                <BarChart2 className="w-4 h-4 text-[#EA580C]" />
-                Precision@5 vs. Spearman Rank Across National Papers
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Visualizing ranking stability and top-5 question appearance rates
-              </p>
-            </div>
-          </div>
-
-          {simulateLoading ? (
-            <ChartSkeleton />
-          ) : chartData.length === 0 ? (
-            <EmptyState
-              icon={<BarChart2 className="w-6 h-6 text-slate-400" />}
-              title="Empty Metric Chart"
-              description="Chart renders automatically once validation backtest metrics are provided."
-              actionText="Load Benchmark Chart"
-              onAction={() => setShowEmptyState(false)}
-            />
-          ) : (
-            <div className="h-72 w-full pt-2">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 10, right: 15, left: -20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                  <XAxis
-                    dataKey="exam"
-                    stroke="#94a3b8"
-                    tick={{ fontSize: 12, fill: "#64748b" }}
-                    tickLine={false}
-                    axisLine={{ stroke: "#e2e8f0" }}
-                  />
-                  <YAxis
-                    stroke="#94a3b8"
-                    tick={{ fontSize: 12, fill: "#64748b" }}
-                    tickLine={false}
-                    axisLine={false}
-                    domain={[0, 100]}
-                  />
-                  <Tooltip
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div className="bg-white p-3 border border-slate-200 rounded-xl shadow-lg text-xs space-y-1">
-                            <p className="font-bold text-slate-800">{label}</p>
-                            {payload.map((entry) => (
-                              <p key={entry.name} style={{ color: entry.color }}>
-                                {entry.name}: <strong>{entry.value}</strong>
-                              </p>
-                            ))}
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
-                  <Bar
-                    dataKey="p5"
-                    name="Precision@5 (%)"
-                    fill="#3730A3"
-                    radius={[6, 6, 0, 0]}
-                    maxBarSize={45}
-                  />
-                  <Bar
-                    dataKey="spearman"
-                    name="Spearman (x100)"
-                    fill="#EA580C"
-                    radius={[6, 6, 0, 0]}
-                    maxBarSize={45}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </div>
-      </div>
-    </AppShell>
+      {/* Footer */}
+      <footer className="border-brutal-t p-6 text-center font-meta text-xs text-neutral-500 mt-12">
+        EXAMSAATHI EMPIRICAL VALIDATION SUITE • STRICT HOLDOUT BACKTEST STANDARDS
+      </footer>
+    </div>
   );
 }
