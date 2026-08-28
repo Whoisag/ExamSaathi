@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
 
 interface PortalHeroProps {
@@ -19,7 +19,19 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Scroll-linked fade out / fade in when scrolling past the hero
+  const { scrollY } = useScroll();
+  const heroContentOpacity = useTransform(scrollY, [0, 260, 480], [1, 1, 0]);
+  const heroContentY = useTransform(scrollY, [0, 260, 480], [0, 0, -45]);
+  const heroContentScale = useTransform(scrollY, [0, 260, 480], [1, 1, 0.94]);
+
   // Bidirectional scroll detection with 2-second close delay when scrolling back to top:
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
+      setIsParted(true);
+    }
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -102,9 +114,20 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
           />
 
           {/* Abstract Question Paper Sheets in Background */}
-          <div className="absolute inset-0 flex items-center justify-around opacity-30 p-8">
+          <div className="absolute inset-0 flex items-center justify-around opacity-35 p-8">
             {/* Paper Sheet 1: JEE Main Shift 1 */}
-            <div className="hidden lg:block w-72 h-96 border-2 border-[#FF4D00] bg-black p-4 font-meta text-[10px] text-neutral-400 rotate-[-6deg] transform">
+            <motion.div
+              animate={{
+                y: [0, -14, 0],
+                rotate: [-6, -4.5, -6],
+              }}
+              transition={{
+                duration: 6.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="hidden lg:block w-72 h-96 border-2 border-[#FF4D00] bg-black p-4 font-meta text-[10px] text-neutral-400 transform shadow-2xl"
+            >
               <div className="border-b border-[#FF4D00] pb-2 mb-3 text-white font-bold flex justify-between">
                 <span>NTA JEE MAIN 2025</span>
                 <span>SEC-A // Q.24</span>
@@ -116,10 +139,22 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
                 </div>
                 <p className="text-[9px] text-neutral-500">// DIRICHLET RANK: #01 WEIGHTAGE 12.5%</p>
               </div>
-            </div>
+            </motion.div>
 
             {/* Paper Sheet 2: NEET Shift Blueprint */}
-            <div className="w-80 h-96 border-2 border-white bg-black p-5 font-meta text-[10px] text-neutral-400 rotate-[3deg] transform">
+            <motion.div
+              animate={{
+                y: [0, 15, 0],
+                rotate: [3, 4.5, 3],
+              }}
+              transition={{
+                duration: 5.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.4,
+              }}
+              className="w-80 h-96 border-2 border-white bg-black p-5 font-meta text-[10px] text-neutral-400 transform shadow-2xl"
+            >
               <div className="border-b border-white pb-2 mb-3 text-white font-bold flex justify-between">
                 <span>NEET UG NATIONAL</span>
                 <span>PHYSICS TRACK</span>
@@ -134,10 +169,22 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
                   <span className="text-[#FF4D00]">+4 MARKS AT STAKE</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Paper Sheet 3: Advanced Multi-Concept Matrix */}
-            <div className="hidden md:block w-72 h-96 border-2 border-[#FF4D00] bg-black p-4 font-meta text-[10px] text-neutral-400 rotate-[-4deg] transform">
+            <motion.div
+              animate={{
+                y: [0, -12, 0],
+                rotate: [-4, -2.5, -4],
+              }}
+              transition={{
+                duration: 7.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.8,
+              }}
+              className="hidden md:block w-72 h-96 border-2 border-[#FF4D00] bg-black p-4 font-meta text-[10px] text-neutral-400 transform shadow-2xl"
+            >
               <div className="border-b border-[#FF4D00] pb-2 mb-3 text-white font-bold flex justify-between">
                 <span>JEE ADVANCED MATRIX</span>
                 <span>MULTI-CONCEPT</span>
@@ -149,7 +196,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
                 </div>
                 <p className="text-[9px] text-[#FF4D00]">// EMPIRICAL HISTORICAL SHIFT CORRELATION: 0.85</p>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Clean 25% Black Overlay (NO BLUR) */}
@@ -235,14 +282,22 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
       {/* HERO INTERACTIVE CONTENT (Fades in cleanly when parted with zero wordmark collisions) */}
       <div className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-44 pb-10 flex flex-col items-center justify-center text-center my-auto">
         <AnimatePresence>
-          {isParted ? (
+          {isParted && (
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-5 max-w-3xl mx-auto flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="w-full flex justify-center"
             >
+              <motion.div
+                style={{
+                  opacity: heroContentOpacity,
+                  y: heroContentY,
+                  scale: heroContentScale,
+                }}
+                className="space-y-5 max-w-3xl mx-auto flex flex-col items-center"
+              >
               {/* Exam Saathi in Orange and White */}
               <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[0.9] select-none">
                 <span className="text-[#FF4D00]">EXAM </span>
@@ -290,24 +345,9 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
                 </span>
               </div>
             </motion.div>
-          ) : (
-            /* Standby Trigger Pill when closed */
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="mt-48 pointer-events-auto"
-            >
-              <button
-                onClick={toggleParting}
-                className="bg-black text-white border-2 border-white px-6 py-3 font-meta text-xs tracking-wider uppercase flex items-center gap-2 hover:bg-[#FF4D00] hover:text-black hover:border-black transition-all cursor-pointer shadow-2xl"
-              >
-                <span>CLICK OR SCROLL TO ENTER PORTAL</span>
-                <ChevronDown className="w-4 h-4 animate-bounce" />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
       </div>
 
       {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR (CLEAN TRANSPARENT, NO BLUR EFFECT) */}
@@ -323,6 +363,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
 
         {/* Rotating Circular Indicator */}
         <div
+          id="portal-toggle-button"
           onClick={toggleParting}
           className="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center select-none cursor-pointer hover:scale-105 transition-transform"
           title="Click to toggle portal parting"

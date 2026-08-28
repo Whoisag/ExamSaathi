@@ -181,7 +181,13 @@ export function SleeveDeckCatalogue() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.25 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-12 md:mb-16"
+        >
           <div className="font-meta text-xs text-[#FF4D00] font-bold tracking-widest uppercase mb-2">
             // INTERACTIVE RECORD SLEEVES • CLICK OR DRAG TO THROW ASIDE //
           </div>
@@ -191,7 +197,7 @@ export function SleeveDeckCatalogue() {
           <p className="font-meta text-xs text-neutral-400 max-w-lg mx-auto mt-4">
             FLIP THROUGH HIGH-YIELD EXAMINATION RECORDS. EACH PHYSICAL SLEEVE REPRESENTS A VERIFIED EMPIRICAL PYQ CHAPTER.
           </p>
-        </div>
+        </motion.div>
 
         {/* Sleeve Deck Area */}
         <div className="relative min-h-[500px] flex flex-col items-center justify-center">
@@ -360,19 +366,25 @@ export function SleeveDeckCatalogue() {
         </div>
 
         {/* Bottom Fast Navigation Shortcuts */}
-        <div className="mt-16 pt-8 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 font-meta text-xs text-neutral-400">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 pt-8 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 font-meta text-xs text-neutral-400"
+        >
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#FF4D00] rounded-full inline-block"></span>
+            <span className="w-2 h-2 bg-[#FF4D00] rounded-full inline-block animate-pulse"></span>
             <span>SUPPORTED ON DESKTOP CLICK & TOUCH MOBILE SWIPE</span>
           </div>
           <Link
             href="/dashboard/exams"
-            className="text-white hover:text-[#FF4D00] font-bold flex items-center gap-1 transition-colors"
+            className="text-white hover:text-[#FF4D00] font-bold flex items-center gap-1 transition-colors group"
           >
             <span>VIEW ALL 150+ CHAPTER SLEEVES</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

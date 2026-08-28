@@ -140,7 +140,13 @@ export default function LandingPage() {
       <SleeveDeckCatalogue />
 
       {/* 4. SKEWED MARQUEE SECTION (-2deg Skew, #000000 Background) */}
-      <section className="relative py-14 bg-black overflow-hidden border-brutal-b -my-2 z-10 transform -rotate-2 scale-105">
+      <motion.section
+        initial={{ opacity: 0.6, scale: 0.98 }}
+        whileInView={{ opacity: 1, scale: 1.05 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="relative py-14 bg-black overflow-hidden border-brutal-b -my-2 z-10 transform -rotate-2"
+      >
         {/* Row 1: Orange 10vw Text Scrolling Left */}
         <div className="overflow-hidden whitespace-nowrap mb-4">
           <div className="animate-marquee-left flex items-center text-[#FF4D00] font-headline text-[9vw] md:text-[8vw] tracking-tighter">
@@ -174,15 +180,21 @@ export default function LandingPage() {
             <span className="mx-6 text-[#FF4D00]">•</span>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 5. VERTICAL SERVICE LIST (Dark Section with Orange Accents) */}
-      <section className="bg-black text-white py-24 px-4 md:px-8 border-brutal-b">
+      <section id="intelligence-stack" className="bg-black text-white py-24 px-4 md:px-8 border-brutal-b">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between border-brutal-b border-white pb-6 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col md:flex-row md:items-end justify-between border-brutal-b border-white pb-6 mb-12"
+          >
             <div>
-              <span className="font-meta text-xs text-[#FF4D00]">[ CORE CAPABILITIES ]</span>
+              <span className="font-meta text-xs text-[#FF4D00] font-bold">[ CORE CAPABILITIES ]</span>
               <h2 className="font-headline text-4xl sm:text-6xl md:text-7xl mt-2 tracking-tight text-white">
                 THE INTELLIGENCE STACK
               </h2>
@@ -190,50 +202,63 @@ export default function LandingPage() {
             <p className="font-meta text-xs text-neutral-400 max-w-sm mt-4 md:mt-0">
               FOUR PROPRIETARY MODULES BUILT TO EXPOSE HIGH-YIELD PATTERNS ACROSS NTA & CBSE SHIFTS.
             </p>
-          </div>
+          </motion.div>
 
-          {/* List Items */}
+          {/* List Items with Staggered Scroll-triggered Entrance */}
           <div className="divide-y-2 divide-neutral-800 border-brutal border-neutral-800">
-            {services.map((svc) => (
-              <Link
+            {services.map((svc, idx) => (
+              <motion.div
                 key={svc.number}
-                href="/dashboard/exams"
-                className="group block p-6 sm:p-10 hover:bg-[#FF4D00] transition-colors duration-200"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex items-start md:items-center gap-6">
-                    <span className="font-headline text-3xl sm:text-5xl text-[#FF4D00] group-hover:text-black transition-colors">
-                      {svc.number}
-                    </span>
-                    <div>
-                      <span className="font-meta text-xs text-neutral-400 group-hover:text-black transition-colors block mb-1">
-                        // {svc.category} • {svc.tag}
+                <Link
+                  href="/dashboard/exams"
+                  className="group block p-6 sm:p-10 hover:bg-[#FF4D00] transition-colors duration-200"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex items-start md:items-center gap-6">
+                      <span className="font-headline text-3xl sm:text-5xl text-[#FF4D00] group-hover:text-black transition-colors">
+                        {svc.number}
                       </span>
-                      <h3 className="font-headline text-2xl sm:text-4xl text-white group-hover:text-black group-hover:translate-x-3 transition-all duration-200">
-                        {svc.title}
-                      </h3>
+                      <div>
+                        <span className="font-meta text-xs text-neutral-400 group-hover:text-black transition-colors block mb-1">
+                          // {svc.category} • {svc.tag}
+                        </span>
+                        <h3 className="font-headline text-2xl sm:text-4xl text-white group-hover:text-black group-hover:translate-x-3 transition-all duration-200">
+                          {svc.title}
+                        </h3>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center justify-between md:justify-end gap-6 md:max-w-md">
-                    <p className="text-sm text-neutral-400 group-hover:text-black transition-colors">
-                      {svc.desc}
-                    </p>
-                    <div className="w-12 h-12 flex-shrink-0 border-brutal border-white group-hover:border-black bg-black group-hover:bg-white flex items-center justify-center group-hover:translate-x-2 transition-all">
-                      <ArrowRight className="w-6 h-6 text-[#FF4D00] group-hover:text-black" />
+                    <div className="flex items-center justify-between md:justify-end gap-6 md:max-w-md">
+                      <p className="text-sm text-neutral-400 group-hover:text-black transition-colors">
+                        {svc.desc}
+                      </p>
+                      <div className="w-12 h-12 flex-shrink-0 border-brutal border-white group-hover:border-black bg-black group-hover:bg-white flex items-center justify-center group-hover:translate-x-2 transition-all">
+                        <ArrowRight className="w-6 h-6 text-[#FF4D00] group-hover:text-black" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* 6. PARALLAX & STICKY STORYTELLING (scroll-experience skill) */}
-      <section className="py-24 px-4 md:px-8 bg-[#FF4D00] border-brutal-b">
+      <section id="cracks-the-code" className="py-24 px-4 md:px-8 bg-[#FF4D00] border-brutal-b">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-16 text-center max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-16 text-center max-w-3xl mx-auto"
+          >
             <span className="font-meta text-xs text-black font-bold bg-white px-3 py-1 border-brutal inline-block mb-3">
               [ METHODOLOGICAL WORKFLOW ]
             </span>
@@ -243,7 +268,7 @@ export default function LandingPage() {
             <p className="font-medium text-black mt-4 text-base md:text-lg">
               High-stakes Indian exams do not pick questions randomly. Syllabus balance requirements, committee rotations, and difficulty constraints force predictable patterns.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {storySteps.map((s, idx) => {
@@ -251,16 +276,17 @@ export default function LandingPage() {
               return (
                 <motion.div
                   key={s.step}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.15 }}
-                  className="bg-white p-8 border-brutal relative flex flex-col justify-between"
+                  viewport={{ once: false, amount: 0.2 }}
+                  whileHover={{ y: -8, scale: 1.02, boxShadow: "8px 8px 0px #000000" }}
+                  transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  className="bg-white p-8 border-brutal relative flex flex-col justify-between cursor-pointer group"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-6 pb-4 border-brutal-b">
                       <span className="font-meta text-xs font-bold text-[#FF4D00]">{s.step}</span>
-                      <IconComp className="w-6 h-6 text-black" />
+                      <IconComp className="w-6 h-6 text-black group-hover:scale-110 group-hover:rotate-6 transition-transform" />
                     </div>
                     <h3 className="font-headline text-2xl text-black mb-4">{s.title}</h3>
                     <p className="text-sm text-neutral-700 leading-relaxed">{s.body}</p>
@@ -268,7 +294,10 @@ export default function LandingPage() {
 
                   <div className="mt-8 pt-4 border-brutal-t flex items-center justify-between font-meta text-xs">
                     <span className="text-neutral-500">STATUS</span>
-                    <span className="text-black font-bold">VERIFIED PROTOCOL</span>
+                    <span className="text-black font-bold flex items-center gap-1.5">
+                      <span className="w-2 h-2 bg-[#FF4D00] inline-block animate-pulse"></span>
+                      VERIFIED PROTOCOL
+                    </span>
                   </div>
                 </motion.div>
               );
@@ -278,41 +307,87 @@ export default function LandingPage() {
       </section>
 
       {/* 7. GIANT BRUTALIST CTA */}
-      <section className="bg-[#FF4D00] py-20 px-4 md:px-8 border-brutal-b text-center">
+      <section id="study-smarter-cta" className="bg-[#FF4D00] py-24 px-4 md:px-8 border-brutal-b text-center overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <span className="font-meta text-xs text-black font-bold bg-white px-3 py-1 border-brutal inline-block mb-4">
-            [ NO CREDIT CARD • NO BACKEND SETUP ]
-          </span>
-          <h2 className="font-headline text-5xl sm:text-7xl md:text-8xl text-black mt-2 mb-8 tracking-tight leading-[0.88]">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="font-meta text-xs text-black font-bold bg-white px-3.5 py-1.5 border-brutal inline-block mb-4">
+              [ NO CREDIT CARD • NO BACKEND SETUP ]
+            </span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 35, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-headline text-5xl sm:text-7xl md:text-8xl text-black mt-2 mb-8 tracking-tight leading-[0.88]"
+          >
             STUDY SMARTER.<br />
             NOT HARDER.
-          </h2>
-          <p className="text-lg md:text-xl text-black font-medium max-w-2xl mx-auto mb-10">
-            Access the complete predictive analytics shell, chapter weightage heatmaps, KaTeX formula cheatsheets, and AI strategy assistant.
-          </p>
+          </motion.h2>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/signup"
-              className="w-full sm:w-auto bg-black text-white px-10 py-5 border-brutal font-headline text-xl hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-3"
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-lg md:text-xl text-black font-medium max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            Access the complete predictive analytics shell, chapter weightage heatmaps, KaTeX formula cheatsheets, and AI strategy assistant.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full sm:w-auto"
             >
-              <span>CREATE FREE ACCOUNT</span>
-              <ArrowRight className="w-6 h-6" />
-            </Link>
-            <Link
-              href="/dashboard/exams"
-              className="w-full sm:w-auto bg-white text-black px-10 py-5 border-brutal font-headline text-xl hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-3"
+              <Link
+                href="/signup"
+                className="w-full sm:w-auto bg-black text-white px-10 py-5 border-brutal font-headline text-xl hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-3"
+              >
+                <span>CREATE FREE ACCOUNT</span>
+                <ArrowRight className="w-6 h-6" />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full sm:w-auto"
             >
-              <span>VIEW EXAM SUITE</span>
-              <ArrowUpRight className="w-6 h-6" />
-            </Link>
-          </div>
+              <Link
+                href="/dashboard/exams"
+                className="w-full sm:w-auto bg-white text-black px-10 py-5 border-brutal font-headline text-xl hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-3"
+              >
+                <span>VIEW EXAM SUITE</span>
+                <ArrowUpRight className="w-6 h-6" />
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* 8. FOOTER */}
-      <footer className="bg-black text-white py-12 px-4 md:px-8 border-brutal-t border-black">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <footer className="bg-black text-white py-14 px-4 md:px-8 border-brutal-t border-black">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8"
+        >
           <div>
             <div className="font-headline text-2xl tracking-tight text-white flex items-center gap-2">
               <span>EXAMSAATHI</span>
@@ -344,7 +419,7 @@ export default function LandingPage() {
           <div className="font-meta text-xs text-neutral-500">
             © 2026 EXAMSAATHI. BRUTALIST KINETIC ORANGE EDITION.
           </div>
-        </div>
+        </motion.div>
       </footer>
     </div>
   );
