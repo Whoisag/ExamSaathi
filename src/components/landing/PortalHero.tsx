@@ -17,7 +17,8 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
 
   const isAutoClosedRef = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const fullyOpenTriggeredRef = useRef(false);
+  const maxProgressRef = useRef(0);
+  const lastScrollYRef = useRef(0);
 
   // Proportional transforms linked directly to openProgress:
   // "if the user scrolls down little bit it should open little bit"
@@ -36,42 +37,49 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
 
   const FULL_OPEN_SCROLL = 220;
 
+  // Schedules automatic closure after 2 seconds:
+  // "it will only close automatically after 2 secs"
+  const scheduleAutoClose = (label = "AUTOCLOSING IN 2S") => {
+    if (timerRef.current) return;
+    setStatusText(label);
+    timerRef.current = setTimeout(() => {
+      isAutoClosedRef.current = true;
+      setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
+      animate(openProgress, 0, {
+        duration: 0.85,
+        ease: [0.2, 0.8, 0.3, 1],
+        onComplete: () => {
+          setIsFullyOpen(false);
+        },
+      });
+      timerRef.current = null;
+    }, 2000);
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
       openProgress.set(1);
+      maxProgressRef.current = 1;
       setIsFullyOpen(true);
-      setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
-      timerRef.current = setTimeout(() => {
-        isAutoClosedRef.current = true;
-        setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
-        animate(openProgress, 0, {
-          duration: 0.85,
-          ease: [0.2, 0.8, 0.3, 1],
-          onComplete: () => {
-            setIsFullyOpen(false);
-          },
-        });
-      }, 2000);
+      scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
     }
   }, [openProgress]);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const isScrollingUp = currentScrollY < lastScrollYRef.current;
+      lastScrollYRef.current = currentScrollY;
 
-      // When user scrolls back near top (<= 15px), reset the lock
-      if (currentScrollY <= 15) {
-        if (isAutoClosedRef.current || fullyOpenTriggeredRef.current) {
-          isAutoClosedRef.current = false;
-          fullyOpenTriggeredRef.current = false;
-          if (timerRef.current) {
-            clearTimeout(timerRef.current);
-            timerRef.current = null;
-          }
-          openProgress.set(0);
-          setIsFullyOpen(false);
-          setStatusText("STANDBY (SCROLL DOWN TO PART)");
+      // Reset only when user is back near the top AND panels have completely auto-closed to 0
+      if (currentScrollY <= 15 && isAutoClosedRef.current && openProgress.get() === 0) {
+        isAutoClosedRef.current = false;
+        maxProgressRef.current = 0;
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
         }
+        setStatusText("STANDBY (SCROLL DOWN TO PART)");
         return;
       }
 
@@ -80,43 +88,31 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         return;
       }
 
-      // Proportional opening as user scrolls down:
-      // "if the user scrolls down little bit it should open little bit"
       const progress = Math.min(1, Math.max(0, currentScrollY / FULL_OPEN_SCROLL));
-      openProgress.set(progress);
 
-      if (progress < 0.98) {
-        setIsFullyOpen(false);
-        setStatusText(`PARTING (${Math.round(progress * 100)}%)`);
-        if (timerRef.current) {
-          clearTimeout(timerRef.current);
-          timerRef.current = null;
-          fullyOpenTriggeredRef.current = false;
+      // 1. Moving downward deeper than before: open proportionally!
+      // "if the user scrolls down little bit it should open little bit"
+      if (progress > maxProgressRef.current) {
+        maxProgressRef.current = progress;
+        openProgress.set(progress);
+
+        if (progress >= 0.98) {
+          setIsFullyOpen(true);
+          scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
+        } else {
+          setIsFullyOpen(false);
+          setStatusText(`PARTING (${Math.round(progress * 100)}%)`);
         }
       }
 
-      // "once its open fully it should close itself automatically in 2 seconds"
-      if (progress >= 0.98 && !fullyOpenTriggeredRef.current) {
-        fullyOpenTriggeredRef.current = true;
-        setIsFullyOpen(true);
-        setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
-
-        if (timerRef.current) {
-          clearTimeout(timerRef.current);
-        }
-
-        timerRef.current = setTimeout(() => {
-          isAutoClosedRef.current = true;
-          setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
-          animate(openProgress, 0, {
-            duration: 0.85,
-            ease: [0.2, 0.8, 0.3, 1],
-            onComplete: () => {
-              setIsFullyOpen(false);
-            },
-          });
-          timerRef.current = null;
-        }, 2000);
+      // 2. Scrolling back up while panels are open: DO NOT CLOSE!
+      // "if the user scrolls back the panel shouldnt close it will only close automatically after 2 secs"
+      if (isScrollingUp && maxProgressRef.current > 0.05) {
+        scheduleAutoClose(
+          maxProgressRef.current >= 0.98
+            ? "FULLY OPEN (AUTOCLOSES IN 2S)"
+            : "AUTOCLOSING IN 2S"
+        );
       }
     };
 
@@ -138,25 +134,14 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
 
     if (openProgress.get() < 0.5) {
       isAutoClosedRef.current = false;
-      fullyOpenTriggeredRef.current = true;
-      setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
+      maxProgressRef.current = 1;
       setIsFullyOpen(true);
+      setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
       animate(openProgress, 1, {
         duration: 0.7,
         ease: [0.2, 0.8, 0.3, 1],
         onComplete: () => {
-          timerRef.current = setTimeout(() => {
-            isAutoClosedRef.current = true;
-            setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
-            animate(openProgress, 0, {
-              duration: 0.85,
-              ease: [0.2, 0.8, 0.3, 1],
-              onComplete: () => {
-                setIsFullyOpen(false);
-              },
-            });
-            timerRef.current = null;
-          }, 2000);
+          scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
         },
       });
     } else {
