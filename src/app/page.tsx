@@ -3,7 +3,9 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, ArrowRight, Sparkles, Terminal, Activity, Layers, BookOpen, Compass } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Terminal, Activity, Layers } from "lucide-react";
+import { PortalHero } from "@/components/landing/PortalHero";
+import { SleeveDeckCatalogue } from "@/components/landing/SleeveDeckCatalogue";
 
 export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,10 +13,6 @@ export default function LandingPage() {
     target: containerRef,
     offset: ["start start", "end end"],
   });
-
-  // Parallax layers as defined in scroll-experience skill
-  const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
-  const yMidground = useTransform(scrollYProgress, [0, 1], ["0%", "-35%"]);
 
   const services = [
     {
@@ -70,9 +68,9 @@ export default function LandingPage() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-white text-black font-sans selection:bg-[#FF4D00] selection:text-white">
-      {/* 1. FIXED FLOATING BRUTALIST NAV */}
-      <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      {/* 1. FIXED FLOATING BRUTALIST NAV (Always visible above portal) */}
+      <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 pointer-events-none">
+        <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
           {/* Logo */}
           <Link
             href="/"
@@ -135,91 +133,13 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* 2. FULLSCREEN HERO SECTION */}
-      <section className="relative min-h-screen flex flex-col justify-between pt-24 pb-8 px-4 md:px-8 border-brutal-b overflow-hidden bg-white">
-        {/* Top Metadata Row */}
-        <div className="max-w-7xl mx-auto w-full pt-8 flex justify-between items-center font-meta text-xs text-neutral-600 border-brutal-b pb-4">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#FF4D00] inline-block animate-pulse"></span>
-            <span>SYSTEM 2026 // PUBLIC FRONTEND SHELL</span>
-          </div>
-          <div className="hidden sm:block">VERIFIED PYQS: 2010 — 2025</div>
-          <div>NTA & CBSE ANALYTICS</div>
-        </div>
+      {/* 2. FULLSCREEN INTERACTIVE PORTAL HERO */}
+      <PortalHero />
 
-        {/* Hero Centered Massive Headline */}
-        <motion.div
-          style={{ y: yBackground }}
-          className="my-auto py-10 text-center max-w-7xl mx-auto w-full"
-        >
-          <div className="font-meta text-xs sm:text-sm md:text-base text-[#FF4D00] font-bold tracking-widest mb-4">
-            [ KINETIC PREDICTIVE AUDITING ]
-          </div>
-          <h1 className="font-headline text-[13.5vw] sm:text-[13vw] md:text-[12vw] lg:text-[11.5vw] xl:text-[11vw] text-black select-none leading-[0.85] tracking-[-0.04em] break-normal">
-            EXAM<span className="text-[#FF4D00]">SAATHI</span>
-          </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-sm sm:text-base md:text-xl font-medium text-neutral-800 leading-tight px-2">
-            Stop guessing what comes in your exam. Surgical PYQ frequency intelligence,
-            overdue recurrence gap alerts, and KaTeX cheat sheets for Indian students.
-          </p>
+      {/* 3. CATALOGUE – SLEEVE DECK (PHYSICAL RECORD SLEEVES) */}
+      <SleeveDeckCatalogue />
 
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/dashboard/exams"
-              className="bg-[#FF4D00] text-black px-8 py-4 border-brutal font-headline text-lg md:text-xl hover:bg-black hover:text-[#FF4D00] transition-colors inline-flex items-center gap-3"
-            >
-              <span>EXPLORE ALL EXAMS</span>
-              <ArrowRight className="w-6 h-6" />
-            </Link>
-            <Link
-              href="/analyzer/jee-main/modern-physics"
-              className="bg-black text-white px-8 py-4 border-brutal font-headline text-lg md:text-xl hover:bg-white hover:text-black transition-colors inline-flex items-center gap-3"
-            >
-              <span>SAMPLE ANALYZER</span>
-              <ArrowUpRight className="w-6 h-6" />
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* Bottom Hero Metadata & 12s Rotating Indicator */}
-        <div className="max-w-7xl mx-auto w-full pt-6 border-brutal-t flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-wrap items-center gap-6 font-meta text-xs">
-            <div>
-              <span className="text-neutral-500 block">SUPPORTED NATIONAL TRACKS:</span>
-              <span className="font-bold text-black">JEE MAIN • ADVANCED • NEET • CBSE 12 • CBSE 10 • CUET</span>
-            </div>
-            <div className="hidden lg:block border-l-2 border-black pl-6">
-              <span className="text-neutral-500 block">METHODOLOGICAL ACCURACY:</span>
-              <span className="font-bold text-[#FF4D00]">MAE 0.48 QS • SPEARMAN RHO 0.85</span>
-            </div>
-          </div>
-
-          {/* 12s Rotating Circular "Scroll Down" Indicator */}
-          <div className="relative w-24 h-24 flex items-center justify-center select-none flex-shrink-0">
-            <svg
-              className="w-full h-full animate-spin-12s text-black"
-              viewBox="0 0 100 100"
-            >
-              <defs>
-                <path
-                  id="circlePath"
-                  d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                />
-              </defs>
-              <text fontSize="10.5" className="font-meta font-bold fill-current tracking-widest">
-                <textPath xlinkHref="#circlePath">
-                  • SCROLL DOWN • DISCOVER DATA •
-                </textPath>
-              </text>
-            </svg>
-            <div className="absolute w-8 h-8 rounded-full bg-[#FF4D00] border-2 border-black flex items-center justify-center">
-              <ArrowRight className="w-4 h-4 text-black transform rotate-90" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. SKEWED MARQUEE SECTION (-2deg Skew, #000000 Background) */}
+      {/* 4. SKEWED MARQUEE SECTION (-2deg Skew, #000000 Background) */}
       <section className="relative py-14 bg-black overflow-hidden border-brutal-b -my-2 z-10 transform -rotate-2 scale-105">
         {/* Row 1: Orange 10vw Text Scrolling Left */}
         <div className="overflow-hidden whitespace-nowrap mb-4">
@@ -256,7 +176,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 4. VERTICAL SERVICE LIST (Dark Section with Orange Accents) */}
+      {/* 5. VERTICAL SERVICE LIST (Dark Section with Orange Accents) */}
       <section className="bg-black text-white py-24 px-4 md:px-8 border-brutal-b">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
@@ -310,7 +230,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 5. PARALLAX & STICKY STORYTELLING (scroll-experience skill) */}
+      {/* 6. PARALLAX & STICKY STORYTELLING (scroll-experience skill) */}
       <section className="py-24 px-4 md:px-8 bg-neutral-100 border-brutal-b">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 text-center max-w-3xl mx-auto">
@@ -355,7 +275,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 6. GIANT BRUTALIST CTA & FOOTER */}
+      {/* 7. GIANT BRUTALIST CTA */}
       <section className="bg-white py-20 px-4 md:px-8 border-brutal-b text-center">
         <div className="max-w-5xl mx-auto">
           <span className="font-meta text-xs text-[#FF4D00] font-bold">[ NO CREDIT CARD • NO BACKEND SETUP ]</span>
@@ -386,7 +306,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* 8. FOOTER */}
       <footer className="bg-black text-white py-12 px-4 md:px-8 border-brutal-t border-black">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
