@@ -36,24 +36,24 @@ export function AppShell({
   const currentSub = activeSubject || currentSubject;
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900 font-sans">
+    <div className="flex min-h-screen bg-[#FF4D00] text-black font-sans selection:bg-black selection:text-white">
       {/* Desktop Sidebar */}
       <Sidebar currentExam={currentExam} currentSubject={currentSub} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-8">
+      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-8 bg-[#FF4D00]">
         {/* Mobile Header */}
-        <header className="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-xs">
+        <header className="md:hidden sticky top-0 z-30 bg-white border-b-2 border-black px-4 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#3730A3] flex items-center justify-center text-white">
-              <Sparkles className="w-4 h-4" />
+            <div className="w-7 h-7 bg-black flex items-center justify-center text-white">
+              <Sparkles className="w-4 h-4 text-[#FF4D00]" />
             </div>
-            <span className="font-bold text-base tracking-tight text-slate-900">
-              Exam<span className="text-[#EA580C]">Saathi</span>
+            <span className="font-headline text-lg tracking-tight text-black">
+              EXAM<span className="text-[#FF4D00]">SAATHI</span>
             </span>
           </Link>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-[#3730A3] border border-indigo-100/60">
+            <span className="text-[11px] font-bold px-2.5 py-1 bg-black text-white border border-black">
               {exam.shortName}
             </span>
           </div>
@@ -61,7 +61,7 @@ export function AppShell({
 
         {/* Desktop Top Sub-Header */}
         {(breadcrumbs || title || actionSlot) && (
-          <div className="bg-white border-b border-slate-200/80 px-4 md:px-8 py-4 sm:py-5 shrink-0">
+          <div className="bg-white border-b-2 border-black px-4 md:px-8 py-4 sm:py-5 shrink-0">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 {breadcrumbs && (

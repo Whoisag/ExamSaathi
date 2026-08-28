@@ -56,7 +56,7 @@ export default function ExamChaptersPage() {
   }, [allChapters, searchQuery, selectedSubject]);
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#FF4D00] selection:text-white font-sans">
+    <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
       <BrutalistHeader />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8 md:py-12">
@@ -64,7 +64,7 @@ export default function ExamChaptersPage() {
         <div className="mb-6">
           <Link
             href="/dashboard/exams"
-            className="inline-flex items-center gap-2 font-meta text-xs text-neutral-600 hover:text-[#FF4D00] transition-colors"
+            className="inline-flex items-center gap-2 font-meta text-xs bg-white text-black border-brutal px-3.5 py-2 font-bold hover:bg-black hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>BACK TO ALL EXAMS</span>
@@ -92,7 +92,7 @@ export default function ExamChaptersPage() {
                   setIsLoading(true);
                   setTimeout(() => setIsLoading(false), 500);
                 }}
-                className="bg-white text-black border-2 border-white px-3.5 py-2 font-meta text-xs hover:bg-[#FF4D00] hover:text-black hover:border-[#FF4D00] transition-colors flex items-center gap-1.5"
+                className="bg-white text-black border-2 border-white px-3.5 py-2 font-meta text-xs hover:bg-[#FF4D00] hover:text-black hover:border-[#FF4D00] transition-colors flex items-center gap-1.5 font-bold cursor-pointer"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
                 <span>SKELETON</span>
@@ -113,7 +113,7 @@ export default function ExamChaptersPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="SEARCH CHAPTERS, EQUATIONS, PHENOMENA..."
-              className="w-full pl-11 pr-4 py-3 border-brutal bg-neutral-50 text-black font-meta text-xs placeholder:text-neutral-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF4D00]"
+              className="w-full pl-11 pr-4 py-3 border-brutal bg-white text-black font-meta text-xs placeholder:text-neutral-500 focus:outline-none"
             />
             <Search className="w-4 h-4 text-neutral-500 absolute left-4 top-1/2 -translate-y-1/2" />
           </div>
@@ -124,10 +124,10 @@ export default function ExamChaptersPage() {
               <button
                 key={subj}
                 onClick={() => setSelectedSubject(subj)}
-                className={`px-4 py-3 border-brutal font-meta text-xs font-bold whitespace-nowrap transition-colors ${
+                className={`px-4 py-3 border-brutal font-meta text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
                   selectedSubject === subj
-                    ? "bg-[#FF4D00] text-black"
-                    : "bg-white text-neutral-700 hover:bg-neutral-100"
+                    ? "bg-black text-white"
+                    : "bg-white text-black hover:bg-black hover:text-white"
                 }`}
               >
                 {subj.toUpperCase()}
@@ -236,8 +236,13 @@ export default function ExamChaptersPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-brutal-t p-6 text-center font-meta text-xs text-neutral-500 mt-12">
-        EXAMSAATHI CHAPTER REPOSITORY • {examInfo.name} SYLLABUS DIRECTORY
+      <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>// EXAMSAATHI CHAPTER REPOSITORY • {examInfo.name} SYLLABUS DIRECTORY</div>
+          <div className="text-neutral-400">
+            RADICAL UNCERTAINTY HONESTY • NTA / CBSE HISTORICAL BACKTEST
+          </div>
+        </div>
       </footer>
     </div>
   );

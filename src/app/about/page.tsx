@@ -18,7 +18,7 @@ import {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#FF4D00] selection:text-white font-sans">
+    <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
       <BrutalistHeader />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 md:px-8 py-8 md:py-12 space-y-10">
@@ -229,8 +229,13 @@ export default function AboutPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-brutal-t p-6 text-center font-meta text-xs text-neutral-500 mt-12">
-        EXAMSAATHI WHITE PAPER • FORMAL METHODOLOGY & ETHICAL SAFEGUARDS
+      <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>// EXAMSAATHI WHITE PAPER • 2026 SHELL</div>
+          <div className="text-neutral-400">
+            FORMAL METHODOLOGY & ETHICAL SAFEGUARDS
+          </div>
+        </div>
       </footer>
     </div>
   );

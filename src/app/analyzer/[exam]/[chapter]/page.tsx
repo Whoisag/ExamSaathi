@@ -29,7 +29,7 @@ export default function ChapterAnalyzerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#FF4D00] selection:text-white font-sans">
+    <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
       <BrutalistHeader />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8 md:py-12">
@@ -38,18 +38,18 @@ export default function ChapterAnalyzerPage() {
           <div className="flex items-center gap-2 font-meta text-xs">
             <Link
               href={`/dashboard/exams/${examSlug}/chapters`}
-              className="inline-flex items-center gap-1 text-neutral-600 hover:text-[#FF4D00] transition-colors"
+              className="inline-flex items-center gap-1 bg-white text-black border-brutal px-3.5 py-2 font-bold hover:bg-black hover:text-white transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>CHAPTERS</span>
             </Link>
-            <span className="text-neutral-400">/</span>
-            <span className="text-black font-bold uppercase">{analyzerData.chapter.name}</span>
+            <span className="text-black font-bold">/</span>
+            <span className="bg-black text-white px-3.5 py-2 font-bold uppercase border-brutal">{analyzerData.chapter.name}</span>
           </div>
 
           <button
             onClick={toggleSkeleton}
-            className="border-brutal px-3 py-1.5 font-meta text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="border-brutal bg-white text-black px-3.5 py-2 font-meta text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer font-bold"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
             <span>TEST SKELETON</span>
@@ -125,7 +125,7 @@ export default function ChapterAnalyzerPage() {
         </div>
 
         {/* Bottom Fast Switcher */}
-        <div className="border-brutal bg-neutral-50 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-brutal bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <span className="font-meta text-xs text-[#FF4D00] font-bold block">
               READY FOR PRACTICE?
@@ -137,7 +137,7 @@ export default function ChapterAnalyzerPage() {
 
           <Link
             href={`/formulas/${examSlug}/physics`}
-            className="bg-[#FF4D00] text-black px-6 py-3 border-brutal font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center gap-2"
+            className="bg-black text-white px-6 py-3 border-brutal font-headline text-sm hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center gap-2"
           >
             <span>FORMULA CHEATSHEET</span>
             <ArrowRight className="w-4 h-4" />
@@ -146,8 +146,13 @@ export default function ChapterAnalyzerPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-brutal-t p-6 text-center font-meta text-xs text-neutral-500 mt-12">
-        EXAMSAATHI CHAPTER ANALYZER ENGINE • RECHARTS & KATEX MATHEMATICAL VISUALIZATION
+      <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>// EXAMSAATHI CHAPTER ANALYZER ENGINE • 2026 SHELL</div>
+          <div className="text-neutral-400">
+            RECHARTS & KATEX MATHEMATICAL VISUALIZATION
+          </div>
+        </div>
       </footer>
     </div>
   );

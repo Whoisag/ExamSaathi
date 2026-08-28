@@ -32,20 +32,20 @@ export default function EvaluationPage() {
   const chartData = showEmptyState ? [] : MOCK_EVAL_CHART_DATA;
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#FF4D00] selection:text-white font-sans">
+    <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
       <BrutalistHeader />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8 md:py-12">
         {/* Top Breadcrumb & Header Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between border-brutal-b pb-6 mb-8 gap-4">
+        <div className="border-brutal bg-black text-white p-6 sm:p-8 mb-8 relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="font-meta text-xs text-[#FF4D00] font-bold mb-1">
               // EMPIRICAL VALIDATION // HOLDOUT BACKTEST AUDIT
             </div>
-            <h1 className="font-headline text-3xl sm:text-5xl text-black tracking-tight">
+            <h1 className="font-headline text-3xl sm:text-5xl text-white tracking-tight">
               MODEL EVALUATION & BENCHMARKS
             </h1>
-            <p className="text-sm text-neutral-600 mt-2 max-w-2xl font-medium">
+            <p className="text-sm text-neutral-300 mt-2 max-w-2xl font-medium">
               Rigorous backtesting benchmarks across 15+ years of NTA and CBSE shift papers:
               Mean Absolute Error (MAE), Spearman Rank Correlation (ρ), and Precision@K.
             </p>
@@ -56,7 +56,7 @@ export default function EvaluationPage() {
             <button
               onClick={handleToggleLoading}
               disabled={simulateLoading}
-              className="border-brutal px-3 py-2 font-meta text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="border-brutal bg-white text-black px-3 py-2 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 font-bold"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${simulateLoading ? "animate-spin text-[#FF4D00]" : ""}`} />
               <span>TEST SKELETON</span>
@@ -66,7 +66,7 @@ export default function EvaluationPage() {
               className={`border-brutal px-3.5 py-2 font-meta text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer ${
                 showEmptyState
                   ? "bg-[#FF4D00] text-black"
-                  : "bg-black text-white hover:bg-neutral-800"
+                  : "bg-white text-black hover:bg-neutral-100"
               }`}
             >
               <Eye className="w-3.5 h-3.5" />
@@ -291,8 +291,13 @@ export default function EvaluationPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-brutal-t p-6 text-center font-meta text-xs text-neutral-500 mt-12">
-        EXAMSAATHI EMPIRICAL VALIDATION SUITE • STRICT HOLDOUT BACKTEST STANDARDS
+      <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>// EXAMSAATHI EMPIRICAL VALIDATION SUITE • 2026 SHELL</div>
+          <div className="text-neutral-400">
+            STRICT HOLDOUT BACKTEST STANDARDS
+          </div>
+        </div>
       </footer>
     </div>
   );

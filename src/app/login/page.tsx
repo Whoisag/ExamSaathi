@@ -59,9 +59,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col justify-between selection:bg-[#FF4D00] selection:text-white font-sans">
+    <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
       {/* Header */}
-      <header className="border-brutal-b p-6 px-8 flex justify-between items-center">
+      <header className="border-brutal-b bg-white p-6 px-8 flex justify-between items-center">
         <Link
           href="/"
           className="font-headline text-2xl tracking-tight flex items-center gap-2 hover:text-[#FF4D00] transition-colors"
@@ -220,7 +220,7 @@ export default function LoginPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-brutal-t p-6 text-center font-meta text-xs text-neutral-500">
+      <footer className="border-brutal-t bg-black text-white p-6 text-center font-meta text-xs">
         EXAMSAATHI PREDICTIVE PYQ INTELLIGENCE • ALL MOCK DATA LOCAL
       </footer>
     </div>
