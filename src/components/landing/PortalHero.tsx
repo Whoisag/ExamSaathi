@@ -17,33 +17,63 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
     return false;
   });
   const heroRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Bidirectional scroll detection:
-  // Scrolling down parts the panels and wordmark; scrolling back to top brings them back!
+  // Bidirectional scroll detection with 2-second close delay when scrolling back to top:
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       if (scrollY > 40) {
+        // If a close timer was scheduled, cancel it because user is scrolling down
+        if (closeTimeoutRef.current) {
+          clearTimeout(closeTimeoutRef.current);
+          closeTimeoutRef.current = null;
+        }
         setIsParted(true);
       } else if (scrollY <= 10) {
-        setIsParted(false);
+        // User scrolled back to top: close panels after 2 seconds
+        if (!closeTimeoutRef.current) {
+          closeTimeoutRef.current = setTimeout(() => {
+            setIsParted(false);
+            closeTimeoutRef.current = null;
+          }, 2000);
+        }
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Bidirectional wheel detection:
   const handleWheel = (e: React.WheelEvent) => {
-    if (e.deltaY > 20 && !isParted) {
+    if (e.deltaY > 20) {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
       setIsParted(true);
     } else if (e.deltaY < -20 && window.scrollY <= 10 && isParted) {
-      setIsParted(false);
+      if (!closeTimeoutRef.current) {
+        closeTimeoutRef.current = setTimeout(() => {
+          setIsParted(false);
+          closeTimeoutRef.current = null;
+        }, 2000);
+      }
     }
   };
 
   const toggleParting = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+
     if (!isParted) {
       setIsParted(true);
     } else {
@@ -203,7 +233,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
       </div>
 
       {/* HERO INTERACTIVE CONTENT (Fades in cleanly when parted with zero wordmark collisions) */}
-      <div className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-36 pb-12 flex flex-col items-center justify-center text-center my-auto min-h-[440px]">
+      <div className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-44 pb-10 flex flex-col items-center justify-center text-center my-auto">
         <AnimatePresence>
           {isParted ? (
             <motion.div
@@ -211,15 +241,21 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-6 max-w-2xl mx-auto"
+              className="space-y-5 max-w-3xl mx-auto flex flex-col items-center"
             >
+              {/* Exam Saathi in Orange and White */}
+              <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[0.9] select-none">
+                <span className="text-[#FF4D00]">EXAM </span>
+                <span className="text-white">SAATHI</span>
+              </h1>
+
               {/* Tagline */}
               <div className="font-meta text-xs sm:text-sm md:text-base text-white tracking-[0.05em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-4 py-2 inline-block">
                 PATTERN-BASED EXAM PREP FOR INDIAN STUDENTS
               </div>
 
               {/* Subtitle */}
-              <p className="text-sm sm:text-base md:text-lg font-medium text-neutral-200 leading-snug">
+              <p className="text-sm sm:text-base md:text-lg font-medium text-neutral-200 leading-snug max-w-2xl mx-auto">
                 Stop guessing what comes in your exam. Surgical PYQ frequency intelligence,
                 overdue recurrence gap alerts, and KaTeX cheat sheets for Indian students.
               </p>
@@ -281,7 +317,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             // INTERACTIVE PORTAL
           </span>
           <span className="hidden sm:inline ml-2">
-            {isParted ? "STATUS: UNLOCKED (SCROLL UP TO CLOSE)" : "STATUS: STANDBY (SCROLL DOWN TO PART)"}
+            {isParted ? "STATUS: UNLOCKED (CLOSES 2S AFTER SCROLL TO TOP)" : "STATUS: STANDBY (SCROLL DOWN TO PART)"}
           </span>
         </div>
 
