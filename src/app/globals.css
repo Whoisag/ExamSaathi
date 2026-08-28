@@ -2,24 +2,24 @@
 @import "katex/dist/katex.min.css";
 
 @theme {
-  --color-primary: #3730a3;
-  --color-primary-hover: #312e81;
-  --color-primary-light: #eef2ff;
-  --color-accent: #ea580c;
-  --color-accent-hover: #c2410c;
-  --color-accent-light: #fff7ed;
+  --color-orange: #ff4d00;
+  --color-brand-black: #000000;
+  --color-brand-white: #ffffff;
+
+  --color-primary: #ff4d00;
+  --color-accent: #ff4d00;
   --color-success: #059669;
-  --color-success-light: #ecfdf5;
   --color-warning: #d97706;
-  --color-warning-light: #fffbeb;
-  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+
+  --font-archivo: var(--font-archivo-black), "Impact", sans-serif;
+  --font-space: var(--font-space-mono), monospace;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-mono), monospace;
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card-radius: 12px;
+  --background: #ffffff;
+  --foreground: #000000;
 }
 
 body {
@@ -30,9 +30,98 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom utility for 12px card radius as requested */
-.rounded-card {
-  border-radius: 12px;
+/* Kinetic Orange Brutalist Typography Utilities */
+.font-headline {
+  font-family: var(--font-archivo-black), "Impact", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+}
+
+.font-meta {
+  font-family: var(--font-space-mono), monospace;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+/* Brutalist Borders */
+.border-brutal {
+  border: 2px solid #000000;
+}
+
+.border-brutal-t {
+  border-top: 2px solid #000000;
+}
+
+.border-brutal-b {
+  border-bottom: 2px solid #000000;
+}
+
+.border-brutal-l {
+  border-left: 2px solid #000000;
+}
+
+.border-brutal-r {
+  border-right: 2px solid #000000;
+}
+
+/* Keyframe Animations */
+@keyframes spin-12s {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-12s {
+  animation: spin-12s 12s linear infinite;
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 25s linear infinite;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-right 25s linear infinite;
+}
+
+.animate-marquee-left:hover,
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}
+
+/* Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-12s,
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none !important;
+  }
 }
 
 /* Print Optimization for Formula Sheet */

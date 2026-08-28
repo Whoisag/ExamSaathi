@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Archivo_Black, Space_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,6 +10,20 @@ const inter = Inter({
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const archivoBlack = Archivo_Black({
+  weight: "400",
+  variable: "--font-archivo-black",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -26,8 +40,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased bg-slate-50 text-slate-900">
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable} ${archivoBlack.variable} ${spaceMono.variable} h-full`}
+    >
+      <body className="min-h-full flex flex-col antialiased bg-white text-black selection:bg-[#FF4D00] selection:text-white">
         {children}
       </body>
     </html>
