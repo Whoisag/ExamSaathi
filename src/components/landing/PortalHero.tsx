@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, animate } from "framer-motion";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
 
 interface PortalHeroProps {
@@ -10,36 +10,23 @@ interface PortalHeroProps {
 }
 
 export function PortalHero({ onExploreClick }: PortalHeroProps) {
-  const [isParted, setIsParted] = useState(() => {
-    if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
-      return true;
-    }
-    return false;
-  });
   const heroRef = useRef<HTMLDivElement>(null);
-  const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const lastScrollYRef = useRef(0);
-  const isPartedRef = useRef(isParted);
+  const openProgress = useMotionValue(0);
+  const [statusText, setStatusText] = useState("STANDBY (SCROLL DOWN TO PART)");
+  const [isFullyOpen, setIsFullyOpen] = useState(false);
 
-  // Sync ref with state
-  useEffect(() => {
-    isPartedRef.current = isParted;
-  }, [isParted]);
+  const isAutoClosedRef = useRef(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const fullyOpenTriggeredRef = useRef(false);
 
-  // Function to open panels simultaneously and automatically close after 2 seconds
-  const openAndScheduleAutoClose = () => {
-    setIsParted(true);
-    isPartedRef.current = true;
-
-    if (autoCloseTimerRef.current) {
-      clearTimeout(autoCloseTimerRef.current);
-    }
-    autoCloseTimerRef.current = setTimeout(() => {
-      setIsParted(false);
-      isPartedRef.current = false;
-      autoCloseTimerRef.current = null;
-    }, 2000);
-  };
+  // Proportional transforms linked directly to openProgress:
+  // "if the user scrolls down little bit it should open little bit"
+  const leftPanelX = useTransform(openProgress, [0, 1], ["0%", "-100%"]);
+  const rightPanelX = useTransform(openProgress, [0, 1], ["0%", "100%"]);
+  const examWordmarkX = useTransform(openProgress, [0, 1], ["0vw", "-100vw"]);
+  const saathiWordmarkX = useTransform(openProgress, [0, 1], ["0vw", "100vw"]);
+  const wordmarkOpacity = useTransform(openProgress, [0, 0.7, 1], [1, 0.7, 0]);
+  const heroInnerOpacity = useTransform(openProgress, [0, 0.15, 1], [0, 0.35, 1]);
 
   // Scroll-linked fade out / fade in when scrolling past the hero
   const { scrollY } = useScroll();
@@ -47,59 +34,147 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
   const heroContentY = useTransform(scrollY, [0, 260, 480], [0, 0, -45]);
   const heroContentScale = useTransform(scrollY, [0, 260, 480], [1, 1, 0.94]);
 
+  const FULL_OPEN_SCROLL = 220;
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
-      openAndScheduleAutoClose();
+      openProgress.set(1);
+      setIsFullyOpen(true);
+      setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
+      timerRef.current = setTimeout(() => {
+        isAutoClosedRef.current = true;
+        setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
+        animate(openProgress, 0, {
+          duration: 0.85,
+          ease: [0.2, 0.8, 0.3, 1],
+          onComplete: () => {
+            setIsFullyOpen(false);
+          },
+        });
+      }, 2000);
     }
-  }, []);
+  }, [openProgress]);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const isScrollingDown = currentScrollY > lastScrollYRef.current;
-      lastScrollYRef.current = currentScrollY;
 
-      // When user scrolls down, open simultaneously; auto-closes after 2s
-      if (isScrollingDown && currentScrollY > 15) {
-        if (!isPartedRef.current) {
-          openAndScheduleAutoClose();
+      // When user scrolls back near top (<= 15px), reset the lock
+      if (currentScrollY <= 15) {
+        if (isAutoClosedRef.current || fullyOpenTriggeredRef.current) {
+          isAutoClosedRef.current = false;
+          fullyOpenTriggeredRef.current = false;
+          if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+          }
+          openProgress.set(0);
+          setIsFullyOpen(false);
+          setStatusText("STANDBY (SCROLL DOWN TO PART)");
         }
+        return;
+      }
+
+      // If already auto-closed, remain closed until user returns to top
+      if (isAutoClosedRef.current) {
+        return;
+      }
+
+      // Proportional opening as user scrolls down:
+      // "if the user scrolls down little bit it should open little bit"
+      const progress = Math.min(1, Math.max(0, currentScrollY / FULL_OPEN_SCROLL));
+      openProgress.set(progress);
+
+      if (progress < 0.98) {
+        setIsFullyOpen(false);
+        setStatusText(`PARTING (${Math.round(progress * 100)}%)`);
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+          fullyOpenTriggeredRef.current = false;
+        }
+      }
+
+      // "once its open fully it should close itself automatically in 2 seconds"
+      if (progress >= 0.98 && !fullyOpenTriggeredRef.current) {
+        fullyOpenTriggeredRef.current = true;
+        setIsFullyOpen(true);
+        setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
+
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+        }
+
+        timerRef.current = setTimeout(() => {
+          isAutoClosedRef.current = true;
+          setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
+          animate(openProgress, 0, {
+            duration: 0.85,
+            ease: [0.2, 0.8, 0.3, 1],
+            onComplete: () => {
+              setIsFullyOpen(false);
+            },
+          });
+          timerRef.current = null;
+        }, 2000);
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (autoCloseTimerRef.current) {
-        clearTimeout(autoCloseTimerRef.current);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
       }
     };
-  }, []);
+  }, [openProgress]);
 
-  // Wheel detection: scrolling down triggers open and 2s auto-close
-  const handleWheel = (e: React.WheelEvent) => {
-    if (e.deltaY > 15 && !isPartedRef.current) {
-      openAndScheduleAutoClose();
-    }
-  };
-
+  // Click on circular indicator toggles open or close
   const toggleParting = () => {
-    if (!isPartedRef.current) {
-      openAndScheduleAutoClose();
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+
+    if (openProgress.get() < 0.5) {
+      isAutoClosedRef.current = false;
+      fullyOpenTriggeredRef.current = true;
+      setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
+      setIsFullyOpen(true);
+      animate(openProgress, 1, {
+        duration: 0.7,
+        ease: [0.2, 0.8, 0.3, 1],
+        onComplete: () => {
+          timerRef.current = setTimeout(() => {
+            isAutoClosedRef.current = true;
+            setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
+            animate(openProgress, 0, {
+              duration: 0.85,
+              ease: [0.2, 0.8, 0.3, 1],
+              onComplete: () => {
+                setIsFullyOpen(false);
+              },
+            });
+            timerRef.current = null;
+          }, 2000);
+        },
+      });
     } else {
-      if (autoCloseTimerRef.current) {
-        clearTimeout(autoCloseTimerRef.current);
-        autoCloseTimerRef.current = null;
-      }
-      setIsParted(false);
-      isPartedRef.current = false;
+      isAutoClosedRef.current = true;
+      setStatusText("STANDBY (SCROLL DOWN TO PART)");
+      animate(openProgress, 0, {
+        duration: 0.85,
+        ease: [0.2, 0.8, 0.3, 1],
+        onComplete: () => {
+          setIsFullyOpen(false);
+        },
+      });
     }
   };
 
   return (
     <div
       ref={heroRef}
-      onWheel={handleWheel}
       className="relative w-full min-h-screen overflow-hidden bg-black select-none flex flex-col justify-between border-brutal-b"
       style={{ perspective: 1200 }}
     >
@@ -210,13 +285,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
       <div className="absolute inset-0 pointer-events-none z-20 flex overflow-hidden">
         {/* Left Panel: Solid Orange #FF4D00 */}
         <motion.div
-          animate={{
-            x: isParted ? "-100%" : "0%",
-          }}
-          transition={{
-            duration: 0.85,
-            ease: [0.2, 0.8, 0.3, 1],
-          }}
+          style={{ x: leftPanelX }}
           className="w-1/2 h-full bg-[#FF4D00] relative border-r-2 border-black flex items-center justify-end"
         >
           <div className="absolute top-28 left-8 font-meta text-xs text-black font-bold hidden sm:block">
@@ -229,13 +298,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
 
         {/* Right Panel: Solid Pitch Black #000000 */}
         <motion.div
-          animate={{
-            x: isParted ? "100%" : "0%",
-          }}
-          transition={{
-            duration: 0.85,
-            ease: [0.2, 0.8, 0.3, 1],
-          }}
+          style={{ x: rightPanelX }}
           className="w-1/2 h-full bg-black relative border-l-2 border-black flex items-center justify-start"
         >
           <div className="absolute top-28 right-8 font-meta text-xs text-neutral-400 font-bold hidden sm:block">
@@ -248,32 +311,24 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
       </div>
 
       {/* DYNAMIC SPLIT WORDMARK: "EXAM" & "SAATHI" */}
-      {/* Closed: Centered at seam. Parted: FULLY moves out of the screen! Scroll back: Slides back to seam! */}
+      {/* Closed: Centered at seam. Opens proportionally with scroll! */}
       <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center overflow-hidden">
-        {/* Left half: "EXAM" (Moves fully offscreen to the left on scroll) */}
+        {/* Left half: "EXAM" */}
         <motion.div
-          animate={{
-            x: isParted ? "-100vw" : "0vw",
-            opacity: isParted ? 0 : 1,
-          }}
-          transition={{
-            duration: 0.85,
-            ease: [0.2, 0.8, 0.3, 1],
+          style={{
+            x: examWordmarkX,
+            opacity: wordmarkOpacity,
           }}
           className="w-1/2 text-right pr-1 sm:pr-2 font-headline text-[13vw] sm:text-[11.5vw] md:text-[10vw] lg:text-[9.5vw] leading-[0.85] select-none whitespace-nowrap text-black"
         >
           EXAM
         </motion.div>
 
-        {/* Right half: "SAATHI" (Moves fully offscreen to the right on scroll) */}
+        {/* Right half: "SAATHI" */}
         <motion.div
-          animate={{
-            x: isParted ? "100vw" : "0vw",
-            opacity: isParted ? 0 : 1,
-          }}
-          transition={{
-            duration: 0.85,
-            ease: [0.2, 0.8, 0.3, 1],
+          style={{
+            x: saathiWordmarkX,
+            opacity: wordmarkOpacity,
           }}
           className="w-1/2 text-left pl-1 sm:pl-2 font-headline text-[13vw] sm:text-[11.5vw] md:text-[10vw] lg:text-[9.5vw] leading-[0.85] select-none whitespace-nowrap text-white"
         >
@@ -281,85 +336,78 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         </motion.div>
       </div>
 
-      {/* HERO INTERACTIVE CONTENT (Fades in cleanly when parted with zero wordmark collisions) */}
-      <div className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-44 pb-10 flex flex-col items-center justify-center text-center my-auto">
-        <AnimatePresence>
-          {isParted && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="w-full flex justify-center"
+      {/* HERO INTERACTIVE CONTENT (Revealed as panels open proportionally) */}
+      <motion.div
+        style={{
+          opacity: heroInnerOpacity,
+        }}
+        className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-44 pb-10 flex flex-col items-center justify-center text-center my-auto pointer-events-auto"
+      >
+        <motion.div
+          style={{
+            opacity: heroContentOpacity,
+            y: heroContentY,
+            scale: heroContentScale,
+          }}
+          className="space-y-5 max-w-3xl mx-auto flex flex-col items-center"
+        >
+          {/* Exam Saathi in Orange and White */}
+          <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[0.9] select-none">
+            <span className="text-[#FF4D00]">EXAM </span>
+            <span className="text-white">SAATHI</span>
+          </h1>
+
+          {/* Tagline */}
+          <div className="font-meta text-xs sm:text-sm md:text-base text-white tracking-[0.05em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-4 py-2 inline-block">
+            PATTERN-BASED EXAM PREP FOR INDIAN STUDENTS
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm sm:text-base md:text-lg font-medium text-neutral-200 leading-snug max-w-2xl mx-auto">
+            Stop guessing what comes in your exam. Surgical PYQ frequency intelligence,
+            overdue recurrence gap alerts, and KaTeX cheat sheets for Indian students.
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <Link
+              href="/dashboard/exams"
+              className="bg-[#FF4D00] text-black px-8 py-4 border-2 border-black font-headline text-base sm:text-lg hover:bg-white hover:text-black transition-colors inline-flex items-center gap-3 shadow-[4px_4px_0px_0px_#FFFFFF]"
             >
-              <motion.div
-                style={{
-                  opacity: heroContentOpacity,
-                  y: heroContentY,
-                  scale: heroContentScale,
-                }}
-                className="space-y-5 max-w-3xl mx-auto flex flex-col items-center"
-              >
-              {/* Exam Saathi in Orange and White */}
-              <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[0.9] select-none">
-                <span className="text-[#FF4D00]">EXAM </span>
-                <span className="text-white">SAATHI</span>
-              </h1>
+              <span>EXPLORE ALL EXAMS</span>
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/analyzer/jee-main/modern-physics"
+              className="bg-black text-white px-8 py-4 border-2 border-white font-headline text-base sm:text-lg hover:bg-[#FF4D00] hover:text-black hover:border-black transition-colors inline-flex items-center gap-3 shadow-[4px_4px_0px_0px_#FF4D00]"
+            >
+              <span>SAMPLE ANALYZER</span>
+              <ArrowUpRight className="w-5 h-5" />
+            </Link>
+          </div>
 
-              {/* Tagline */}
-              <div className="font-meta text-xs sm:text-sm md:text-base text-white tracking-[0.05em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-4 py-2 inline-block">
-                PATTERN-BASED EXAM PREP FOR INDIAN STUDENTS
-              </div>
+          {/* Verified Metrics Row */}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-6 font-meta text-xs text-neutral-300">
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#FF4D00] inline-block"></span>
+              <span>JEE MAIN • NEET • ADVANCED • CBSE</span>
+            </span>
+            <span className="hidden sm:inline text-neutral-600">•</span>
+            <span className="text-[#FF4D00] font-bold">
+              MAE 0.48 QS // SPEARMAN RHO 0.85
+            </span>
+          </div>
+        </motion.div>
+      </motion.div>
 
-              {/* Subtitle */}
-              <p className="text-sm sm:text-base md:text-lg font-medium text-neutral-200 leading-snug max-w-2xl mx-auto">
-                Stop guessing what comes in your exam. Surgical PYQ frequency intelligence,
-                overdue recurrence gap alerts, and KaTeX cheat sheets for Indian students.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-                <Link
-                  href="/dashboard/exams"
-                  className="bg-[#FF4D00] text-black px-8 py-4 border-2 border-black font-headline text-base sm:text-lg hover:bg-white hover:text-black transition-colors inline-flex items-center gap-3"
-                >
-                  <span>EXPLORE ALL EXAMS</span>
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-                <Link
-                  href="/analyzer/jee-main/modern-physics"
-                  className="bg-black text-white px-8 py-4 border-2 border-white font-headline text-base sm:text-lg hover:bg-[#FF4D00] hover:text-black hover:border-black transition-colors inline-flex items-center gap-3"
-                >
-                  <span>SAMPLE ANALYZER</span>
-                  <ArrowUpRight className="w-5 h-5" />
-                </Link>
-              </div>
-
-              {/* Verified Metrics Row */}
-              <div className="pt-2 flex flex-wrap items-center justify-center gap-6 font-meta text-xs text-neutral-300">
-                <span className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF4D00] inline-block"></span>
-                  <span>JEE MAIN • NEET • ADVANCED • CBSE</span>
-                </span>
-                <span className="hidden sm:inline text-neutral-600">•</span>
-                <span className="text-[#FF4D00] font-bold">
-                  MAE 0.48 QS // SPEARMAN RHO 0.85
-                </span>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      </div>
-
-      {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR (CLEAN TRANSPARENT, NO BLUR EFFECT) */}
+      {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR */}
       <div className="relative z-30 max-w-7xl mx-auto w-full px-4 sm:px-8 py-6 flex items-center justify-between border-t-2 border-neutral-800 bg-transparent">
-        <div className={`font-meta text-xs transition-colors ${isParted ? "text-neutral-400" : "text-black"}`}>
-          <span className={isParted ? "text-[#FF4D00] font-bold" : "text-black font-bold"}>
+        <div className="font-meta text-xs text-black sm:text-neutral-400">
+          <span className="text-[#FF4D00] font-bold">
             // INTERACTIVE PORTAL
           </span>
-          <span className="hidden sm:inline ml-2">
-            {isParted ? "STATUS: UNLOCKED (AUTOCLOSES IN 2 SECONDS)" : "STATUS: STANDBY (SCROLL DOWN TO PART)"}
+          <span className="hidden sm:inline ml-2 text-white font-mono">
+            STATUS: {statusText}
           </span>
         </div>
 
@@ -384,7 +432,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             </text>
           </svg>
           <div className="absolute w-8 h-8 rounded-full bg-[#FF4D00] border-2 border-black flex items-center justify-center">
-            {isParted ? (
+            {isFullyOpen ? (
               <ChevronDown className="w-4 h-4 text-black animate-bounce" />
             ) : (
               <ArrowRight className="w-4 h-4 text-black transform rotate-90" />
