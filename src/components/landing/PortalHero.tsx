@@ -10,33 +10,46 @@ interface PortalHeroProps {
 }
 
 export function PortalHero({ onExploreClick }: PortalHeroProps) {
-  const [isParted, setIsParted] = useState(false);
+  const [isParted, setIsParted] = useState(() => {
+    if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
+      return true;
+    }
+    return false;
+  });
   const heroRef = useRef<HTMLDivElement>(null);
 
-  // Trigger parting on scroll down or query parameter
+  // Bidirectional scroll detection:
+  // Scrolling down parts the panels and wordmark; scrolling back to top brings them back!
   useEffect(() => {
-    if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
-      setIsParted(true);
-    }
-
     const handleScroll = () => {
-      if (window.scrollY > 30 && !isParted) {
+      const scrollY = window.scrollY;
+      if (scrollY > 40) {
         setIsParted(true);
+      } else if (scrollY <= 10) {
+        setIsParted(false);
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isParted]);
+  }, []);
 
+  // Bidirectional wheel detection:
   const handleWheel = (e: React.WheelEvent) => {
-    if (e.deltaY > 15 && !isParted) {
+    if (e.deltaY > 20 && !isParted) {
       setIsParted(true);
+    } else if (e.deltaY < -20 && window.scrollY <= 10 && isParted) {
+      setIsParted(false);
     }
   };
 
   const toggleParting = () => {
-    setIsParted((prev) => !prev);
+    if (!isParted) {
+      setIsParted(true);
+    } else {
+      setIsParted(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -46,7 +59,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
       className="relative w-full min-h-screen overflow-hidden bg-black select-none flex flex-col justify-between border-brutal-b"
       style={{ perspective: 1200 }}
     >
-      {/* FULL-BLEED BACKGROUND VISUALIZATION (Behind Panels) */}
+      {/* FULL-BLEED BACKGROUND VISUALIZATION (Revealed when panels part) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[#0a0a0a]">
           {/* Subtle Grid System */}
@@ -59,7 +72,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
           />
 
           {/* Abstract Question Paper Sheets in Background */}
-          <div className="absolute inset-0 flex items-center justify-around opacity-25 p-8">
+          <div className="absolute inset-0 flex items-center justify-around opacity-30 p-8">
             {/* Paper Sheet 1: JEE Main Shift 1 */}
             <div className="hidden lg:block w-72 h-96 border-2 border-[#FF4D00] bg-black p-4 font-meta text-[10px] text-neutral-400 rotate-[-6deg] transform">
               <div className="border-b border-[#FF4D00] pb-2 mb-3 text-white font-bold flex justify-between">
@@ -109,39 +122,39 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             </div>
           </div>
 
-          {/* 20% Black Overlay */}
-          <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
+          {/* Clean 25% Black Overlay (NO BLUR) */}
+          <div className="absolute inset-0 bg-black/25" />
         </div>
       </div>
 
-      {/* TWO PARTING PANELS (Left Orange #FF4D00, Right Pitch Black #000000) */}
+      {/* TWO SOLID PARTING PANELS: Left #FF4D00, Right #000000 (SOLID, NEVER TRANSPARENT) */}
       <div className="absolute inset-0 pointer-events-none z-20 flex overflow-hidden">
-        {/* Left Panel: #FF4D00 */}
+        {/* Left Panel: Solid Orange #FF4D00 */}
         <motion.div
           animate={{
             x: isParted ? "-100%" : "0%",
           }}
           transition={{
-            duration: 0.8,
+            duration: 0.85,
             ease: [0.2, 0.8, 0.3, 1],
           }}
           className="w-1/2 h-full bg-[#FF4D00] relative border-r-2 border-black flex items-center justify-end"
         >
-          <div className="absolute top-28 left-8 font-meta text-xs text-black/60 font-bold hidden sm:block">
+          <div className="absolute top-28 left-8 font-meta text-xs text-black font-bold hidden sm:block">
             // PORTAL PANEL L-01 // NTA SHIFTS
           </div>
-          <div className="absolute bottom-12 left-8 font-meta text-[11px] text-black font-bold hidden sm:block">
+          <div className="absolute bottom-28 left-8 font-meta text-[11px] text-black font-bold hidden sm:block">
             DATA HARVEST: 2010 — 2025
           </div>
         </motion.div>
 
-        {/* Right Panel: #000000 */}
+        {/* Right Panel: Solid Pitch Black #000000 */}
         <motion.div
           animate={{
             x: isParted ? "100%" : "0%",
           }}
           transition={{
-            duration: 0.8,
+            duration: 0.85,
             ease: [0.2, 0.8, 0.3, 1],
           }}
           className="w-1/2 h-full bg-black relative border-l-2 border-black flex items-center justify-start"
@@ -149,80 +162,59 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
           <div className="absolute top-28 right-8 font-meta text-xs text-neutral-400 font-bold hidden sm:block">
             // PORTAL PANEL R-02 // PREDICTIVE AUDIT
           </div>
-          <div className="absolute bottom-12 right-8 font-meta text-[11px] text-neutral-400 font-bold hidden sm:block">
+          <div className="absolute bottom-28 right-8 font-meta text-[11px] text-neutral-400 font-bold hidden sm:block">
             RECURRENCE ENGINE: POISSON
           </div>
         </motion.div>
       </div>
 
       {/* DYNAMIC SPLIT WORDMARK: "EXAM" & "SAATHI" */}
-      <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
-        {/* Left half: "EXAM" */}
+      {/* Closed: Centered at seam. Parted: FULLY moves out of the screen! Scroll back: Slides back to seam! */}
+      <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center overflow-hidden">
+        {/* Left half: "EXAM" (Moves fully offscreen to the left on scroll) */}
         <motion.div
-          animate={
-            isParted
-              ? {
-                  left: "2rem",
-                  x: "0%",
-                  letterSpacing: "-0.08em",
-                  color: "#FFFFFF",
-                }
-              : {
-                  left: "50%",
-                  x: "-100%",
-                  letterSpacing: "-0.04em",
-                  color: "#000000",
-                }
-          }
+          animate={{
+            x: isParted ? "-100vw" : "0vw",
+            opacity: isParted ? 0 : 1,
+          }}
           transition={{
-            duration: 0.8,
+            duration: 0.85,
             ease: [0.2, 0.8, 0.3, 1],
           }}
-          className="absolute font-headline text-[12vw] sm:text-[10vw] md:text-[9vw] lg:text-[8vw] leading-[0.85] select-none pr-1 sm:pr-2 whitespace-nowrap"
+          className="w-1/2 text-right pr-1 sm:pr-2 font-headline text-[13vw] sm:text-[11.5vw] md:text-[10vw] lg:text-[9.5vw] leading-[0.85] select-none whitespace-nowrap text-black"
         >
           EXAM
         </motion.div>
 
-        {/* Right half: "SAATHI" */}
+        {/* Right half: "SAATHI" (Moves fully offscreen to the right on scroll) */}
         <motion.div
-          animate={
-            isParted
-              ? {
-                  right: "2rem",
-                  x: "0%",
-                  letterSpacing: "-0.08em",
-                  color: "#FF4D00",
-                }
-              : {
-                  right: "50%",
-                  x: "100%",
-                  letterSpacing: "-0.04em",
-                  color: "#FFFFFF",
-                }
-          }
+          animate={{
+            x: isParted ? "100vw" : "0vw",
+            opacity: isParted ? 0 : 1,
+          }}
           transition={{
-            duration: 0.8,
+            duration: 0.85,
             ease: [0.2, 0.8, 0.3, 1],
           }}
-          className="absolute font-headline text-[12vw] sm:text-[10vw] md:text-[9vw] lg:text-[8vw] leading-[0.85] select-none pl-1 sm:pl-2 whitespace-nowrap"
+          className="w-1/2 text-left pl-1 sm:pl-2 font-headline text-[13vw] sm:text-[11.5vw] md:text-[10vw] lg:text-[9.5vw] leading-[0.85] select-none whitespace-nowrap text-white"
         >
           SAATHI
         </motion.div>
       </div>
 
-      {/* HERO INTERACTIVE CONTENT (Fades in when parted) */}
-      <div className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-8 pt-36 pb-12 flex flex-col items-center justify-center text-center my-auto min-h-[420px]">
+      {/* HERO INTERACTIVE CONTENT (Fades in cleanly when parted with zero wordmark collisions) */}
+      <div className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-36 pb-12 flex flex-col items-center justify-center text-center my-auto min-h-[440px]">
         <AnimatePresence>
           {isParted ? (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-6 max-w-2xl mx-auto"
             >
-              {/* Tagline per prompt */}
-              <div className="font-meta text-sm md:text-base text-white tracking-[0.05em] uppercase font-bold">
+              {/* Tagline */}
+              <div className="font-meta text-xs sm:text-sm md:text-base text-white tracking-[0.05em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-4 py-2 inline-block">
                 PATTERN-BASED EXAM PREP FOR INDIAN STUDENTS
               </div>
 
@@ -263,7 +255,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
               </div>
             </motion.div>
           ) : (
-            /* Standby Hint when closed */
+            /* Standby Trigger Pill when closed */
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -272,7 +264,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             >
               <button
                 onClick={toggleParting}
-                className="bg-black/90 text-white border-2 border-white px-6 py-3 font-meta text-xs tracking-wider uppercase flex items-center gap-2 hover:bg-[#FF4D00] hover:text-black hover:border-black transition-all cursor-pointer shadow-2xl"
+                className="bg-black text-white border-2 border-white px-6 py-3 font-meta text-xs tracking-wider uppercase flex items-center gap-2 hover:bg-[#FF4D00] hover:text-black hover:border-black transition-all cursor-pointer shadow-2xl"
               >
                 <span>CLICK OR SCROLL TO ENTER PORTAL</span>
                 <ChevronDown className="w-4 h-4 animate-bounce" />
@@ -282,12 +274,14 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         </AnimatePresence>
       </div>
 
-      {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR */}
-      <div className="relative z-30 max-w-7xl mx-auto w-full px-4 sm:px-8 py-6 flex items-center justify-between border-brutal-t border-neutral-800 bg-black/40 backdrop-blur-xs">
-        <div className="font-meta text-xs text-neutral-400">
-          <span className="text-[#FF4D00] font-bold">// INTERACTIVE PORTAL</span>
-          <span className="hidden sm:inline ml-2 text-neutral-500">
-            {isParted ? "STATUS: UNLOCKED" : "STATUS: STANDBY (CLICK TO PART)"}
+      {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR (CLEAN TRANSPARENT, NO BLUR EFFECT) */}
+      <div className="relative z-30 max-w-7xl mx-auto w-full px-4 sm:px-8 py-6 flex items-center justify-between border-t-2 border-neutral-800 bg-transparent">
+        <div className={`font-meta text-xs transition-colors ${isParted ? "text-neutral-400" : "text-black"}`}>
+          <span className={isParted ? "text-[#FF4D00] font-bold" : "text-black font-bold"}>
+            // INTERACTIVE PORTAL
+          </span>
+          <span className="hidden sm:inline ml-2">
+            {isParted ? "STATUS: UNLOCKED (SCROLL UP TO CLOSE)" : "STATUS: STANDBY (SCROLL DOWN TO PART)"}
           </span>
         </div>
 
