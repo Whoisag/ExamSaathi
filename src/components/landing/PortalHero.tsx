@@ -17,7 +17,29 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
     return false;
   });
   const heroRef = useRef<HTMLDivElement>(null);
-  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollYRef = useRef(0);
+  const isPartedRef = useRef(isParted);
+
+  // Sync ref with state
+  useEffect(() => {
+    isPartedRef.current = isParted;
+  }, [isParted]);
+
+  // Function to open panels simultaneously and automatically close after 2 seconds
+  const openAndScheduleAutoClose = () => {
+    setIsParted(true);
+    isPartedRef.current = true;
+
+    if (autoCloseTimerRef.current) {
+      clearTimeout(autoCloseTimerRef.current);
+    }
+    autoCloseTimerRef.current = setTimeout(() => {
+      setIsParted(false);
+      isPartedRef.current = false;
+      autoCloseTimerRef.current = null;
+    }, 2000);
+  };
 
   // Scroll-linked fade out / fade in when scrolling past the hero
   const { scrollY } = useScroll();
@@ -25,30 +47,22 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
   const heroContentY = useTransform(scrollY, [0, 260, 480], [0, 0, -45]);
   const heroContentScale = useTransform(scrollY, [0, 260, 480], [1, 1, 0.94]);
 
-  // Bidirectional scroll detection with 2-second close delay when scrolling back to top:
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
-      setIsParted(true);
+      openAndScheduleAutoClose();
     }
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      if (scrollY > 40) {
-        // If a close timer was scheduled, cancel it because user is scrolling down
-        if (closeTimeoutRef.current) {
-          clearTimeout(closeTimeoutRef.current);
-          closeTimeoutRef.current = null;
-        }
-        setIsParted(true);
-      } else if (scrollY <= 10) {
-        // User scrolled back to top: close panels after 2 seconds
-        if (!closeTimeoutRef.current) {
-          closeTimeoutRef.current = setTimeout(() => {
-            setIsParted(false);
-            closeTimeoutRef.current = null;
-          }, 2000);
+      const currentScrollY = window.scrollY;
+      const isScrollingDown = currentScrollY > lastScrollYRef.current;
+      lastScrollYRef.current = currentScrollY;
+
+      // When user scrolls down, open simultaneously; auto-closes after 2s
+      if (isScrollingDown && currentScrollY > 15) {
+        if (!isPartedRef.current) {
+          openAndScheduleAutoClose();
         }
       }
     };
@@ -56,41 +70,29 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (closeTimeoutRef.current) {
-        clearTimeout(closeTimeoutRef.current);
+      if (autoCloseTimerRef.current) {
+        clearTimeout(autoCloseTimerRef.current);
       }
     };
   }, []);
 
-  // Bidirectional wheel detection:
+  // Wheel detection: scrolling down triggers open and 2s auto-close
   const handleWheel = (e: React.WheelEvent) => {
-    if (e.deltaY > 20) {
-      if (closeTimeoutRef.current) {
-        clearTimeout(closeTimeoutRef.current);
-        closeTimeoutRef.current = null;
-      }
-      setIsParted(true);
-    } else if (e.deltaY < -20 && window.scrollY <= 10 && isParted) {
-      if (!closeTimeoutRef.current) {
-        closeTimeoutRef.current = setTimeout(() => {
-          setIsParted(false);
-          closeTimeoutRef.current = null;
-        }, 2000);
-      }
+    if (e.deltaY > 15 && !isPartedRef.current) {
+      openAndScheduleAutoClose();
     }
   };
 
   const toggleParting = () => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-
-    if (!isParted) {
-      setIsParted(true);
+    if (!isPartedRef.current) {
+      openAndScheduleAutoClose();
     } else {
+      if (autoCloseTimerRef.current) {
+        clearTimeout(autoCloseTimerRef.current);
+        autoCloseTimerRef.current = null;
+      }
       setIsParted(false);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      isPartedRef.current = false;
     }
   };
 
@@ -357,7 +359,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             // INTERACTIVE PORTAL
           </span>
           <span className="hidden sm:inline ml-2">
-            {isParted ? "STATUS: UNLOCKED (CLOSES 2S AFTER SCROLL TO TOP)" : "STATUS: STANDBY (SCROLL DOWN TO PART)"}
+            {isParted ? "STATUS: UNLOCKED (AUTOCLOSES IN 2 SECONDS)" : "STATUS: STANDBY (SCROLL DOWN TO PART)"}
           </span>
         </div>
 

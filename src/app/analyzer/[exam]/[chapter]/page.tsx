@@ -9,6 +9,7 @@ import { TrendChart } from "@/components/analyzer/TrendChart";
 import { TopicPredictionList } from "@/components/analyzer/TopicPredictionList";
 import { GeneratedQuestionCard } from "@/components/analyzer/GeneratedQuestionCard";
 import { GapAlertCard } from "@/components/analyzer/GapAlertCard";
+import { LoginPromptModal } from "@/components/ui/LoginPromptModal";
 import { getMockAnalyzerData } from "@/data/mock";
 import { ArrowLeft, ArrowRight, RefreshCw, Flame, BookOpen, Layers } from "lucide-react";
 
@@ -16,6 +17,7 @@ export default function ChapterAnalyzerPage() {
   const params = useParams();
   const examSlug = (params?.exam as string) || "jee-main";
   const chapterSlug = (params?.chapter as string) || "modern-physics";
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const analyzerData = useMemo(() => {
     return getMockAnalyzerData(examSlug, chapterSlug);
@@ -135,15 +137,23 @@ export default function ChapterAnalyzerPage() {
             </h4>
           </div>
 
-          <Link
-            href={`/formulas/${examSlug}/physics`}
-            className="bg-black text-white px-6 py-3 border-brutal font-headline text-sm hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center gap-2"
+          <button
+            id="formula-cheatsheet-btn"
+            onClick={() => setIsLoginModalOpen(true)}
+            className="bg-black text-white px-6 py-3 border-brutal font-headline text-sm hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center gap-2 cursor-pointer"
           >
             <span>FORMULA CHEATSHEET</span>
             <ArrowRight className="w-4 h-4" />
-          </Link>
+          </button>
         </div>
       </main>
+
+      <LoginPromptModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        title="PLEASE LOGIN FIRST"
+        message="Please login first to view and download high-yield formula cheatsheets."
+      />
 
       {/* Footer */}
       <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">

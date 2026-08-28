@@ -155,29 +155,15 @@ export function SleeveDeckCatalogue() {
   const topCard = deck[deck.length - 1];
 
   return (
-    <section id="catalogue" className="relative py-20 md:py-28 bg-black text-white overflow-hidden border-brutal-b">
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-center opacity-40 md:opacity-50"
-        >
-          <source src="/videos/topic-catalogue-bg.mp4" type="video/mp4" />
-        </video>
-        {/* Brutalist Dark Vignette / Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black" />
-        {/* Subtle Orange Grid Pattern Overlay */}
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: `linear-gradient(#FF4D00 1px, transparent 1px), linear-gradient(90deg, #FF4D00 1px, transparent 1px)`,
-            backgroundSize: "40px 40px",
-          }}
-        />
-      </div>
+    <section id="catalogue" className="relative py-20 md:py-28 bg-[#FF4D00] text-black overflow-hidden border-brutal-b">
+      {/* Subtle Black Grid Pattern Overlay */}
+      <div
+        className="absolute inset-0 opacity-10 pointer-events-none select-none"
+        style={{
+          backgroundImage: `linear-gradient(#000000 1px, transparent 1px), linear-gradient(90deg, #000000 1px, transparent 1px)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
         {/* Section Header */}
@@ -188,13 +174,13 @@ export function SleeveDeckCatalogue() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-12 md:mb-16"
         >
-          <div className="font-meta text-xs text-[#FF4D00] font-bold tracking-widest uppercase mb-2">
-            // INTERACTIVE RECORD SLEEVES • CLICK OR DRAG TO THROW ASIDE //
-          </div>
-          <h2 className="font-headline text-[11vw] sm:text-[9vw] md:text-[8vw] lg:text-[7.5vw] text-white tracking-tight leading-[0.88] select-none">
+          <span className="font-meta text-xs text-black font-bold bg-white px-3.5 py-1.5 border-2 border-black inline-block tracking-widest uppercase mb-3 shadow-[3px_3px_0px_0px_#000000]">
+            [ INTERACTIVE RECORD SLEEVES • CLICK OR DRAG TO THROW ASIDE ]
+          </span>
+          <h2 className="font-headline text-[11vw] sm:text-[9vw] md:text-[8vw] lg:text-[7.5vw] text-black tracking-tight leading-[0.88] select-none">
             TOPIC CATALOGUE
           </h2>
-          <p className="font-meta text-xs text-neutral-400 max-w-lg mx-auto mt-4">
+          <p className="font-sans text-xs sm:text-sm font-semibold text-black max-w-lg mx-auto mt-4">
             FLIP THROUGH HIGH-YIELD EXAMINATION RECORDS. EACH PHYSICAL SLEEVE REPRESENTS A VERIFIED EMPIRICAL PYQ CHAPTER.
           </p>
         </motion.div>
@@ -202,12 +188,12 @@ export function SleeveDeckCatalogue() {
         {/* Sleeve Deck Area */}
         <div className="relative min-h-[500px] flex flex-col items-center justify-center">
           {/* Deck Counter */}
-          <div className="mb-6 font-meta text-xs text-neutral-400 flex items-center gap-3">
+          <div className="mb-6 font-meta text-xs text-black font-bold flex items-center gap-3">
             <span className="flex items-center gap-1.5">
-              <Disc3 className="w-4 h-4 text-[#FF4D00] animate-spin" />
+              <Disc3 className="w-4 h-4 text-black animate-spin" />
               <span>SLEEVES REMAINING:</span>
             </span>
-            <span className="bg-[#FF4D00] text-black font-bold px-2 py-0.5 border border-black">
+            <span className="bg-black text-white font-bold px-2.5 py-0.5 border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
               {deck.length} / {SLEEVE_DECK_DATA.length}
             </span>
           </div>
@@ -371,15 +357,15 @@ export function SleeveDeckCatalogue() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="mt-16 pt-8 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 font-meta text-xs text-neutral-400"
+          className="mt-16 pt-8 border-t-2 border-black flex flex-col sm:flex-row items-center justify-between gap-4 font-meta text-xs text-black font-bold"
         >
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#FF4D00] rounded-full inline-block animate-pulse"></span>
+            <span className="w-2.5 h-2.5 bg-black inline-block animate-pulse"></span>
             <span>SUPPORTED ON DESKTOP CLICK & TOUCH MOBILE SWIPE</span>
           </div>
           <Link
             href="/dashboard/exams"
-            className="text-white hover:text-[#FF4D00] font-bold flex items-center gap-1 transition-colors group"
+            className="text-black bg-white px-4 py-2 border-2 border-black hover:bg-black hover:text-white font-headline text-xs flex items-center gap-2 transition-colors group shadow-[3px_3px_0px_0px_#000000]"
           >
             <span>VIEW ALL 150+ CHAPTER SLEEVES</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

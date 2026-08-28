@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
 import { KaTeXMath } from "@/components/ui/KaTeXMath";
+import { LoginPromptModal } from "@/components/ui/LoginPromptModal";
 import {
   ShieldCheck,
   Cpu,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 
 export default function AboutPage() {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   return (
     <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
       <BrutalistHeader />
@@ -217,16 +219,23 @@ export default function AboutPage() {
                 SEE THESE MODELS APPLIED TO LIVE CHAPTERS
               </span>
             </div>
-            <Link
-              href="/dashboard/exams"
-              className="bg-[#FF4D00] text-black px-6 py-3 border-brutal font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center gap-2"
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="bg-[#FF4D00] text-black px-6 py-3 border-brutal font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>OPEN EXAMS DIRECTORY</span>
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </button>
           </div>
         </section>
       </main>
+
+      <LoginPromptModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        title="PLEASE LOGIN FIRST"
+        message="Please login first to explore the active examination directory and see predictive models applied to live chapters."
+      />
 
       {/* Footer */}
       <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">
