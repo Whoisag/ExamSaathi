@@ -42,7 +42,7 @@ export default function AssistantPage() {
               <span>TEST SKELETON</span>
             </button>
             <div className="border-brutal bg-[#FF4D00] text-black px-3.5 py-2 font-meta text-xs font-bold">
-              NEURAL SHELL ACTIVE
+              UI PREVIEW ONLY
             </div>
           </div>
         </div>
