@@ -231,14 +231,16 @@ export default function LandingPage() {
       </section>
 
       {/* 6. PARALLAX & STICKY STORYTELLING (scroll-experience skill) */}
-      <section className="py-24 px-4 md:px-8 bg-neutral-100 border-brutal-b">
+      <section className="py-24 px-4 md:px-8 bg-[#FF4D00] border-brutal-b">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 text-center max-w-3xl mx-auto">
-            <span className="font-meta text-xs text-[#FF4D00] font-bold">[ METHODOLOGICAL WORKFLOW ]</span>
+            <span className="font-meta text-xs text-black font-bold bg-white px-3 py-1 border-brutal inline-block mb-3">
+              [ METHODOLOGICAL WORKFLOW ]
+            </span>
             <h2 className="font-headline text-4xl sm:text-6xl text-black mt-2">
               HOW EXAMSAATHI CRACKS THE CODE
             </h2>
-            <p className="font-medium text-neutral-700 mt-4 text-base md:text-lg">
+            <p className="font-medium text-black mt-4 text-base md:text-lg">
               High-stakes Indian exams do not pick questions randomly. Syllabus balance requirements, committee rotations, and difficulty constraints force predictable patterns.
             </p>
           </div>
@@ -276,28 +278,30 @@ export default function LandingPage() {
       </section>
 
       {/* 7. GIANT BRUTALIST CTA */}
-      <section className="bg-white py-20 px-4 md:px-8 border-brutal-b text-center">
+      <section className="bg-[#FF4D00] py-20 px-4 md:px-8 border-brutal-b text-center">
         <div className="max-w-5xl mx-auto">
-          <span className="font-meta text-xs text-[#FF4D00] font-bold">[ NO CREDIT CARD • NO BACKEND SETUP ]</span>
-          <h2 className="font-headline text-5xl sm:text-7xl md:text-8xl text-black mt-4 mb-8 tracking-tight leading-[0.88]">
+          <span className="font-meta text-xs text-black font-bold bg-white px-3 py-1 border-brutal inline-block mb-4">
+            [ NO CREDIT CARD • NO BACKEND SETUP ]
+          </span>
+          <h2 className="font-headline text-5xl sm:text-7xl md:text-8xl text-black mt-2 mb-8 tracking-tight leading-[0.88]">
             STUDY SMARTER.<br />
             NOT HARDER.
           </h2>
-          <p className="text-lg md:text-xl text-neutral-800 max-w-2xl mx-auto mb-10">
+          <p className="text-lg md:text-xl text-black font-medium max-w-2xl mx-auto mb-10">
             Access the complete predictive analytics shell, chapter weightage heatmaps, KaTeX formula cheatsheets, and AI strategy assistant.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/signup"
-              className="w-full sm:w-auto bg-[#FF4D00] text-black px-10 py-5 border-brutal font-headline text-xl hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center justify-center gap-3"
+              className="w-full sm:w-auto bg-black text-white px-10 py-5 border-brutal font-headline text-xl hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-3"
             >
               <span>CREATE FREE ACCOUNT</span>
               <ArrowRight className="w-6 h-6" />
             </Link>
             <Link
               href="/dashboard/exams"
-              className="w-full sm:w-auto bg-black text-white px-10 py-5 border-brutal font-headline text-xl hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-3"
+              className="w-full sm:w-auto bg-white text-black px-10 py-5 border-brutal font-headline text-xl hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-3"
             >
               <span>VIEW EXAM SUITE</span>
               <ArrowUpRight className="w-6 h-6" />
