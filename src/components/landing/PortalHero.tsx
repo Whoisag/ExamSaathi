@@ -356,10 +356,10 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <Link
-              href="/dashboard/exams"
+              href="/signup"
               className="bg-[#FF4D00] text-black px-8 py-4 border-2 border-black font-headline text-base sm:text-lg hover:bg-white hover:text-black transition-colors inline-flex items-center gap-3 shadow-[4px_4px_0px_0px_#FFFFFF]"
             >
-              <span>EXPLORE ALL EXAMS</span>
+              <span>CREATE A NEW ACCOUNT</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link

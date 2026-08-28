@@ -115,19 +115,12 @@ export default function LandingPage() {
           </nav>
 
           {/* Auth Actions */}
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <Link
               href="/login"
-              className="hidden sm:inline-block bg-white text-black px-3.5 py-1.5 border-brutal font-meta text-xs hover:bg-black hover:text-white transition-colors"
+              className="inline-block bg-white text-black px-4 py-2 border-brutal font-meta text-xs font-bold hover:bg-[#FF4D00] hover:text-black transition-colors"
             >
               LOGIN
-            </Link>
-            <Link
-              href="/dashboard/exams"
-              className="bg-[#FF4D00] text-black px-3 py-1.5 sm:px-4 sm:py-1.5 border-brutal font-meta text-[11px] sm:text-xs font-bold hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center gap-1"
-            >
-              <span>DASHBOARD</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
@@ -346,7 +339,7 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.25 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex items-center justify-center pt-2"
           >
             <motion.div
               whileHover={{ scale: 1.04, y: -2 }}
@@ -355,24 +348,10 @@ export default function LandingPage() {
             >
               <Link
                 href="/signup"
-                className="w-full sm:w-auto bg-black text-white px-10 py-5 border-brutal font-headline text-xl hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-3"
+                className="w-full sm:w-auto bg-black text-white px-12 py-5 border-brutal font-headline text-xl hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-3 shadow-[6px_6px_0px_0px_#000000]"
               >
                 <span>CREATE FREE ACCOUNT</span>
                 <ArrowRight className="w-6 h-6" />
-              </Link>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className="w-full sm:w-auto"
-            >
-              <Link
-                href="/dashboard/exams"
-                className="w-full sm:w-auto bg-white text-black px-10 py-5 border-brutal font-headline text-xl hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-3"
-              >
-                <span>VIEW EXAM SUITE</span>
-                <ArrowUpRight className="w-6 h-6" />
               </Link>
             </motion.div>
           </motion.div>

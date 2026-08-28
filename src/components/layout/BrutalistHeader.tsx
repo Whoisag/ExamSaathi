@@ -93,19 +93,11 @@ export function BrutalistHeader() {
           ) : (
             <Link
               href="/login"
-              className="border-2 border-black px-4 py-1.5 font-meta text-xs hover:bg-black hover:text-white transition-colors bg-white font-bold text-black"
+              className="border-2 border-black px-4 py-1.5 font-meta text-xs hover:bg-[#FF4D00] hover:text-black transition-colors bg-white font-bold text-black"
             >
               LOGIN
             </Link>
           )}
-
-          <Link
-            href="/dashboard/exams"
-            className="bg-black text-white border-2 border-black px-4 py-1.5 font-meta text-xs font-bold hover:bg-white hover:text-black transition-colors flex items-center gap-1"
-          >
-            <span>DASHBOARD</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
         </div>
       </div>
     </header>
