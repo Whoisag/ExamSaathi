@@ -11,6 +11,7 @@ import { GeneratedQuestionCard } from "@/components/analyzer/GeneratedQuestionCa
 import { GapAlertCard } from "@/components/analyzer/GapAlertCard";
 import { CbseDataFreshnessBanner } from "@/components/analyzer/CbseDataFreshnessBanner";
 import { LoginPromptModal } from "@/components/ui/LoginPromptModal";
+import { MarkdownMath } from "@/components/ui/MarkdownMath";
 import { getMockAnalyzerData, ChapterAnalyzerData } from "@/data/mock";
 import {
   ArrowLeft,
@@ -232,9 +233,7 @@ export default function ChapterAnalyzerPage() {
               </div>
             </div>
 
-            <div className="prose prose-sm max-w-none font-sans text-neutral-800 leading-relaxed whitespace-pre-line text-xs sm:text-sm">
-              {aiInsights}
-            </div>
+            <MarkdownMath content={aiInsights} />
           </div>
         )}
 

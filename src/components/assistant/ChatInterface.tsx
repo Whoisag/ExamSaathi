@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "@/data/mock";
 import { KaTeXMath } from "@/components/ui/KaTeXMath";
+import { MarkdownMath } from "@/components/ui/MarkdownMath";
 import { Send, Bot, User, Sparkles, Loader2, RotateCcw } from "lucide-react";
 
 interface ChatInterfaceProps {
@@ -166,14 +167,11 @@ export function ChatInterface({
                   </span>
                 </div>
 
-                <div className="text-xs sm:text-sm font-sans leading-relaxed whitespace-pre-line">
-                  {msg.content}
-                </div>
-
-                {/* Optional KaTeX Math */}
-                {msg.mathLatex && (
-                  <div className="mt-3 p-3 bg-neutral-100 text-black border border-black overflow-x-auto text-xs sm:text-sm">
-                    <KaTeXMath math={msg.mathLatex} block={true} />
+                {isBot ? (
+                  <MarkdownMath content={msg.content} />
+                ) : (
+                  <div className="text-xs sm:text-sm font-sans leading-relaxed whitespace-pre-line text-white">
+                    {msg.content}
                   </div>
                 )}
               </div>
