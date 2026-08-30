@@ -61,12 +61,10 @@ Ensure exactly 1 option has "isCorrect": true, and all equations are strictly en
     if (aiResult.text && !aiResult.error) {
       try {
         let cleanText = aiResult.text.trim();
-        if (cleanText.includes("```")) {
-          const match = cleanText.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-          if (match && match[1]) {
-            cleanText = match[1].trim();
-          }
-        }
+        // Robust strip of leading/trailing markdown fences even if truncated
+        cleanText = cleanText.replace(/^```(?:json)?\s*/i, "");
+        cleanText = cleanText.replace(/\s*```\s*$/i, "").trim();
+
         const parsed = JSON.parse(cleanText);
         const questions = parsed.questions || parsed;
         if (Array.isArray(questions) && questions.length > 0) {
