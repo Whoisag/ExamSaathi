@@ -12,7 +12,7 @@ export function BrutalistHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: "EXAMS", href: "/dashboard/exams" },
+    ...(user ? [{ label: "EXAMS", href: "/dashboard/exams" }] : []),
     { label: "ANALYZER", href: "/analyzer/jee-main/modern-physics" },
     { label: "ASSISTANT", href: "/assistant" },
     { label: "EVALUATION", href: "/evaluation" },
