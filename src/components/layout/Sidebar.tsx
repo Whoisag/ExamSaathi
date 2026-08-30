@@ -26,18 +26,17 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
 
   const navLinks = [
     {
-      label: "Overview",
-      href: "/",
-      icon: GraduationCap,
-      exact: true,
-    },
-    {
-      label: "Topic Trends",
-      href: `/dashboard/${currentExam}/${encodeURIComponent(currentSubject.toLowerCase())}`,
+      label: "Target Exams",
+      href: "/dashboard/exams",
       icon: LayoutDashboard,
     },
     {
-      label: "Practice",
+      label: "Syllabus Chapters",
+      href: `/dashboard/exams/${currentExam}/chapters`,
+      icon: GraduationCap,
+    },
+    {
+      label: "Practice Questions",
       href: `/dashboard/practice?exam=${currentExam}`,
       icon: Target,
     },
@@ -52,14 +51,9 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
       icon: BookmarkCheck,
     },
     {
-      label: "Evaluation",
-      href: "/evaluation",
-      icon: Award,
-    },
-    {
-      label: "Methodology & Ethics",
-      href: "/about",
-      icon: Info,
+      label: "AI Strategy Tutor",
+      href: "/assistant",
+      icon: Sparkles,
     },
   ];
 
@@ -113,11 +107,10 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
         </div>
         {navLinks.map((item) => {
           const Icon = item.icon;
-          const isActive = item.exact
-            ? pathname === item.href
-            : pathname.startsWith(item.href) ||
-              (item.label === "Topic Trends" && pathname.startsWith("/dashboard")) ||
-              (item.label === "Formula Sheets" && pathname.startsWith("/formulas"));
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/" && pathname.startsWith(item.href)) ||
+            (item.label === "Formula Sheets" && pathname.startsWith("/formulas"));
 
           return (
             <Link

@@ -11,13 +11,18 @@ export function BrutalistHeader() {
   const { user, signOut, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems = [
-    ...(user ? [{ label: "EXAMS", href: "/dashboard/exams" }] : []),
-    { label: "ANALYZER", href: "/analyzer/jee-main/modern-physics" },
-    { label: "ASSISTANT", href: "/assistant" },
-    { label: "EVALUATION", href: "/evaluation" },
-    { label: "METHODOLOGY", href: "/about" },
-  ];
+  const navItems = user
+    ? [
+        { label: "EXAMS", href: "/dashboard/exams" },
+        { label: "PRACTICE", href: "/dashboard/practice" },
+        { label: "MY DASHBOARD", href: "/my-dashboard" },
+        { label: "AI TUTOR", href: "/assistant" },
+      ]
+    : [
+        { label: "AI ASSISTANT", href: "/assistant" },
+        { label: "EVALUATION", href: "/evaluation" },
+        { label: "METHODOLOGY", href: "/about" },
+      ];
 
   if (loading) {
     return (

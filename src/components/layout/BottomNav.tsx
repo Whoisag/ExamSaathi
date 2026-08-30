@@ -53,10 +53,10 @@ export function BottomNav({ currentExam = "jee-main", currentSubject = "physics"
       activePattern: /^\/my-dashboard/,
     },
     {
-      label: "Eval",
-      href: "/evaluation",
+      label: "AI Tutor",
+      href: "/assistant",
       icon: Award,
-      activePattern: /^\/evaluation|\/about/,
+      activePattern: /^\/assistant/,
     },
   ];
 

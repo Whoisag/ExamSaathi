@@ -84,12 +84,6 @@ export default function LandingPage() {
           {/* Center Pill Navigation */}
           <nav className="hidden md:flex items-center bg-black p-1.5 rounded-full border-brutal shadow-none">
             <Link
-              href="/analyzer/jee-main/modern-physics"
-              className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors"
-            >
-              [ANALYZER]
-            </Link>
-            <Link
               href="/assistant"
               className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors"
             >
@@ -140,14 +134,6 @@ export default function LandingPage() {
             >
               <div className="text-[10px] text-[#FF4D00] font-mono font-bold tracking-wider">// NAVIGATION MENU</div>
               <div className="grid grid-cols-1 gap-1.5 font-meta text-xs">
-                <Link
-                  href="/analyzer/jee-main/modern-physics"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
-                >
-                  <span>[TOPIC ANALYZER]</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
                 <Link
                   href="/assistant"
                   onClick={() => setMobileMenuOpen(false)}
@@ -446,9 +432,6 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-wrap gap-6 font-meta text-xs">
-            <Link href="/analyzer/jee-main/modern-physics" className="hover:text-[#FF4D00] transition-colors">
-              [ANALYZER]
-            </Link>
             <Link href="/assistant" className="hover:text-[#FF4D00] transition-colors">
               [ASSISTANT]
             </Link>

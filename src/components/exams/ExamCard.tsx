@@ -126,20 +126,13 @@ export function ExamCard({ exam, isLoading = false }: ExamCardProps) {
       </div>
 
       {/* Action Footer */}
-      <div className="pt-4 border-brutal-t flex gap-2">
+      <div className="pt-4 border-brutal-t">
         <Link
           href={`/dashboard/exams/${exam.slug}/chapters`}
-          className="flex-1 bg-[#FF4D00] text-black py-3 border-brutal font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-[#FF4D00] text-black py-3 border-brutal font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center justify-center gap-2"
         >
-          <span>SELECT CHAPTERS</span>
+          <span>SELECT CHAPTERS & ANALYZE</span>
           <ArrowRight className="w-4 h-4" />
-        </Link>
-        <Link
-          href={`/analyzer/${exam.slug}/modern-physics`}
-          className="bg-black text-white px-3.5 py-3 border-brutal hover:bg-white hover:text-black transition-colors flex items-center justify-center"
-          title="Direct to Analyzer"
-        >
-          <Sparkles className="w-4 h-4" />
         </Link>
       </div>
     </div>
