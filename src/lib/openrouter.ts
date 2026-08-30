@@ -112,10 +112,10 @@ export async function callOpenRouter(
   const model =
     options.model ||
     process.env.OPENROUTER_MODEL_ANALYSIS ||
-    "google/gemini-2.0-flash-001";
+    "minimax/minimax-m3:free";
   const temperature = options.temperature ?? 0.3;
   const maxTokens = options.maxTokens ?? 1500;
-  const timeoutMs = options.timeoutMs ?? 5000;
+  const timeoutMs = options.timeoutMs ?? 25000;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
