@@ -121,8 +121,16 @@ export async function callOpenRouter(
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const payload: Record<string, unknown> = {
+    // Resilient OpenRouter model routing array: if primary hits 429 rate limit, upstream automatically fails over
+    const modelsList = [
       model,
+      "minimax/minimax-m3:free",
+      "nvidia/nemotron-3.5-lightning:free",
+    ];
+    const uniqueModels = Array.from(new Set(modelsList.filter(Boolean)));
+
+    const payload: Record<string, unknown> = {
+      models: uniqueModels,
       messages,
       temperature,
       max_tokens: maxTokens,
