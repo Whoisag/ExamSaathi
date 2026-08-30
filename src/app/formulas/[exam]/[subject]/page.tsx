@@ -75,27 +75,27 @@ export default function FormulasSubjectPage() {
       actionSlot={
         <div className="flex items-center gap-3">
           {/* State Test Switches */}
-          <div className="hidden sm:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs no-print">
+          <div className="hidden sm:flex items-center gap-1 bg-white p-1 border-2 border-black text-xs no-print font-meta">
             <button
               onClick={handleToggleLoading}
               disabled={simulateLoading}
-              className="px-2.5 py-1 rounded-lg text-slate-700 hover:bg-white transition-all font-medium flex items-center gap-1"
+              className="px-2.5 py-1 text-black hover:bg-[#FF4D00] transition-all font-bold flex items-center gap-1"
               title="Test Loading State"
             >
-              <RefreshCw className={`w-3 h-3 text-[#3730A3] ${simulateLoading ? "animate-spin" : ""}`} />
-              <span>Skeleton</span>
+              <RefreshCw className={`w-3 h-3 text-black ${simulateLoading ? "animate-spin" : ""}`} />
+              <span>SKELETON</span>
             </button>
             <button
               onClick={() => setSimulateEmpty(!simulateEmpty)}
-              className={`px-2.5 py-1 rounded-lg transition-all font-medium flex items-center gap-1 ${
+              className={`px-2.5 py-1 transition-all font-bold flex items-center gap-1 ${
                 simulateEmpty
-                  ? "bg-[#EA580C] text-white font-bold"
-                  : "text-slate-700 hover:bg-white"
+                  ? "bg-black text-[#FF4D00]"
+                  : "text-black hover:bg-[#FF4D00]"
               }`}
               title="Test Empty State"
             >
               <Eye className="w-3 h-3" />
-              <span>Empty</span>
+              <span>EMPTY</span>
             </button>
           </div>
 

@@ -17,28 +17,34 @@ export function FormulaSection({ priority, formulas }: FormulaSectionProps) {
     switch (priority) {
       case "High":
         return {
-          title: "Tier 1: High Yield & Repeat Critical",
+          title: "TIER 1: HIGH YIELD & REPEAT CRITICAL",
           subtitle: "Tested in >70% of shifts; direct scoring potential with minimal derivation.",
-          icon: <Flame className="w-5 h-5 text-[#EA580C]" />,
-          colorClass: "text-[#EA580C]",
-          bgClass: "bg-orange-50 border-orange-200",
+          icon: <Flame className="w-5 h-5 text-black" />,
+          colorClass: "text-black",
+          bgClass: "bg-[#FF4D00] border-2 border-black text-black shadow-[4px_4px_0px_0px_#000000]",
+          badgeClass: "bg-black text-[#FF4D00]",
+          subClass: "text-neutral-900",
         };
       case "Medium":
         return {
-          title: "Tier 2: Medium Priority Core Concepts",
+          title: "TIER 2: MEDIUM PRIORITY CORE CONCEPTS",
           subtitle: "Standard conceptual formulas tested in ~40-60% of question papers.",
-          icon: <Star className="w-5 h-5 text-[#3730A3]" />,
-          colorClass: "text-[#3730A3]",
-          bgClass: "bg-indigo-50 border-indigo-200",
+          icon: <Star className="w-5 h-5 text-[#FF4D00]" />,
+          colorClass: "text-white",
+          bgClass: "bg-black border-2 border-black text-white shadow-[4px_4px_0px_0px_#FF4D00]",
+          badgeClass: "bg-[#FF4D00] text-black",
+          subClass: "text-neutral-300",
         };
       case "Low":
       default:
         return {
-          title: "Tier 3: Supplementary & Edge Cases",
+          title: "TIER 3: SUPPLEMENTARY & EDGE CASES",
           subtitle: "Occasional appearance; useful for multi-step composite numericals.",
-          icon: <Bookmark className="w-5 h-5 text-slate-500" />,
-          colorClass: "text-slate-700",
-          bgClass: "bg-slate-100 border-slate-200",
+          icon: <Bookmark className="w-5 h-5 text-black" />,
+          colorClass: "text-black",
+          bgClass: "bg-white border-2 border-black text-black shadow-[4px_4px_0px_0px_#000000]",
+          badgeClass: "bg-neutral-100 text-black border border-black",
+          subClass: "text-neutral-600",
         };
     }
   };
@@ -46,19 +52,19 @@ export function FormulaSection({ priority, formulas }: FormulaSectionProps) {
   const config = getSectionHeader();
 
   return (
-    <section className="space-y-4 pt-2">
+    <section className="space-y-4 pt-2 font-sans">
       {/* Section Header */}
-      <div className={`p-4 rounded-xl border ${config.bgClass} flex items-start justify-between gap-4`}>
+      <div className={`p-4 border-2 border-black ${config.bgClass} flex items-start justify-between gap-4`}>
         <div className="flex items-start gap-3">
-          <div className="p-2 rounded-lg bg-white shadow-2xs shrink-0">{config.icon}</div>
+          <div className="p-2 border border-black bg-white shadow-xs shrink-0">{config.icon}</div>
           <div>
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              {config.title}
-              <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-white text-slate-700 shadow-2xs border border-slate-200/60">
-                {formulas.length} Formulas
+            <h3 className="font-headline text-sm sm:text-base flex items-center gap-2 flex-wrap">
+              <span>{config.title}</span>
+              <span className={`font-meta text-xs font-bold px-2 py-0.5 border border-black ${config.badgeClass}`}>
+                {formulas.length} FORMULAS
               </span>
             </h3>
-            <p className="text-xs text-slate-600 mt-0.5">{config.subtitle}</p>
+            <p className={`font-sans text-xs mt-1 ${config.subClass}`}>{config.subtitle}</p>
           </div>
         </div>
       </div>

@@ -41,17 +41,17 @@ export function GapAlert({
   }
 
   return (
-    <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
-      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+    <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-4 sm:p-6 space-y-4 font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-2 border-neutral-100 gap-2">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-[#D97706]" />
+          <h3 className="font-headline text-base sm:text-xl text-black flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-[#FF4D00]" />
             {title}
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
+          <p className="font-meta text-xs text-neutral-500 mt-0.5">{subtitle}</p>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-[#D97706] border border-amber-200">
-          {alerts.length} Overdue Topics
+        <span className="font-meta text-[10px] font-bold px-3 py-1 bg-[#FF4D00] text-black border border-black shadow-[2px_2px_0px_0px_#000000] self-start sm:self-auto">
+          {alerts.length} OVERDUE TOPICS
         </span>
       </div>
 
@@ -59,47 +59,47 @@ export function GapAlert({
         {alerts.map((alert) => (
           <div
             key={alert.id}
-            className="p-4 rounded-xl border border-amber-200/80 bg-gradient-to-r from-amber-50/40 to-orange-50/20 space-y-2.5"
+            className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000]"
           >
             {/* Title & Badge */}
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                <h4 className="font-headline text-sm sm:text-base text-black leading-snug">
                   {alert.topicName}
                 </h4>
-                <p className="text-xs text-slate-600 font-mono mt-0.5">{alert.subtopic}</p>
+                <p className="font-meta text-xs text-[#FF4D00] font-bold mt-0.5">{alert.subtopic}</p>
               </div>
               <span
-                className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0 ${
+                className={`font-meta text-[10px] font-bold px-2 py-0.5 border border-black uppercase tracking-wider shrink-0 ${
                   alert.predictedUrgency === "High"
-                    ? "bg-[#EA580C] text-white"
-                    : "bg-[#D97706] text-white"
+                    ? "bg-[#FF4D00] text-black shadow-[1px_1px_0px_0px_#000000]"
+                    : "bg-black text-white"
                 }`}
               >
-                {alert.predictedUrgency} Priority
+                {alert.predictedUrgency} PRIORITY
               </span>
             </div>
 
             {/* Gap Stats Pill Badges */}
-            <div className="flex items-center gap-2 text-xs flex-wrap">
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white border border-slate-200 text-slate-700 font-medium">
-                <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                Last appeared: <strong>{alert.lastAppearedYear}</strong>
+            <div className="flex items-center gap-2 text-xs flex-wrap font-meta text-[11px]">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 border border-black bg-white text-black font-bold">
+                <Calendar className="w-3.5 h-3.5 text-[#FF4D00]" />
+                LAST: <strong>{alert.lastAppearedYear}</strong>
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white border border-slate-200 text-slate-700 font-medium">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
-                Cycle: <strong>Every {alert.recurrenceCycleYears} yrs</strong>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 border border-black bg-white text-black font-bold">
+                <Clock className="w-3.5 h-3.5 text-[#FF4D00]" />
+                CYCLE: <strong>EVERY {alert.recurrenceCycleYears} YRS</strong>
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-100/70 border border-amber-200 text-amber-900 font-bold">
-                ⚠️ Overdue by {alert.overdueByYears} yrs
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 border border-black bg-orange-100 text-black font-bold">
+                ⚠️ OVERDUE BY {alert.overdueByYears} YRS
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-[#059669] font-bold ml-auto">
-                +{alert.marksAtStake} Marks at Stake
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 border border-black bg-black text-[#FF4D00] font-bold sm:ml-auto">
+                +{alert.marksAtStake} MARKS AT STAKE
               </span>
             </div>
 
             {/* Explanation */}
-            <p className="text-xs text-slate-600 leading-relaxed pt-1 border-t border-amber-200/40">
+            <p className="font-sans text-xs text-neutral-700 leading-relaxed pt-2 border-t border-neutral-200">
               {alert.explanation}
             </p>
           </div>

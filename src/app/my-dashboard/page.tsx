@@ -56,95 +56,95 @@ export default function MyDashboardPage() {
       subtitle="Track your syllabus mastery, resolve high-stakes vulnerabilities, and bank quick-win marks."
       breadcrumbs={[{ label: "My Dashboard" }]}
       actionSlot={
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+        <div className="flex items-center gap-1.5 bg-white p-1 border-2 border-black text-xs font-meta shadow-[2px_2px_0px_0px_#000000]">
           <button
             onClick={handleToggleLoading}
             disabled={simulateLoading}
-            className="px-2.5 py-1 rounded-lg text-slate-700 hover:bg-white transition-all font-medium flex items-center gap-1"
+            className="px-2.5 py-1 text-black hover:bg-[#FF4D00] transition-all font-bold flex items-center gap-1"
           >
-            <RefreshCw className={`w-3 h-3 text-[#3730A3] ${simulateLoading ? "animate-spin" : ""}`} />
-            <span className="hidden sm:inline">Skeleton</span>
+            <RefreshCw className={`w-3 h-3 text-black ${simulateLoading ? "animate-spin" : ""}`} />
+            <span className="hidden sm:inline">SKELETON</span>
           </button>
           <button
             onClick={() => setSimulateEmpty(!simulateEmpty)}
-            className={`px-2.5 py-1 rounded-lg transition-all font-medium flex items-center gap-1 ${
+            className={`px-2.5 py-1 transition-all font-bold flex items-center gap-1 ${
               simulateEmpty
-                ? "bg-[#EA580C] text-white font-bold"
-                : "text-slate-700 hover:bg-white"
+                ? "bg-black text-[#FF4D00]"
+                : "text-black hover:bg-[#FF4D00]"
             }`}
           >
             <Eye className="w-3 h-3" />
-            <span className="hidden sm:inline">Empty</span>
+            <span className="hidden sm:inline">EMPTY</span>
           </button>
         </div>
       }
     >
       <div className="space-y-6">
         {/* Readiness Metric Strip */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans">
           {/* Metric 1: Readiness Score */}
-          <div className="bg-white rounded-[12px] p-5 border border-slate-200 shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold uppercase tracking-wider">Exam Readiness</span>
-              <Target className="w-4 h-4 text-[#3730A3]" />
+          <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
+            <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
+              <span className="font-bold uppercase tracking-wider text-black">Exam Readiness</span>
+              <Target className="w-4 h-4 text-[#FF4D00]" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">
+              <span className="text-2xl sm:text-3xl font-headline text-black">
                 {readinessScore}%
               </span>
-              <span className="text-xs text-[#059669] font-semibold">+6% this week</span>
+              <span className="text-xs font-meta text-emerald-600 font-bold">+6% this week</span>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+            <div className="w-full bg-neutral-100 border border-black h-2 overflow-hidden">
               <div
-                className="bg-[#3730A3] h-full rounded-full transition-all duration-500"
+                className="bg-[#FF4D00] h-full transition-all duration-500"
                 style={{ width: `${readinessScore}%` }}
               />
             </div>
           </div>
 
           {/* Metric 2: Mastered Chapters */}
-          <div className="bg-white rounded-[12px] p-5 border border-slate-200 shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold uppercase tracking-wider">Mastered High-Yield</span>
-              <Trophy className="w-4 h-4 text-[#059669]" />
+          <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
+            <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
+              <span className="font-bold uppercase tracking-wider text-black">Mastered High-Yield</span>
+              <Trophy className="w-4 h-4 text-black" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#059669] font-mono">
+              <span className="text-2xl sm:text-3xl font-headline text-black">
                 {masteredCount}
               </span>
-              <span className="text-xs text-slate-400">/ {totalTopics} chapters</span>
+              <span className="text-xs font-meta text-neutral-600">/ {totalTopics} chapters</span>
             </div>
-            <p className="text-[11px] text-slate-500">Average mock test accuracy 88%</p>
+            <p className="font-meta text-[11px] text-neutral-500">Average mock test accuracy 88%</p>
           </div>
 
           {/* Metric 3: Critical Gaps */}
-          <div className="bg-white rounded-[12px] p-5 border border-slate-200 shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold uppercase tracking-wider">Attention Required</span>
-              <Flame className="w-4 h-4 text-[#EA580C]" />
+          <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
+            <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
+              <span className="font-bold uppercase tracking-wider text-black">Attention Required</span>
+              <Flame className="w-4 h-4 text-[#FF4D00]" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#EA580C] font-mono">
+              <span className="text-2xl sm:text-3xl font-headline text-[#FF4D00]">
                 {weakCount}
               </span>
-              <span className="text-xs text-slate-400">Weak Topics</span>
+              <span className="text-xs font-meta text-neutral-600">Weak Topics</span>
             </div>
-            <p className="text-[11px] text-slate-500">~20 marks at stake in upcoming session</p>
+            <p className="font-meta text-[11px] text-neutral-500">~20 marks at stake in upcoming session</p>
           </div>
 
           {/* Metric 4: In Active Revision */}
-          <div className="bg-white rounded-[12px] p-5 border border-slate-200 shadow-2xs space-y-2">
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span className="font-semibold uppercase tracking-wider">In Revision Loop</span>
-              <RotateCcw className="w-4 h-4 text-[#D97706]" />
+          <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
+            <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
+              <span className="font-bold uppercase tracking-wider text-black">In Revision Loop</span>
+              <RotateCcw className="w-4 h-4 text-black" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#D97706] font-mono">
+              <span className="text-2xl sm:text-3xl font-headline text-black">
                 {revisingCount}
               </span>
-              <span className="text-xs text-slate-400">Topics</span>
+              <span className="text-xs font-meta text-neutral-600">Topics</span>
             </div>
-            <p className="text-[11px] text-slate-500">Next scheduled revision: Today</p>
+            <p className="font-meta text-[11px] text-neutral-500">Next scheduled revision: Today</p>
           </div>
         </div>
 

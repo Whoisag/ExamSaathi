@@ -4,12 +4,15 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Lock, Mail, AlertCircle, Info } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -31,31 +34,24 @@ export default function LoginPage() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
+    setErrors({});
 
-    // Save mock user to localStorage as specified
-    const mockUser = {
-      id: "usr_" + Math.random().toString(36).substring(2, 9),
-      email: email.trim(),
-      name: email.split("@")[0],
-      targetExam: "jee-main",
-      createdAt: new Date().toISOString(),
-      role: "student",
-    };
+    const { error } = await signIn(email.trim(), password);
 
-    try {
-      localStorage.setItem("exam_saathi_user", JSON.stringify(mockUser));
-    } catch {
-      // localStorage may fail in private mode
+    if (error) {
+      setErrors({ general: error.message });
+      toast.error(error.message || "Authentication failed. Please check your credentials.");
+      setIsSubmitting(false);
+      return;
     }
 
-    setTimeout(() => {
-      router.push("/dashboard/exams");
-    }, 400);
+    toast.success("Authentication successful! Redirecting...");
+    router.push("/dashboard/exams");
   };
 
   return (
@@ -81,7 +77,7 @@ export default function LoginPage() {
       <main className="max-w-md w-full mx-auto p-6 py-12">
         <div className="border-brutal bg-white p-8 md:p-10 relative">
           <div className="absolute top-0 right-0 bg-black text-white px-3 py-1 font-meta text-[10px] uppercase font-bold">
-            AUTH // DEMO SHELL
+            AUTH // SUPABASE
           </div>
 
           <span className="font-meta text-xs text-[#FF4D00] font-bold block mb-1">
@@ -95,6 +91,14 @@ export default function LoginPage() {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+            {/* General Error */}
+            {errors.general && (
+              <div className="bg-red-50 border-2 border-red-600 p-3 font-meta text-xs text-red-600 flex items-center gap-1">
+                <AlertCircle className="w-3.5 h-3.5" />
+                <span>{errors.general}</span>
+              </div>
+            )}
+
             {/* Email Field */}
             <div>
               <label className="block font-meta text-xs font-bold text-black mb-2">
@@ -214,14 +218,14 @@ export default function LoginPage() {
 
           {/* Helper notice */}
           <div className="mt-8 pt-6 border-brutal-t text-center font-meta text-xs text-neutral-500">
-            MOCK AUTHENTICATION ACTIVE // DIRECT LOCAL REDIRECT
+            SUPABASE AUTHENTICATION ACTIVE
           </div>
         </div>
       </main>
 
       {/* Footer */}
       <footer className="border-brutal-t bg-black text-white p-6 text-center font-meta text-xs">
-        EXAMSAATHI PREDICTIVE PYQ INTELLIGENCE • ALL MOCK DATA LOCAL
+        EXAMSAATHI PREDICTIVE PYQ INTELLIGENCE • SUPABASE AUTH
       </footer>
     </div>
   );

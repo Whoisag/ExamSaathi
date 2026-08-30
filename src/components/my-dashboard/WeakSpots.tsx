@@ -36,19 +36,19 @@ export function WeakSpots({ items = [], isLoading = false, isEmpty = false }: We
   }
 
   return (
-    <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
-      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+    <div className="bg-white border-2 border-black p-4 sm:p-6 shadow-[4px_4px_0px_0px_#000000] space-y-4 font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-2 border-neutral-100 gap-2">
         <div>
-          <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-[#EA580C]" />
-            High-Stakes Weak Spots
+          <h3 className="font-headline text-base sm:text-lg text-black flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-[#FF4D00]" />
+            HIGH-STAKES WEAK SPOTS
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="font-meta text-xs text-neutral-500 mt-0.5">
             Chapters with low mock accuracy where questions are virtually guaranteed
           </p>
         </div>
-        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-[#EA580C]">
-          Attention Required
+        <span className="font-meta text-[10px] font-bold px-2.5 py-1 bg-black text-[#FF4D00] border border-black shadow-[2px_2px_0px_0px_#FF4D00] self-start sm:self-auto">
+          ATTENTION REQUIRED
         </span>
       </div>
 
@@ -56,21 +56,21 @@ export function WeakSpots({ items = [], isLoading = false, isEmpty = false }: We
         {items.map((item) => (
           <div
             key={item.id}
-            className="p-4 rounded-xl border border-orange-200/90 bg-orange-50/30 space-y-2"
+            className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-2.5 shadow-[2px_2px_0px_0px_#000000]"
           >
             <div className="flex items-start justify-between gap-3">
-              <h4 className="text-sm font-bold text-slate-900">{item.topic}</h4>
-              <span className="text-xs font-mono font-bold text-[#EA580C] bg-white px-2 py-0.5 rounded-md border border-orange-200 shrink-0">
-                +{item.marksImpact} Marks at Risk
+              <h4 className="font-headline text-sm text-black">{item.topic}</h4>
+              <span className="font-meta text-xs font-bold text-black bg-[#FF4D00] px-2 py-0.5 border border-black shrink-0">
+                +{item.marksImpact} MARKS AT RISK
               </span>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">{item.reason}</p>
-            <div className="pt-2 border-t border-orange-100 flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-700 flex items-center gap-1.5">
-                <ArrowRight className="w-3.5 h-3.5 text-[#EA580C]" />
-                Action: {item.suggestedAction}
+            <p className="font-sans text-xs text-neutral-700 leading-relaxed">{item.reason}</p>
+            <div className="pt-2 border-t border-neutral-200 flex items-center justify-between text-xs font-meta">
+              <span className="font-bold text-black flex items-center gap-1.5">
+                <ArrowRight className="w-3.5 h-3.5 text-[#FF4D00]" />
+                ACTION: {item.suggestedAction}
               </span>
-              <span className="text-[10px] uppercase tracking-wider font-bold text-[#EA580C]">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-[#FF4D00]">
                 {item.urgency}
               </span>
             </div>

@@ -44,22 +44,22 @@ interface CustomTooltipProps {
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/95 backdrop-blur-md p-3.5 border border-slate-200 rounded-xl shadow-lg text-xs space-y-2">
-        <p className="font-bold text-slate-800 border-b border-slate-100 pb-1 flex items-center justify-between gap-4">
-          <span>Exam Year:</span>
-          <span className="text-[#3730A3] font-mono">{label}</span>
+      <div className="bg-black text-white p-3.5 border-2 border-black shadow-[4px_4px_0px_0px_#FF4D00] font-meta text-xs space-y-2">
+        <p className="font-bold text-white border-b border-neutral-800 pb-1 flex items-center justify-between gap-4">
+          <span>EXAM YEAR:</span>
+          <span className="text-[#FF4D00] font-mono font-bold">{label}</span>
         </p>
         <div className="space-y-1.5">
           {payload.map((entry) => (
             <div key={entry.name} className="flex items-center justify-between gap-6">
-              <span className="flex items-center gap-1.5 text-slate-600 font-medium truncate max-w-[140px]">
+              <span className="flex items-center gap-1.5 text-neutral-300 font-medium truncate max-w-[140px]">
                 <span
-                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                  className="w-2.5 h-2.5 shrink-0"
                   style={{ backgroundColor: entry.color }}
                 />
                 {entry.name}
               </span>
-              <span className="font-mono font-bold text-slate-900">{entry.value}%</span>
+              <span className="font-mono font-bold text-[#FF4D00]">{entry.value}%</span>
             </div>
           ))}
         </div>
@@ -93,7 +93,7 @@ export function TrendChart({
   if (isEmpty || !data || data.length === 0) {
     return (
       <EmptyState
-        icon={<TrendingUp className="w-6 h-6 text-slate-400" />}
+        icon={<TrendingUp className="w-6 h-6 text-neutral-400" />}
         title="No Trend Data Available"
         description="Unable to generate historical line chart for the selected subject."
       />
@@ -108,20 +108,20 @@ export function TrendChart({
   };
 
   return (
-    <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+    <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-4 sm:p-6 space-y-4 font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b-2 border-neutral-100">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-[#3730A3]" />
+          <h3 className="font-headline text-base sm:text-xl text-black flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-[#FF4D00]" />
             {title}
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
+          <p className="font-meta text-xs text-neutral-500 mt-0.5">{subtitle}</p>
         </div>
 
         {/* Filter Toggle Badges */}
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1 mr-1">
-            <Filter className="w-3 h-3" /> Toggle:
+          <span className="font-meta text-[10px] font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1 mr-1">
+            <Filter className="w-3 h-3" /> TOGGLE:
           </span>
           {topics.map((t) => {
             const isVisible = activeTopics[t.key] ?? true;
@@ -129,14 +129,14 @@ export function TrendChart({
               <button
                 key={t.key}
                 onClick={() => toggleTopic(t.key)}
-                className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 border ${
+                className={`px-3 py-1 font-meta text-xs transition-all flex items-center gap-1.5 border-2 border-black ${
                   isVisible
-                    ? "bg-slate-50 border-slate-300 text-slate-800 shadow-2xs"
-                    : "bg-slate-100/50 border-transparent text-slate-400 opacity-60"
+                    ? "bg-black text-white shadow-[2px_2px_0px_0px_#000000]"
+                    : "bg-neutral-100 text-neutral-400 border-neutral-300 opacity-60"
                 }`}
               >
                 <span
-                  className="w-2 h-2 rounded-full"
+                  className="w-2 h-2"
                   style={{ backgroundColor: isVisible ? t.color : "#94a3b8" }}
                 />
                 {t.name}

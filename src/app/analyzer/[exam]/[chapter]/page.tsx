@@ -9,9 +9,10 @@ import { TrendChart } from "@/components/analyzer/TrendChart";
 import { TopicPredictionList } from "@/components/analyzer/TopicPredictionList";
 import { GeneratedQuestionCard } from "@/components/analyzer/GeneratedQuestionCard";
 import { GapAlertCard } from "@/components/analyzer/GapAlertCard";
+import { CbseDataFreshnessBanner } from "@/components/analyzer/CbseDataFreshnessBanner";
 import { LoginPromptModal } from "@/components/ui/LoginPromptModal";
 import { getMockAnalyzerData } from "@/data/mock";
-import { ArrowLeft, ArrowRight, RefreshCw, Flame, BookOpen, Layers } from "lucide-react";
+import { ArrowLeft, ArrowRight, RefreshCw, Flame, BookOpen, Layers, Target } from "lucide-react";
 
 export default function ChapterAnalyzerPage() {
   const params = useParams();
@@ -49,13 +50,23 @@ export default function ChapterAnalyzerPage() {
             <span className="bg-black text-white px-3.5 py-2 font-bold uppercase border-brutal">{analyzerData.chapter.name}</span>
           </div>
 
-          <button
-            onClick={toggleSkeleton}
-            className="border-brutal bg-white text-black px-3.5 py-2 font-meta text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer font-bold"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-            <span>TEST SKELETON</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/dashboard/practice?exam=${examSlug}`}
+              className="border-brutal bg-white text-black hover:bg-[#FF4D00] hover:text-black px-3.5 py-2 font-meta text-xs transition-colors flex items-center gap-1.5 font-bold"
+            >
+              <Target className="w-3.5 h-3.5 text-[#FF4D00]" />
+              <span>PRACTICE</span>
+            </Link>
+
+            <button
+              onClick={toggleSkeleton}
+              className="border-brutal bg-white text-black px-3.5 py-2 font-meta text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer font-bold"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+              <span>TEST SKELETON</span>
+            </button>
+          </div>
         </div>
 
         {/* Chapter Title Banner */}
@@ -95,6 +106,9 @@ export default function ChapterAnalyzerPage() {
             </div>
           </div>
         </div>
+
+        {/* Synthetic-Data Freshness Banner for CBSE Class 12 */}
+        <CbseDataFreshnessBanner examSlug={examSlug} />
 
         {/* 1 & 2. Two-Column Charts Grid (Weightage Pie + Trend Line) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

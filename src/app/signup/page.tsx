@@ -4,14 +4,17 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, AlertCircle, Info, Check } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const router = useRouter();
+  const { signUp } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [targetExam, setTargetExam] = useState("jee-main");
-  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; general?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -38,27 +41,23 @@ export default function SignupPage() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
+    setErrors({});
 
-    const mockUser = {
-      id: "usr_" + Math.random().toString(36).substring(2, 9),
-      name: name.trim(),
-      email: email.trim(),
-      targetExam,
-      createdAt: new Date().toISOString(),
-      role: "student",
-    };
+    const { error } = await signUp(email.trim(), password, name.trim(), targetExam);
 
-    try {
-      localStorage.setItem("exam_saathi_user", JSON.stringify(mockUser));
-    } catch {
-      // ignore in incognito
+    if (error) {
+      setErrors({ general: error.message });
+      toast.error(error.message || "Registration failed. Please check details.");
+      setIsSubmitting(false);
+      return;
     }
 
+    toast.success("Account created successfully! Preparing dashboard...");
     setTimeout(() => {
       router.push("/dashboard/exams");
     }, 400);
@@ -87,7 +86,7 @@ export default function SignupPage() {
       <main className="max-w-md w-full mx-auto p-6 py-10">
         <div className="border-brutal bg-white p-8 md:p-10 relative">
           <div className="absolute top-0 right-0 bg-black text-white px-3 py-1 font-meta text-[10px] uppercase font-bold">
-            NEW ACCOUNT // DEMO
+            NEW ACCOUNT // SUPABASE
           </div>
 
           <span className="font-meta text-xs text-[#FF4D00] font-bold block mb-1">
@@ -101,6 +100,14 @@ export default function SignupPage() {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            {/* General Error */}
+            {errors.general && (
+              <div className="bg-red-50 border-2 border-red-600 p-3 font-meta text-xs text-red-600 flex items-center gap-1">
+                <AlertCircle className="w-3.5 h-3.5" />
+                <span>{errors.general}</span>
+              </div>
+            )}
+
             {/* Full Name */}
             <div>
               <label className="block font-meta text-xs font-bold text-black mb-1.5">
@@ -259,14 +266,14 @@ export default function SignupPage() {
           </form>
 
           <div className="mt-6 pt-5 border-brutal-t text-center font-meta text-[11px] text-neutral-500">
-            BY PROCEEDING YOU AGREE TO LOCAL CLIENT-SIDE SESSION TERMS.
+            BY PROCEEDING YOU AGREE TO OUR TERMS OF SERVICE AND PRIVACY POLICY.
           </div>
         </div>
       </main>
 
       {/* Footer */}
       <footer className="border-brutal-t bg-black text-white p-6 text-center font-meta text-xs">
-        EXAMSAATHI PREDICTIVE PYQ INTELLIGENCE • ZERO BACKEND • FAST LOCAL SHELL
+        EXAMSAATHI PREDICTIVE PYQ INTELLIGENCE • SUPABASE AUTH
       </footer>
     </div>
   );

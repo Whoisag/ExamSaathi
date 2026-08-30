@@ -12,13 +12,13 @@ interface PortalHeroProps {
 export function PortalHero({ onExploreClick }: PortalHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const openProgress = useMotionValue(0);
-  const [statusText, setStatusText] = useState("STANDBY (SCROLL DOWN TO PART)");
+  const [statusText, setStatusText] = useState("STANDBY (SCROLL TO OPEN)");
   const [isFullyOpen, setIsFullyOpen] = useState(false);
 
-  const isAutoClosedRef = useRef(false);
+  const isUnlockedRef = useRef(false);
+  const targetProgressRef = useRef(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const maxProgressRef = useRef(0);
-  const lastScrollYRef = useRef(0);
+  const touchStartYRef = useRef(0);
 
   // Proportional transforms linked directly to openProgress:
   // "if the user scrolls down little bit it should open little bit"
@@ -35,21 +35,22 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
   const heroContentY = useTransform(scrollY, [0, 260, 480], [0, 0, -45]);
   const heroContentScale = useTransform(scrollY, [0, 260, 480], [1, 1, 0.94]);
 
-  const FULL_OPEN_SCROLL = 220;
-
   // Schedules automatic closure after 2 seconds:
-  // "it will only close automatically after 2 secs"
-  const scheduleAutoClose = (label = "AUTOCLOSING IN 2S") => {
-    if (timerRef.current) return;
+  // "and after it is opened it closes automatically after 2 secs"
+  const scheduleAutoClose = (label = "FULLY OPEN (AUTOCLOSES IN 2S)") => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
     setStatusText(label);
     timerRef.current = setTimeout(() => {
-      isAutoClosedRef.current = true;
-      setStatusText("AUTOCLOSED (SCROLL TO TOP TO RESET)");
+      setStatusText("AUTOCLOSING...");
       animate(openProgress, 0, {
         duration: 0.85,
         ease: [0.2, 0.8, 0.3, 1],
         onComplete: () => {
           setIsFullyOpen(false);
+          targetProgressRef.current = 0;
+          setStatusText("STANDBY (SCROLL DOWN TO EXPLORE)");
         },
       });
       timerRef.current = null;
@@ -57,67 +58,157 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.location.search.includes("parted=true")) {
-      openProgress.set(1);
-      maxProgressRef.current = 1;
-      setIsFullyOpen(true);
-      scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
+    if (typeof window !== "undefined") {
+      if (window.location.search.includes("parted=true")) {
+        openProgress.set(1);
+        targetProgressRef.current = 1;
+        setIsFullyOpen(true);
+        isUnlockedRef.current = true;
+        scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
+      } else if (window.scrollY > 10) {
+        // If user refreshed while scrolled down, do not lock
+        isUnlockedRef.current = true;
+      }
     }
   }, [openProgress]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const isScrollingUp = currentScrollY < lastScrollYRef.current;
-      lastScrollYRef.current = currentScrollY;
-
-      // Reset only when user is back near the top AND panels have completely auto-closed to 0
-      if (currentScrollY <= 15 && isAutoClosedRef.current && openProgress.get() === 0) {
-        isAutoClosedRef.current = false;
-        maxProgressRef.current = 0;
-        if (timerRef.current) {
-          clearTimeout(timerRef.current);
-          timerRef.current = null;
-        }
-        setStatusText("STANDBY (SCROLL DOWN TO PART)");
+    // 1. Mouse wheel handler:
+    // "when the user uses the scroller in the mouse the panels opens with every scroll of the scroller of the mouse and after its open then only the user can scroll down he landing page to see everyting else in the landing page"
+    const handleWheel = (e: WheelEvent) => {
+      // If user has already unlocked or is scrolled down the page, let standard scrolling happen
+      if (isUnlockedRef.current || window.scrollY > 5) {
         return;
       }
 
-      // If already auto-closed, remain closed until user returns to top
-      if (isAutoClosedRef.current) {
-        return;
-      }
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 40;
+      else if (e.deltaMode === 2) delta *= 800;
 
-      const progress = Math.min(1, Math.max(0, currentScrollY / FULL_OPEN_SCROLL));
+      if (delta > 0) {
+        // Scrolling downward: open panels with every scroll of the scroller!
+        e.preventDefault();
 
-      // 1. Moving downward deeper than before: open proportionally!
-      // "if the user scrolls down little bit it should open little bit"
-      if (progress > maxProgressRef.current) {
-        maxProgressRef.current = progress;
-        openProgress.set(progress);
+        // Increment progress proportionally
+        const increment = Math.abs(delta) * 0.0028;
+        const next = Math.min(1, targetProgressRef.current + increment);
+        targetProgressRef.current = next;
+        openProgress.set(next);
 
-        if (progress >= 0.98) {
+        if (next >= 0.98) {
+          targetProgressRef.current = 1;
+          openProgress.set(1);
           setIsFullyOpen(true);
+          isUnlockedRef.current = true; // Unlock landing page scroll!
           scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
         } else {
           setIsFullyOpen(false);
-          setStatusText(`PARTING (${Math.round(progress * 100)}%)`);
+          setStatusText(`PARTING (${Math.round(next * 100)}%)`);
         }
-      }
-
-      // 2. Scrolling back up while panels are open: DO NOT CLOSE!
-      // "if the user scrolls back the panel shouldnt close it will only close automatically after 2 secs"
-      if (isScrollingUp && maxProgressRef.current > 0.05) {
-        scheduleAutoClose(
-          maxProgressRef.current >= 0.98
-            ? "FULLY OPEN (AUTOCLOSES IN 2S)"
-            : "AUTOCLOSING IN 2S"
-        );
+      } else {
+        // Scrolling upward while at top: prevent bounce and do not close prematurely
+        // "if the user scrolls back the panel shouldnt close it will only close automatically after 2 secs"
+        e.preventDefault();
       }
     };
 
+    // 2. Touch gesture handler for mobile:
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        touchStartYRef.current = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isUnlockedRef.current || window.scrollY > 5) {
+        return;
+      }
+
+      if (e.touches.length > 0) {
+        const currentY = e.touches[0].clientY;
+        const delta = touchStartYRef.current - currentY; // positive when swiping up / scrolling down
+
+        if (delta > 0) {
+          e.preventDefault();
+          const increment = delta * 0.0035;
+          const next = Math.min(1, targetProgressRef.current + increment);
+          targetProgressRef.current = next;
+          openProgress.set(next);
+          touchStartYRef.current = currentY;
+
+          if (next >= 0.98) {
+            targetProgressRef.current = 1;
+            openProgress.set(1);
+            setIsFullyOpen(true);
+            isUnlockedRef.current = true; // Unlock landing page scroll!
+            scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
+          } else {
+            setIsFullyOpen(false);
+            setStatusText(`PARTING (${Math.round(next * 100)}%)`);
+          }
+        }
+      }
+    };
+
+    // 3. Keyboard handler (DownArrow, PageDown, Space):
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isUnlockedRef.current || window.scrollY > 5) {
+        return;
+      }
+
+      if (["ArrowDown", "PageDown", " "].includes(e.key)) {
+        e.preventDefault();
+        const next = Math.min(1, targetProgressRef.current + 0.34);
+        targetProgressRef.current = next;
+        openProgress.set(next);
+
+        if (next >= 0.98) {
+          targetProgressRef.current = 1;
+          openProgress.set(1);
+          setIsFullyOpen(true);
+          isUnlockedRef.current = true;
+          scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
+        } else {
+          setIsFullyOpen(false);
+          setStatusText(`PARTING (${Math.round(next * 100)}%)`);
+        }
+      }
+    };
+
+    // 4. Scroll listener: enforce scroll lock until fully open, and re-arm when back at top
+    const handleScroll = () => {
+      if (!isUnlockedRef.current && window.scrollY > 0) {
+        window.scrollTo(0, 0);
+        return;
+      }
+
+      if (
+        window.scrollY <= 5 &&
+        isUnlockedRef.current &&
+        openProgress.get() === 0 &&
+        !timerRef.current
+      ) {
+        isUnlockedRef.current = false;
+        targetProgressRef.current = 0;
+        setStatusText("STANDBY (SCROLL DOWN TO PART)");
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    document.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("scroll", handleScroll, { passive: true });
+
     return () => {
+      window.removeEventListener("wheel", handleWheel);
+      document.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("scroll", handleScroll);
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -133,8 +224,8 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
     }
 
     if (openProgress.get() < 0.5) {
-      isAutoClosedRef.current = false;
-      maxProgressRef.current = 1;
+      targetProgressRef.current = 1;
+      isUnlockedRef.current = true;
       setIsFullyOpen(true);
       setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
       animate(openProgress, 1, {
@@ -145,13 +236,14 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         },
       });
     } else {
-      isAutoClosedRef.current = true;
-      setStatusText("STANDBY (SCROLL DOWN TO PART)");
+      targetProgressRef.current = 0;
+      setStatusText("AUTOCLOSING...");
       animate(openProgress, 0, {
         duration: 0.85,
         ease: [0.2, 0.8, 0.3, 1],
         onComplete: () => {
           setIsFullyOpen(false);
+          setStatusText("STANDBY (SCROLL DOWN TO PART)");
         },
       });
     }
@@ -215,7 +307,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
                 ease: "easeInOut",
                 delay: 0.4,
               }}
-              className="w-80 h-96 border-2 border-white bg-black p-5 font-meta text-[10px] text-neutral-400 transform shadow-2xl"
+              className="w-[88vw] max-w-xs sm:w-80 h-80 sm:h-96 border-2 border-white bg-black p-4 sm:p-5 font-meta text-[10px] text-neutral-400 transform shadow-2xl"
             >
               <div className="border-b border-white pb-2 mb-3 text-white font-bold flex justify-between">
                 <span>NEET UG NATIONAL</span>
@@ -223,10 +315,10 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
               </div>
               <div className="space-y-3 text-neutral-300 font-mono">
                 <p>Poisson recurrence interval Δt = 3.2 yrs exceeded.</p>
-                <div className="h-24 border border-dashed border-[#FF4D00] flex items-center justify-center text-[#FF4D00] font-headline text-lg">
+                <div className="h-20 sm:h-24 border border-dashed border-[#FF4D00] flex items-center justify-center text-[#FF4D00] font-headline text-base sm:text-lg">
                   P(k) = λᵏ e⁻ᵏ / k!
                 </div>
-                <div className="flex justify-between text-white font-bold pt-1">
+                <div className="flex justify-between text-white font-bold pt-1 text-[9px] sm:text-[10px]">
                   <span>FREQUENCY: HIGH</span>
                   <span className="text-[#FF4D00]">+4 MARKS AT STAKE</span>
                 </div>
@@ -304,7 +396,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             x: examWordmarkX,
             opacity: wordmarkOpacity,
           }}
-          className="w-1/2 text-right pr-1 sm:pr-2 font-headline text-[13vw] sm:text-[11.5vw] md:text-[10vw] lg:text-[9.5vw] leading-[0.85] select-none whitespace-nowrap text-black"
+          className="w-1/2 text-right pr-1 sm:pr-2 font-headline text-[12vw] sm:text-[10.5vw] md:text-[9.5vw] lg:text-[8.5vw] leading-[0.85] select-none whitespace-nowrap text-black"
         >
           EXAM
         </motion.div>
@@ -315,7 +407,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             x: saathiWordmarkX,
             opacity: wordmarkOpacity,
           }}
-          className="w-1/2 text-left pl-1 sm:pl-2 font-headline text-[13vw] sm:text-[11.5vw] md:text-[10vw] lg:text-[9.5vw] leading-[0.85] select-none whitespace-nowrap text-white"
+          className="w-1/2 text-left pl-1 sm:pl-2 font-headline text-[12vw] sm:text-[10.5vw] md:text-[9.5vw] lg:text-[8.5vw] leading-[0.85] select-none whitespace-nowrap text-white"
         >
           SAATHI
         </motion.div>
@@ -326,7 +418,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         style={{
           opacity: heroInnerOpacity,
         }}
-        className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-44 pb-10 flex flex-col items-center justify-center text-center my-auto pointer-events-auto"
+        className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-32 sm:pt-40 md:pt-44 pb-8 sm:pb-10 flex flex-col items-center justify-center text-center my-auto pointer-events-auto"
       >
         <motion.div
           style={{
@@ -334,47 +426,47 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             y: heroContentY,
             scale: heroContentScale,
           }}
-          className="space-y-5 max-w-3xl mx-auto flex flex-col items-center"
+          className="space-y-4 sm:space-y-5 max-w-3xl mx-auto flex flex-col items-center"
         >
           {/* Exam Saathi in Orange and White */}
-          <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[0.9] select-none">
+          <h1 className="font-headline text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[0.9] select-none">
             <span className="text-[#FF4D00]">EXAM </span>
             <span className="text-white">SAATHI</span>
           </h1>
 
           {/* Tagline */}
-          <div className="font-meta text-xs sm:text-sm md:text-base text-white tracking-[0.05em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-4 py-2 inline-block">
+          <div className="font-meta text-[11px] sm:text-xs md:text-sm text-white tracking-[0.05em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-3 py-1.5 sm:px-4 sm:py-2 inline-block">
             PATTERN-BASED EXAM PREP FOR INDIAN STUDENTS
           </div>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base md:text-lg font-medium text-neutral-200 leading-snug max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base md:text-lg font-medium text-neutral-200 leading-snug max-w-2xl mx-auto px-2">
             Stop guessing what comes in your exam. Surgical PYQ frequency intelligence,
             overdue recurrence gap alerts, and KaTeX cheat sheets for Indian students.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-2 w-full max-w-sm sm:max-w-none px-2 sm:px-0">
             <Link
               href="/signup"
-              className="bg-[#FF4D00] text-black px-8 py-4 border-2 border-black font-headline text-base sm:text-lg hover:bg-white hover:text-black transition-colors inline-flex items-center gap-3 shadow-[4px_4px_0px_0px_#FFFFFF]"
+              className="bg-[#FF4D00] text-black px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-black font-headline text-sm sm:text-base md:text-lg hover:bg-white hover:text-black transition-all inline-flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_#FFFFFF] active:translate-y-0.5"
             >
               <span>CREATE A NEW ACCOUNT</span>
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
             <Link
               href="/analyzer/jee-main/modern-physics"
-              className="bg-black text-white px-8 py-4 border-2 border-white font-headline text-base sm:text-lg hover:bg-[#FF4D00] hover:text-black hover:border-black transition-colors inline-flex items-center gap-3 shadow-[4px_4px_0px_0px_#FF4D00]"
+              className="bg-black text-white px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-white font-headline text-sm sm:text-base md:text-lg hover:bg-[#FF4D00] hover:text-black hover:border-black transition-all inline-flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_#FF4D00] active:translate-y-0.5"
             >
               <span>SAMPLE ANALYZER</span>
-              <ArrowUpRight className="w-5 h-5" />
+              <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
           </div>
 
           {/* Verified Metrics Row */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-6 font-meta text-xs text-neutral-300">
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3 sm:gap-6 font-meta text-[10px] sm:text-xs text-neutral-300">
             <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-[#FF4D00] inline-block"></span>
+              <span className="w-2 h-2 bg-[#FF4D00] inline-block shrink-0"></span>
               <span>JEE MAIN • NEET • ADVANCED • CBSE</span>
             </span>
             <span className="hidden sm:inline text-neutral-600">•</span>
@@ -386,12 +478,12 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
       </motion.div>
 
       {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR */}
-      <div className="relative z-30 max-w-7xl mx-auto w-full px-4 sm:px-8 py-6 flex items-center justify-between border-t-2 border-neutral-800 bg-transparent">
-        <div className="font-meta text-xs text-black sm:text-neutral-400">
+      <div className="relative z-30 max-w-7xl mx-auto w-full px-4 sm:px-8 py-4 sm:py-6 flex items-center justify-between border-t-2 border-neutral-800 bg-transparent">
+        <div className="font-meta text-xs flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
           <span className="text-[#FF4D00] font-bold">
             // INTERACTIVE PORTAL
           </span>
-          <span className="hidden sm:inline ml-2 text-white font-mono">
+          <span className="text-neutral-300 font-mono text-[10px] sm:text-xs">
             STATUS: {statusText}
           </span>
         </div>
@@ -400,7 +492,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         <div
           id="portal-toggle-button"
           onClick={toggleParting}
-          className="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center select-none cursor-pointer hover:scale-105 transition-transform"
+          className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center select-none cursor-pointer hover:scale-105 transition-transform shrink-0"
           title="Click to toggle portal parting"
         >
           <svg className="w-full h-full animate-spin-12s text-white" viewBox="0 0 100 100">
@@ -416,11 +508,11 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
               </textPath>
             </text>
           </svg>
-          <div className="absolute w-8 h-8 rounded-full bg-[#FF4D00] border-2 border-black flex items-center justify-center">
+          <div className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FF4D00] border-2 border-black flex items-center justify-center">
             {isFullyOpen ? (
-              <ChevronDown className="w-4 h-4 text-black animate-bounce" />
+              <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black animate-bounce" />
             ) : (
-              <ArrowRight className="w-4 h-4 text-black transform rotate-90" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black transform rotate-90" />
             )}
           </div>
         </div>

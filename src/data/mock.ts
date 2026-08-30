@@ -1338,3 +1338,249 @@ export const MOCK_SUGGESTED_PROMPTS = [
   "What is the Poisson recurrence probability of Single Slit Diffraction?",
 ];
 
+// ==========================================
+// PRACTICE QUESTIONS (CBSE / NATIONAL DRILLS)
+// ==========================================
+
+export type PracticeQuestion = {
+  id: string;
+  subject: "Physics" | "Chemistry" | "Mathematics";
+  chapter: string;
+  year: number;
+  marks: number;
+  questionType: string;
+  difficulty: string;
+  questionText: string;
+  sourceType: "ai_generated";
+  analyzerTags: string[];
+};
+
+export const MOCK_PRACTICE_QUESTIONS: PracticeQuestion[] = [
+  // Physics Questions
+  {
+    id: "pq-phy-01",
+    subject: "Physics",
+    chapter: "Electrostatics & Gauss Law",
+    year: 2025,
+    marks: 3,
+    questionType: "Short Answer",
+    difficulty: "Medium",
+    questionText: "An infinitely long thin wire of uniform linear charge density λ is enclosed inside a cylindrical Gaussian surface of radius r and length L. Using Gauss's law, derive the expression for the electric field intensity at a radial distance r from the wire axis.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Gauss Theorem", "High Recurrence", "Tier 1"],
+  },
+  {
+    id: "pq-phy-02",
+    subject: "Physics",
+    chapter: "Electrostatics & Gauss Law",
+    year: 2024,
+    marks: 2,
+    questionType: "MCQ",
+    difficulty: "Easy",
+    questionText: "Two point charges +4q and +q are placed a distance d apart. Where should a third charge -q be placed on the line connecting them so that the net electrostatic force on it is zero?",
+    sourceType: "ai_generated",
+    analyzerTags: ["Coulomb Law", "Equilibrium Points"],
+  },
+  {
+    id: "pq-phy-03",
+    subject: "Physics",
+    chapter: "Current Electricity & Circuits",
+    year: 2025,
+    marks: 5,
+    questionType: "Long Answer",
+    difficulty: "Hard",
+    questionText: "State Kirchhoff's circuit rules based on energy and charge conservation. In a balanced Wheatstone bridge network with arm resistances P = 10 Ω, Q = 20 Ω, R = 15 Ω, and S = 30 Ω connected to a 6V source with internal resistance 1 Ω, calculate the current delivered by the cell and verify galvanometer deflection.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Kirchhoff Laws", "Wheatstone Bridge", "Poisson Overdue"],
+  },
+  {
+    id: "pq-phy-04",
+    subject: "Physics",
+    chapter: "Optics & Wave Theory",
+    year: 2024,
+    marks: 3,
+    questionType: "Short Answer",
+    difficulty: "Medium",
+    questionText: "In Young's double-slit experiment using monochromatic light of wavelength 600 nm, the slit separation is 0.8 mm and screen distance is 1.6 m. Determine the fringe width and the distance from the central maximum to the 3rd dark fringe.",
+    sourceType: "ai_generated",
+    analyzerTags: ["YDSE", "Fringe Shift", "Wave Optics"],
+  },
+  {
+    id: "pq-phy-05",
+    subject: "Physics",
+    chapter: "Modern Physics & Dual Nature",
+    year: 2025,
+    marks: 3,
+    questionType: "Short Answer",
+    difficulty: "Easy",
+    questionText: "Light of frequency 1.5 times the threshold frequency is incident on a photosensitive surface. If the incident frequency is halved and intensity is doubled, describe the change in stopping potential and saturation photoelectric current.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Photoelectric Effect", "Einstein Equation", "Tier 1"],
+  },
+  {
+    id: "pq-phy-06",
+    subject: "Physics",
+    chapter: "Magnetic Effects of Current",
+    year: 2024,
+    marks: 4,
+    questionType: "Derivation Drill",
+    difficulty: "Hard",
+    questionText: "Apply the Biot-Savart law to obtain an expression for the magnetic field vector at an axial point distance x from the center of a circular coil of N turns carrying current I. Discuss the limiting case when x >> R.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Biot-Savart Law", "Axial Field", "Core Syllabus"],
+  },
+
+  // Chemistry Questions
+  {
+    id: "pq-chem-01",
+    subject: "Chemistry",
+    chapter: "Solutions & Colligative Properties",
+    year: 2025,
+    marks: 3,
+    questionType: "Numerical",
+    difficulty: "Medium",
+    questionText: "A 5% (by mass) aqueous solution of cane sugar (molar mass = 342 g/mol) has a freezing point of 271 K. Calculate the freezing point of a 5% aqueous solution of glucose (molar mass = 180 g/mol). Freezing point of pure water is 273.15 K.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Freezing Point Depression", "Van't Hoff", "Tier 1"],
+  },
+  {
+    id: "pq-chem-02",
+    subject: "Chemistry",
+    chapter: "Solutions & Colligative Properties",
+    year: 2024,
+    marks: 1,
+    questionType: "MCQ",
+    difficulty: "Easy",
+    questionText: "Which of the following 0.1 M aqueous solutions exhibits the highest boiling point elevation: (a) 0.1 M NaCl, (b) 0.1 M BaCl2, (c) 0.1 M FeCl3, or (d) 0.1 M Glucose?",
+    sourceType: "ai_generated",
+    analyzerTags: ["Van't Hoff Factor", "Colligative Properties"],
+  },
+  {
+    id: "pq-chem-03",
+    subject: "Chemistry",
+    chapter: "Electrochemistry & Nernst",
+    year: 2025,
+    marks: 5,
+    questionType: "Long Answer",
+    difficulty: "Hard",
+    questionText: "Represent the cell in which the following reaction takes place: Mg(s) + 2Ag+(0.0001 M) -> Mg2+(0.130 M) + 2Ag(s). Given E°(Mg2+/Mg) = -2.37 V and E°(Ag+/Ag) = +0.80 V. Calculate its EMF at 298 K using the Nernst equation and determine the equilibrium constant Kc.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Nernst Equation", "Cell Potential", "Equilibrium Constant"],
+  },
+  {
+    id: "pq-chem-04",
+    subject: "Chemistry",
+    chapter: "Chemical Kinetics",
+    year: 2024,
+    marks: 3,
+    questionType: "Short Answer",
+    difficulty: "Medium",
+    questionText: "A first order reaction is 40% complete in 50 minutes. Calculate the specific rate constant k and the time required for 80% completion of the reaction.",
+    sourceType: "ai_generated",
+    analyzerTags: ["First Order Kinetics", "Rate Law", "High Recurrence"],
+  },
+  {
+    id: "pq-chem-05",
+    subject: "Chemistry",
+    chapter: "Coordination Compounds",
+    year: 2025,
+    marks: 3,
+    questionType: "Short Answer",
+    difficulty: "Easy",
+    questionText: "Write the IUPAC names of [Co(NH3)5(CO3)]Cl and K3[Fe(CN)6]. Using Crystal Field Theory, predict whether [Fe(H2O)6]2+ is high spin or low spin.",
+    sourceType: "ai_generated",
+    analyzerTags: ["IUPAC Nomenclature", "Crystal Field Theory", "Spectrochemical Series"],
+  },
+  {
+    id: "pq-chem-06",
+    subject: "Chemistry",
+    chapter: "Aldehydes, Ketones & Carboxylic Acids",
+    year: 2025,
+    marks: 4,
+    questionType: "Mechanism Drill",
+    difficulty: "Hard",
+    questionText: "Give chemical tests to distinguish between: (i) Propanal and Propanone, (ii) Benzaldehyde and Acetophenone. Write the complete reaction mechanism for the cross-aldol condensation of acetaldehyde and benzaldehyde.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Tollens Reagent", "Iodoform Test", "Aldol Condensation"],
+  },
+
+  // Mathematics Questions
+  {
+    id: "pq-math-01",
+    subject: "Mathematics",
+    chapter: "Matrices & Determinants",
+    year: 2025,
+    marks: 5,
+    questionType: "Long Answer",
+    difficulty: "Hard",
+    questionText: "If A = [[2, -3, 5], [3, 2, -4], [1, 1, -2]], find A^-1. Using A^-1, solve the following system of linear equations: 2x - 3y + 5z = 11, 3x + 2y - 4z = -5, x + y - 2z = -3.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Matrix Inversion", "Linear Systems", "Cramer Rule Alternative"],
+  },
+  {
+    id: "pq-math-02",
+    subject: "Mathematics",
+    chapter: "Matrices & Determinants",
+    year: 2024,
+    marks: 1,
+    questionType: "MCQ",
+    difficulty: "Easy",
+    questionText: "If A is a square matrix of order 3 such that |adj(A)| = 64, find the absolute value of determinant |A|.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Adjoint Properties", "Determinant Rule"],
+  },
+  {
+    id: "pq-math-03",
+    subject: "Mathematics",
+    chapter: "Integrals & Calculus",
+    year: 2025,
+    marks: 4,
+    questionType: "Short Answer",
+    difficulty: "Hard",
+    questionText: "Evaluate the definite integral: I = ∫[0 to π] (x * sin(x)) / (1 + cos^2(x)) dx using the properties of definite integrals.",
+    sourceType: "ai_generated",
+    analyzerTags: ["King Property", "Definite Integrals", "Tier 1"],
+  },
+  {
+    id: "pq-math-04",
+    subject: "Mathematics",
+    chapter: "Integrals & Calculus",
+    year: 2024,
+    marks: 2,
+    questionType: "Short Answer",
+    difficulty: "Medium",
+    questionText: "Find the antiderivative: ∫ (e^x * (1 + sin(x))) / (1 + cos(x)) dx.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Integration By Parts", "Exponential Standard Form"],
+  },
+  {
+    id: "pq-math-05",
+    subject: "Mathematics",
+    chapter: "Vectors & 3D Geometry",
+    year: 2025,
+    marks: 4,
+    questionType: "Short Answer",
+    difficulty: "Medium",
+    questionText: "Find the shortest distance between the lines whose vector equations are r = (i + 2j + 3k) + λ(i - 3j + 2k) and r = (4i + 5j + 6k) + μ(2i + 3j + k). State whether the lines are coplanar.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Skew Lines", "Shortest Distance", "Coplanarity"],
+  },
+  {
+    id: "pq-math-06",
+    subject: "Mathematics",
+    chapter: "Probability",
+    year: 2025,
+    marks: 4,
+    questionType: "Case-Based",
+    difficulty: "Medium",
+    questionText: "Bag I contains 3 red and 4 black balls, while Bag II contains 5 red and 6 black balls. One ball is transferred from Bag I to Bag II and then a ball is drawn at random from Bag II. If the drawn ball is red, find the conditional probability that the transferred ball was black.",
+    sourceType: "ai_generated",
+    analyzerTags: ["Bayes Theorem", "Total Probability", "Conditional Probability"],
+  },
+];
+
+export function getMockPracticeQuestions(): PracticeQuestion[] {
+  return MOCK_PRACTICE_QUESTIONS;
+}
+
+

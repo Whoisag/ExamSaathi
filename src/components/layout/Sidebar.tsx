@@ -12,6 +12,7 @@ import {
   Info,
   ChevronRight,
   GraduationCap,
+  Target,
 } from "lucide-react";
 import { EXAMS, ExamId } from "@/data/mock";
 
@@ -36,6 +37,11 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
       icon: LayoutDashboard,
     },
     {
+      label: "Practice",
+      href: `/dashboard/practice?exam=${currentExam}`,
+      icon: Target,
+    },
+    {
       label: "Formula Sheets",
       href: `/formulas/${currentExam}/${encodeURIComponent(currentSubject.toLowerCase())}`,
       icon: Sigma,
@@ -58,49 +64,51 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
   ];
 
   return (
-    <aside className="hidden md:flex md:flex-col w-64 border-r border-slate-200 bg-white min-h-screen sticky top-0 shrink-0 select-none z-30">
+    <aside className="hidden md:flex md:flex-col w-64 border-r-2 border-black bg-white min-h-screen sticky top-0 shrink-0 select-none z-30 font-sans">
       {/* Brand Header */}
-      <div className="h-16 flex items-center px-6 border-b border-slate-100 gap-3">
-        <div className="w-9 h-9 rounded-xl bg-[#3730A3] flex items-center justify-center text-white shadow-sm shadow-indigo-200">
-          <Sparkles className="w-5 h-5" />
-        </div>
-        <div>
-          <span className="font-bold text-lg tracking-tight text-slate-900 flex items-center gap-1.5">
-            Exam<span className="text-[#EA580C]">Saathi</span>
-          </span>
-          <p className="text-[11px] font-medium text-slate-400 -mt-0.5">PYQ Intelligence AI</p>
-        </div>
+      <div className="h-16 flex items-center px-5 border-b-2 border-black bg-black text-white justify-between">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+          <div className="w-7 h-7 bg-[#FF4D00] border border-black flex items-center justify-center text-black font-bold text-xs">
+            ES
+          </div>
+          <div>
+            <span className="font-headline text-lg tracking-tight text-white">
+              EXAM<span className="text-[#FF4D00]">SAATHI</span>
+            </span>
+          </div>
+        </Link>
+        <span className="w-2 h-2 bg-[#FF4D00]"></span>
       </div>
 
       {/* Quick Exam Switcher */}
-      <div className="px-4 py-4 border-b border-slate-100">
-        <label className="text-[11px] font-semibold tracking-wider uppercase text-slate-400 block mb-2 px-2">
-          Selected Target Exam
+      <div className="px-4 py-3.5 border-b-2 border-black bg-neutral-50">
+        <label className="text-[10px] font-bold font-meta tracking-wider uppercase text-neutral-500 block mb-1.5 px-1">
+          // TARGET EXAM
         </label>
-        <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 flex items-center justify-between">
+        <div className="bg-white border-2 border-black p-2.5 flex items-center justify-between shadow-[2px_2px_0px_0px_#000000]">
           <div className="min-w-0">
-            <p className="text-xs font-bold text-slate-900 truncate">
+            <p className="text-xs font-bold text-black font-headline truncate">
               {EXAMS[currentExam]?.name || "JEE Main"}
             </p>
-            <p className="text-[10px] text-slate-500 truncate">
+            <p className="text-[10px] font-meta text-neutral-600 truncate">
               {EXAMS[currentExam]?.badge || "National Entrance"}
             </p>
           </div>
           <Link
-            href="/"
-            className="text-[11px] font-medium text-[#3730A3] hover:text-[#312E81] hover:underline shrink-0 flex items-center"
+            href="/dashboard/exams"
+            className="text-[10px] font-bold font-meta text-black bg-[#FF4D00] hover:bg-black hover:text-white px-2 py-1 border border-black transition-colors shrink-0 flex items-center gap-0.5 ml-2"
           >
-            Change
+            SWITCH
             <ChevronRight className="w-3 h-3" />
           </Link>
         </div>
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        <div className="px-3 pb-2">
-          <p className="text-[11px] font-semibold tracking-wider uppercase text-slate-400">
-            Navigation
+      <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
+        <div className="px-2 pb-1.5">
+          <p className="text-[10px] font-bold font-meta tracking-wider uppercase text-neutral-500">
+            // PLATFORM MODULES
           </p>
         </div>
         {navLinks.map((item) => {
@@ -115,15 +123,15 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
             <Link
               key={item.label}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-2.5 px-3 py-2.5 font-meta text-xs transition-all ${
                 isActive
-                  ? "bg-[#EEF2FF] text-[#3730A3] font-semibold shadow-xs"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  ? "bg-black text-[#FF4D00] border-2 border-black shadow-[3px_3px_0px_0px_#FF4D00] font-bold"
+                  : "text-black hover:bg-[#FF4D00]/10 hover:text-black border-2 border-transparent font-medium"
               }`}
             >
               <Icon
                 className={`w-4 h-4 shrink-0 ${
-                  isActive ? "text-[#3730A3]" : "text-slate-400"
+                  isActive ? "text-[#FF4D00]" : "text-neutral-700"
                 }`}
               />
               <span>{item.label}</span>
@@ -133,13 +141,13 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
       </nav>
 
       {/* Footer Info Box */}
-      <div className="p-4 m-3 bg-gradient-to-br from-indigo-50/70 to-orange-50/50 border border-indigo-100/80 rounded-xl text-xs space-y-2">
-        <div className="flex items-center gap-1.5 font-semibold text-slate-800">
-          <span className="w-2 h-2 rounded-full bg-[#059669] animate-pulse"></span>
-          <span>Zero-Bias Guaranteed</span>
+      <div className="p-3.5 m-3 bg-black border-2 border-black text-white font-meta text-[11px] space-y-1.5 shadow-[3px_3px_0px_0px_#FF4D00]">
+        <div className="flex items-center gap-1.5 font-bold text-[#FF4D00]">
+          <span className="w-2 h-2 bg-[#FF4D00] inline-block animate-pulse"></span>
+          <span>EMPIRICAL ZERO-BIAS</span>
         </div>
-        <p className="text-slate-500 text-[11px] leading-relaxed">
-          Proprietary Poisson & Dirichlet model analyzing 15+ years of verified question papers.
+        <p className="text-neutral-300 text-[10px] leading-relaxed">
+          Dirichlet & Poisson engine analyzing 15+ yrs of NTA/CBSE shifts.
         </p>
       </div>
     </aside>

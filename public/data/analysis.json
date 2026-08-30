@@ -1,0 +1,3321 @@
+{
+  "frequency_matrix": {
+    "Current Electricity": {
+      "2020": 20,
+      "2021": 1
+    },
+    "Mechanical Properties of Fluids": {
+      "2020": 28,
+      "2021": 33
+    },
+    "Rigid Body Dynamics": {
+      "2020": 56,
+      "2021": 0
+    },
+    "Thermodynamics": {
+      "2021": 35,
+      "2020": 18
+    },
+    "Simple Harmonic Motion": {
+      "2020": 11,
+      "2021": 0
+    },
+    "Work, Power & Energy": {
+      "2020": 21,
+      "2021": 0
+    },
+    "Magnetism": {
+      "2020": 17,
+      "2021": 0
+    },
+    "Electrostatics": {
+      "2020": 24,
+      "2021": 1
+    },
+    "Kinematics": {
+      "2020": 8,
+      "2021": 0
+    },
+    "Semiconductors": {
+      "2020": 17,
+      "2021": 0
+    },
+    "Magnetic Effects of Current": {
+      "2020": 9,
+      "2021": 0
+    },
+    "Projectile Motion": {
+      "2020": 11,
+      "2021": 0
+    },
+    "Dual Nature of Matter": {
+      "2020": 11,
+      "2021": 1
+    },
+    "Kinetic Theory of Gases": {
+      "2021": 16,
+      "2020": 4
+    },
+    "AC": {
+      "2020": 3,
+      "2021": 0
+    },
+    "Wave Optics": {
+      "2020": 23,
+      "2021": 0
+    },
+    "Gravitation": {
+      "2020": 11,
+      "2021": 0
+    },
+    "Centre of Mass": {
+      "2020": 23,
+      "2021": 0
+    },
+    "Mechanical Properties of Solids": {
+      "2021": 4,
+      "2020": 0
+    },
+    "Thermal Properties of Matter": {
+      "2021": 5,
+      "2020": 0
+    },
+    "Nuclear Physics": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Ray Optics": {
+      "2020": 21,
+      "2021": 0
+    },
+    "Heat": {
+      "2020": 7,
+      "2021": 1
+    },
+    "Collision": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Digital Electronics": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Modern Physics": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Moving charges and magnetism": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Behaviour of Perfect Gases": {
+      "2021": 9,
+      "2020": 0
+    },
+    "Newton's Laws of Motion": {
+      "2020": 25,
+      "2021": 0
+    },
+    "Elasticity": {
+      "2020": 2,
+      "2021": 5
+    },
+    "Capacitance": {
+      "2020": 17,
+      "2021": 0
+    },
+    "Waves": {
+      "2020": 8,
+      "2021": 0
+    },
+    "EMI": {
+      "2020": 10,
+      "2021": 0
+    },
+    "Moving Charges and Magnetism": {
+      "2020": 4,
+      "2021": 0
+    },
+    "Communication Systems": {
+      "2020": 5,
+      "2021": 0
+    },
+    "Relative motion": {
+      "2020": 7,
+      "2021": 0
+    },
+    "Vectors": {
+      "2020": 14,
+      "2021": 13
+    },
+    "Units & Dimensions": {
+      "2020": 4,
+      "2021": 0
+    },
+    "EM Waves": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Electric current": {
+      "2020": 2,
+      "2021": 0
+    },
+    "Atomic Physics": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Motion in 1D": {
+      "2020": 8,
+      "2021": 0
+    },
+    "Error Analysis": {
+      "2020": 5,
+      "2021": 0
+    },
+    "Sound Waves": {
+      "2020": 4,
+      "2021": 0
+    },
+    "Isobaric process": {
+      "2021": 2,
+      "2020": 0
+    },
+    "Oscillation": {
+      "2020": 3,
+      "2021": 0
+    },
+    "Circular motion": {
+      "2020": 2,
+      "2021": 0
+    },
+    "System of Particles": {
+      "2020": 3,
+      "2021": 0
+    },
+    "Mechanics": {
+      "2020": 2,
+      "2021": 0
+    },
+    "AC Circuits": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Wave": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Sound": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Physical Chemistry": {
+      "2021": 123,
+      "2020": 130
+    },
+    "Organic Chemistry": {
+      "2020": 85,
+      "2021": 87
+    },
+    "IUPAC & Structural Isomerism": {
+      "2020": 7,
+      "2021": 0
+    },
+    "Inorganic Chemistry": {
+      "2021": 52,
+      "2020": 63
+    },
+    "Ideal Gas": {
+      "2020": 2,
+      "2021": 0
+    },
+    "Atomic Structure": {
+      "2021": 4,
+      "2020": 4
+    },
+    "Chemical Bonding": {
+      "2020": 12,
+      "2021": 0
+    },
+    "Carbonyl Compounds": {
+      "2020": 4,
+      "2021": 0
+    },
+    "Chemical Kinetics": {
+      "2020": 11,
+      "2021": 0
+    },
+    "Mole Concept": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Hydrocarbons": {
+      "2021": 3,
+      "2020": 0
+    },
+    "Coordination Compounds": {
+      "2021": 4,
+      "2020": 8
+    },
+    "IUPAC Nomenclature": {
+      "2020": 3,
+      "2021": 0
+    },
+    "Periodic Table": {
+      "2020": 7,
+      "2021": 0
+    },
+    "P-Block Elements": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Electrochemistry": {
+      "2020": 4,
+      "2021": 0
+    },
+    "Surface Chemistry": {
+      "2020": 9,
+      "2021": 0
+    },
+    "Halogen Chemistry": {
+      "2021": 3,
+      "2020": 0
+    },
+    "Equivalent Concept": {
+      "2020": 7,
+      "2021": 0
+    },
+    "Eudiometry": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Real Gas": {
+      "2020": 2,
+      "2021": 0
+    },
+    "Alcohols, Phenols & Ethers": {
+      "2021": 3,
+      "2020": 0
+    },
+    "Isomerism": {
+      "2020": 5,
+      "2021": 0
+    },
+    "Salt Analysis": {
+      "2021": 4,
+      "2020": 0
+    },
+    "Amines": {
+      "2020": 4,
+      "2021": 0
+    },
+    "Stereoisomerism": {
+      "2020": 3,
+      "2021": 0
+    },
+    "S-Block Elements": {
+      "2020": 4,
+      "2021": 0
+    },
+    "Sub": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Redox Reactions": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Straight Lines": {
+      "2021": 29,
+      "2020": 24
+    },
+    "Ellipse": {
+      "2020": 9,
+      "2021": 4
+    },
+    "Special functions": {
+      "2021": 1,
+      "2020": 0
+    },
+    "Complex Numbers": {
+      "2020": 25,
+      "2021": 4
+    },
+    "Integration": {
+      "2021": 7,
+      "2020": 0
+    },
+    "Definite Integration": {
+      "2020": 17,
+      "2021": 2
+    },
+    "Relation": {
+      "2020": 5,
+      "2021": 0
+    },
+    "Limits": {
+      "2021": 3,
+      "2020": 18
+    },
+    "Sequences & Series": {
+      "2021": 6,
+      "2020": 21
+    },
+    "Differentiation": {
+      "2020": 13,
+      "2021": 0
+    },
+    "Circles": {
+      "2021": 46,
+      "2020": 0
+    },
+    "Theory of Equations": {
+      "2020": 17,
+      "2021": 4
+    },
+    "Monotonicity": {
+      "2020": 7,
+      "2021": 0
+    },
+    "Matrices & Determinants": {
+      "2020": 16,
+      "2021": 4
+    },
+    "Quadratic Equations": {
+      "2020": 27,
+      "2021": 4
+    },
+    "Logarithms": {
+      "2020": 6,
+      "2021": 0
+    },
+    "Binomial Theorem": {
+      "2020": 20,
+      "2021": 12
+    },
+    "Permutations & Combinations": {
+      "2020": 22,
+      "2021": 5
+    },
+    "Parabola": {
+      "2020": 12,
+      "2021": 8
+    },
+    "Area Under Curve": {
+      "2021": 4,
+      "2020": 0
+    },
+    "Trigonometry": {
+      "2021": 3,
+      "2020": 12
+    },
+    "Functions": {
+      "2020": 25,
+      "2021": 2
+    },
+    "Conic Sections": {
+      "2021": 24,
+      "2020": 0
+    },
+    "Indefinite Integration": {
+      "2020": 7,
+      "2021": 1
+    },
+    "Limits, Continuity & Differentiability": {
+      "2020": 11,
+      "2021": 0
+    },
+    "Series & Progressions": {
+      "2020": 8,
+      "2021": 0
+    },
+    "3D Geometry": {
+      "2020": 4,
+      "2021": 5
+    },
+    "Mathematical Reasoning": {
+      "2020": 4,
+      "2021": 0
+    },
+    "Hyperbola": {
+      "2020": 4,
+      "2021": 1
+    },
+    "Sets": {
+      "2020": 10,
+      "2021": 2
+    },
+    "Application of Derivatives": {
+      "2021": 8,
+      "2020": 0
+    },
+    "Inverse Trigonometric Functions": {
+      "2020": 6,
+      "2021": 4
+    },
+    "Statistics": {
+      "2021": 3,
+      "2020": 3
+    },
+    "Continuity & Differentiability": {
+      "2021": 8,
+      "2020": 7
+    },
+    "Compound Angles": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Properties of Triangles": {
+      "2020": 13,
+      "2021": 10
+    },
+    "Probability": {
+      "2021": 12,
+      "2020": 8
+    },
+    "Logarithms & Applications": {
+      "2020": 9,
+      "2021": 0
+    },
+    "Inequalities & Absolute Value": {
+      "2020": 9,
+      "2021": 0
+    },
+    "Trigonometric Ratios & Equations": {
+      "2020": 2,
+      "2021": 0
+    },
+    "Differential Equations": {
+      "2020": 6,
+      "2021": 5
+    },
+    "Circles & Parabola": {
+      "2021": 1,
+      "2020": 0
+    },
+    "Matrices": {
+      "2021": 1,
+      "2020": 0
+    },
+    "Mathematical Induction": {
+      "2020": 1,
+      "2021": 0
+    },
+    "Inequalities": {
+      "2021": 1,
+      "2020": 0
+    },
+    "Logical Reasoning": {
+      "2021": 1,
+      "2020": 0
+    }
+  },
+  "trends": {
+    "Current Electricity": {
+      "slope": -19.0,
+      "trend": "falling"
+    },
+    "Mechanical Properties of Fluids": {
+      "slope": 5.0,
+      "trend": "rising"
+    },
+    "Rigid Body Dynamics": {
+      "slope": -56.0,
+      "trend": "falling"
+    },
+    "Thermodynamics": {
+      "slope": 17.0,
+      "trend": "rising"
+    },
+    "Simple Harmonic Motion": {
+      "slope": -11.0,
+      "trend": "falling"
+    },
+    "Work, Power & Energy": {
+      "slope": -21.0,
+      "trend": "falling"
+    },
+    "Magnetism": {
+      "slope": -17.0,
+      "trend": "falling"
+    },
+    "Electrostatics": {
+      "slope": -23.0,
+      "trend": "falling"
+    },
+    "Kinematics": {
+      "slope": -8.0,
+      "trend": "falling"
+    },
+    "Semiconductors": {
+      "slope": -17.0,
+      "trend": "falling"
+    },
+    "Magnetic Effects of Current": {
+      "slope": -9.0,
+      "trend": "falling"
+    },
+    "Projectile Motion": {
+      "slope": -11.0,
+      "trend": "falling"
+    },
+    "Dual Nature of Matter": {
+      "slope": -10.0,
+      "trend": "falling"
+    },
+    "Kinetic Theory of Gases": {
+      "slope": 12.0,
+      "trend": "rising"
+    },
+    "AC": {
+      "slope": -3.0,
+      "trend": "falling"
+    },
+    "Wave Optics": {
+      "slope": -23.0,
+      "trend": "falling"
+    },
+    "Gravitation": {
+      "slope": -11.0,
+      "trend": "falling"
+    },
+    "Centre of Mass": {
+      "slope": -23.0,
+      "trend": "falling"
+    },
+    "Mechanical Properties of Solids": {
+      "slope": 4.0,
+      "trend": "rising"
+    },
+    "Thermal Properties of Matter": {
+      "slope": 5.0,
+      "trend": "rising"
+    },
+    "Nuclear Physics": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Ray Optics": {
+      "slope": -21.0,
+      "trend": "falling"
+    },
+    "Heat": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Collision": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Digital Electronics": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Modern Physics": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Moving charges and magnetism": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Behaviour of Perfect Gases": {
+      "slope": 9.0,
+      "trend": "rising"
+    },
+    "Newton's Laws of Motion": {
+      "slope": -25.0,
+      "trend": "falling"
+    },
+    "Elasticity": {
+      "slope": 3.0,
+      "trend": "rising"
+    },
+    "Capacitance": {
+      "slope": -17.0,
+      "trend": "falling"
+    },
+    "Waves": {
+      "slope": -8.0,
+      "trend": "falling"
+    },
+    "EMI": {
+      "slope": -10.0,
+      "trend": "falling"
+    },
+    "Moving Charges and Magnetism": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Communication Systems": {
+      "slope": -5.0,
+      "trend": "falling"
+    },
+    "Relative motion": {
+      "slope": -7.0,
+      "trend": "falling"
+    },
+    "Vectors": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Units & Dimensions": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "EM Waves": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Electric current": {
+      "slope": -2.0,
+      "trend": "falling"
+    },
+    "Atomic Physics": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Motion in 1D": {
+      "slope": -8.0,
+      "trend": "falling"
+    },
+    "Error Analysis": {
+      "slope": -5.0,
+      "trend": "falling"
+    },
+    "Sound Waves": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Isobaric process": {
+      "slope": 2.0,
+      "trend": "rising"
+    },
+    "Oscillation": {
+      "slope": -3.0,
+      "trend": "falling"
+    },
+    "Circular motion": {
+      "slope": -2.0,
+      "trend": "falling"
+    },
+    "System of Particles": {
+      "slope": -3.0,
+      "trend": "falling"
+    },
+    "Mechanics": {
+      "slope": -2.0,
+      "trend": "falling"
+    },
+    "AC Circuits": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Wave": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Sound": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Physical Chemistry": {
+      "slope": -7.0,
+      "trend": "falling"
+    },
+    "Organic Chemistry": {
+      "slope": 2.0,
+      "trend": "rising"
+    },
+    "IUPAC & Structural Isomerism": {
+      "slope": -7.0,
+      "trend": "falling"
+    },
+    "Inorganic Chemistry": {
+      "slope": -11.0,
+      "trend": "falling"
+    },
+    "Ideal Gas": {
+      "slope": -2.0,
+      "trend": "falling"
+    },
+    "Atomic Structure": {
+      "slope": 0.0,
+      "trend": "stable"
+    },
+    "Chemical Bonding": {
+      "slope": -12.0,
+      "trend": "falling"
+    },
+    "Carbonyl Compounds": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Chemical Kinetics": {
+      "slope": -11.0,
+      "trend": "falling"
+    },
+    "Mole Concept": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Hydrocarbons": {
+      "slope": 3.0,
+      "trend": "rising"
+    },
+    "Coordination Compounds": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "IUPAC Nomenclature": {
+      "slope": -3.0,
+      "trend": "falling"
+    },
+    "Periodic Table": {
+      "slope": -7.0,
+      "trend": "falling"
+    },
+    "P-Block Elements": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Electrochemistry": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Surface Chemistry": {
+      "slope": -9.0,
+      "trend": "falling"
+    },
+    "Halogen Chemistry": {
+      "slope": 3.0,
+      "trend": "rising"
+    },
+    "Equivalent Concept": {
+      "slope": -7.0,
+      "trend": "falling"
+    },
+    "Eudiometry": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Real Gas": {
+      "slope": -2.0,
+      "trend": "falling"
+    },
+    "Alcohols, Phenols & Ethers": {
+      "slope": 3.0,
+      "trend": "rising"
+    },
+    "Isomerism": {
+      "slope": -5.0,
+      "trend": "falling"
+    },
+    "Salt Analysis": {
+      "slope": 4.0,
+      "trend": "rising"
+    },
+    "Amines": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Stereoisomerism": {
+      "slope": -3.0,
+      "trend": "falling"
+    },
+    "S-Block Elements": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Sub": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Redox Reactions": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Straight Lines": {
+      "slope": 5.0,
+      "trend": "rising"
+    },
+    "Ellipse": {
+      "slope": -5.0,
+      "trend": "falling"
+    },
+    "Special functions": {
+      "slope": 1.0,
+      "trend": "rising"
+    },
+    "Complex Numbers": {
+      "slope": -21.0,
+      "trend": "falling"
+    },
+    "Integration": {
+      "slope": 7.0,
+      "trend": "rising"
+    },
+    "Definite Integration": {
+      "slope": -15.0,
+      "trend": "falling"
+    },
+    "Relation": {
+      "slope": -5.0,
+      "trend": "falling"
+    },
+    "Limits": {
+      "slope": -15.0,
+      "trend": "falling"
+    },
+    "Sequences & Series": {
+      "slope": -15.0,
+      "trend": "falling"
+    },
+    "Differentiation": {
+      "slope": -13.0,
+      "trend": "falling"
+    },
+    "Circles": {
+      "slope": 46.0,
+      "trend": "rising"
+    },
+    "Theory of Equations": {
+      "slope": -13.0,
+      "trend": "falling"
+    },
+    "Monotonicity": {
+      "slope": -7.0,
+      "trend": "falling"
+    },
+    "Matrices & Determinants": {
+      "slope": -12.0,
+      "trend": "falling"
+    },
+    "Quadratic Equations": {
+      "slope": -23.0,
+      "trend": "falling"
+    },
+    "Logarithms": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Binomial Theorem": {
+      "slope": -8.0,
+      "trend": "falling"
+    },
+    "Permutations & Combinations": {
+      "slope": -17.0,
+      "trend": "falling"
+    },
+    "Parabola": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Area Under Curve": {
+      "slope": 4.0,
+      "trend": "rising"
+    },
+    "Trigonometry": {
+      "slope": -9.0,
+      "trend": "falling"
+    },
+    "Functions": {
+      "slope": -23.0,
+      "trend": "falling"
+    },
+    "Conic Sections": {
+      "slope": 24.0,
+      "trend": "rising"
+    },
+    "Indefinite Integration": {
+      "slope": -6.0,
+      "trend": "falling"
+    },
+    "Limits, Continuity & Differentiability": {
+      "slope": -11.0,
+      "trend": "falling"
+    },
+    "Series & Progressions": {
+      "slope": -8.0,
+      "trend": "falling"
+    },
+    "3D Geometry": {
+      "slope": 1.0,
+      "trend": "rising"
+    },
+    "Mathematical Reasoning": {
+      "slope": -4.0,
+      "trend": "falling"
+    },
+    "Hyperbola": {
+      "slope": -3.0,
+      "trend": "falling"
+    },
+    "Sets": {
+      "slope": -8.0,
+      "trend": "falling"
+    },
+    "Application of Derivatives": {
+      "slope": 8.0,
+      "trend": "rising"
+    },
+    "Inverse Trigonometric Functions": {
+      "slope": -2.0,
+      "trend": "falling"
+    },
+    "Statistics": {
+      "slope": 0.0,
+      "trend": "stable"
+    },
+    "Continuity & Differentiability": {
+      "slope": 1.0,
+      "trend": "rising"
+    },
+    "Compound Angles": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Properties of Triangles": {
+      "slope": -3.0,
+      "trend": "falling"
+    },
+    "Probability": {
+      "slope": 4.0,
+      "trend": "rising"
+    },
+    "Logarithms & Applications": {
+      "slope": -9.0,
+      "trend": "falling"
+    },
+    "Inequalities & Absolute Value": {
+      "slope": -9.0,
+      "trend": "falling"
+    },
+    "Trigonometric Ratios & Equations": {
+      "slope": -2.0,
+      "trend": "falling"
+    },
+    "Differential Equations": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Circles & Parabola": {
+      "slope": 1.0,
+      "trend": "rising"
+    },
+    "Matrices": {
+      "slope": 1.0,
+      "trend": "rising"
+    },
+    "Mathematical Induction": {
+      "slope": -1.0,
+      "trend": "falling"
+    },
+    "Inequalities": {
+      "slope": 1.0,
+      "trend": "rising"
+    },
+    "Logical Reasoning": {
+      "slope": 1.0,
+      "trend": "rising"
+    }
+  },
+  "topic_scores": [
+    {
+      "topic": "Physical Chemistry",
+      "subject": "Chemistry",
+      "score": 0.8,
+      "freq_norm": 1.0,
+      "recency_norm": 1.0,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 253,
+      "yearly_counts": {
+        "2021": 123,
+        "2020": 130
+      },
+      "trend": "falling",
+      "trend_slope": -7.0,
+      "rank": 1
+    },
+    {
+      "topic": "Organic Chemistry",
+      "subject": "Chemistry",
+      "score": 0.7775,
+      "freq_norm": 0.6798,
+      "recency_norm": 0.6852,
+      "trend_norm": 1.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 172,
+      "yearly_counts": {
+        "2020": 85,
+        "2021": 87
+      },
+      "trend": "rising",
+      "trend_slope": 2.0,
+      "rank": 2
+    },
+    {
+      "topic": "Thermodynamics",
+      "subject": "Physics",
+      "score": 0.451,
+      "freq_norm": 0.2095,
+      "recency_norm": 0.2242,
+      "trend_norm": 1.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 53,
+      "yearly_counts": {
+        "2021": 35,
+        "2020": 18
+      },
+      "trend": "rising",
+      "trend_slope": 17.0,
+      "rank": 3
+    },
+    {
+      "topic": "Mechanical Properties of Fluids",
+      "subject": "Physics",
+      "score": 0.437,
+      "freq_norm": 0.2411,
+      "recency_norm": 0.2464,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 61,
+      "yearly_counts": {
+        "2020": 28,
+        "2021": 33
+      },
+      "trend": "rising",
+      "trend_slope": 5.0,
+      "rank": 4
+    },
+    {
+      "topic": "Inorganic Chemistry",
+      "subject": "Chemistry",
+      "score": 0.4163,
+      "freq_norm": 0.4545,
+      "recency_norm": 0.4483,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 115,
+      "yearly_counts": {
+        "2021": 52,
+        "2020": 63
+      },
+      "trend": "falling",
+      "trend_slope": -11.0,
+      "rank": 5
+    },
+    {
+      "topic": "Straight Lines",
+      "subject": "Mathematics",
+      "score": 0.4148,
+      "freq_norm": 0.2095,
+      "recency_norm": 0.2146,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 53,
+      "yearly_counts": {
+        "2021": 29,
+        "2020": 24
+      },
+      "trend": "rising",
+      "trend_slope": 5.0,
+      "rank": 6
+    },
+    {
+      "topic": "Circles",
+      "subject": "Mathematics",
+      "score": 0.4052,
+      "freq_norm": 0.1818,
+      "recency_norm": 0.2194,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 46,
+      "yearly_counts": {
+        "2021": 46,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 46.0,
+      "rank": 7
+    },
+    {
+      "topic": "Probability",
+      "subject": "Mathematics",
+      "score": 0.3564,
+      "freq_norm": 0.0791,
+      "recency_norm": 0.0827,
+      "trend_norm": 1.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 20,
+      "yearly_counts": {
+        "2021": 12,
+        "2020": 8
+      },
+      "trend": "rising",
+      "trend_slope": 4.0,
+      "rank": 8
+    },
+    {
+      "topic": "Conic Sections",
+      "subject": "Mathematics",
+      "score": 0.339,
+      "freq_norm": 0.0949,
+      "recency_norm": 0.1145,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 24,
+      "yearly_counts": {
+        "2021": 24,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 24.0,
+      "rank": 9
+    },
+    {
+      "topic": "Kinetic Theory of Gases",
+      "subject": "Physics",
+      "score": 0.325,
+      "freq_norm": 0.0791,
+      "recency_norm": 0.089,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 20,
+      "yearly_counts": {
+        "2021": 16,
+        "2020": 4
+      },
+      "trend": "rising",
+      "trend_slope": 12.0,
+      "rank": 10
+    },
+    {
+      "topic": "Continuity & Differentiability",
+      "subject": "Mathematics",
+      "score": 0.3085,
+      "freq_norm": 0.0593,
+      "recency_norm": 0.0604,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 15,
+      "yearly_counts": {
+        "2021": 8,
+        "2020": 7
+      },
+      "trend": "rising",
+      "trend_slope": 1.0,
+      "rank": 11
+    },
+    {
+      "topic": "Matrices",
+      "subject": "Mathematics",
+      "score": 0.303,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0048,
+      "trend_norm": 1.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2021": 1,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 1.0,
+      "rank": 12
+    },
+    {
+      "topic": "Behaviour of Perfect Gases",
+      "subject": "Physics",
+      "score": 0.2938,
+      "freq_norm": 0.0356,
+      "recency_norm": 0.0429,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 9,
+      "yearly_counts": {
+        "2021": 9,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 9.0,
+      "rank": 13
+    },
+    {
+      "topic": "3D Geometry",
+      "subject": "Mathematics",
+      "score": 0.2919,
+      "freq_norm": 0.0356,
+      "recency_norm": 0.0366,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 9,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 5
+      },
+      "trend": "rising",
+      "trend_slope": 1.0,
+      "rank": 14
+    },
+    {
+      "topic": "Application of Derivatives",
+      "subject": "Mathematics",
+      "score": 0.2908,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.0382,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2021": 8,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 8.0,
+      "rank": 15
+    },
+    {
+      "topic": "Integration",
+      "subject": "Mathematics",
+      "score": 0.2877,
+      "freq_norm": 0.0277,
+      "recency_norm": 0.0334,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 7,
+      "yearly_counts": {
+        "2021": 7,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 7.0,
+      "rank": 16
+    },
+    {
+      "topic": "Elasticity",
+      "subject": "Physics",
+      "score": 0.2868,
+      "freq_norm": 0.0277,
+      "recency_norm": 0.0302,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 7,
+      "yearly_counts": {
+        "2020": 2,
+        "2021": 5
+      },
+      "trend": "rising",
+      "trend_slope": 3.0,
+      "rank": 17
+    },
+    {
+      "topic": "Thermal Properties of Matter",
+      "subject": "Physics",
+      "score": 0.2817,
+      "freq_norm": 0.0198,
+      "recency_norm": 0.0238,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 5,
+      "yearly_counts": {
+        "2021": 5,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 5.0,
+      "rank": 18
+    },
+    {
+      "topic": "Mechanical Properties of Solids",
+      "subject": "Physics",
+      "score": 0.2787,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0191,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2021": 4,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 4.0,
+      "rank": 19
+    },
+    {
+      "topic": "Salt Analysis",
+      "subject": "Chemistry",
+      "score": 0.2787,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0191,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2021": 4,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 4.0,
+      "rank": 20
+    },
+    {
+      "topic": "Area Under Curve",
+      "subject": "Mathematics",
+      "score": 0.2787,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0191,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2021": 4,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 4.0,
+      "rank": 21
+    },
+    {
+      "topic": "Hydrocarbons",
+      "subject": "Chemistry",
+      "score": 0.2757,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0143,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2021": 3,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 3.0,
+      "rank": 22
+    },
+    {
+      "topic": "Halogen Chemistry",
+      "subject": "Chemistry",
+      "score": 0.2757,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0143,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2021": 3,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 3.0,
+      "rank": 23
+    },
+    {
+      "topic": "Alcohols, Phenols & Ethers",
+      "subject": "Chemistry",
+      "score": 0.2757,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0143,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2021": 3,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 3.0,
+      "rank": 24
+    },
+    {
+      "topic": "Isobaric process",
+      "subject": "Physics",
+      "score": 0.2727,
+      "freq_norm": 0.0079,
+      "recency_norm": 0.0095,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 2,
+      "yearly_counts": {
+        "2021": 2,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 2.0,
+      "rank": 25
+    },
+    {
+      "topic": "Special functions",
+      "subject": "Mathematics",
+      "score": 0.2697,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0048,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2021": 1,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 1.0,
+      "rank": 26
+    },
+    {
+      "topic": "Circles & Parabola",
+      "subject": "Mathematics",
+      "score": 0.2697,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0048,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2021": 1,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 1.0,
+      "rank": 27
+    },
+    {
+      "topic": "Inequalities",
+      "subject": "Mathematics",
+      "score": 0.2697,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0048,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2021": 1,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 1.0,
+      "rank": 28
+    },
+    {
+      "topic": "Logical Reasoning",
+      "subject": "Mathematics",
+      "score": 0.2697,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0048,
+      "trend_norm": 1.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2021": 1,
+        "2020": 0
+      },
+      "trend": "rising",
+      "trend_slope": 1.0,
+      "rank": 29
+    },
+    {
+      "topic": "Rigid Body Dynamics",
+      "subject": "Physics",
+      "score": 0.2086,
+      "freq_norm": 0.2213,
+      "recency_norm": 0.1781,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 56,
+      "yearly_counts": {
+        "2020": 56,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -56.0,
+      "rank": 30
+    },
+    {
+      "topic": "Atomic Structure",
+      "subject": "Chemistry",
+      "score": 0.1889,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.0318,
+      "trend_norm": 0.5,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2021": 4,
+        "2020": 4
+      },
+      "trend": "stable",
+      "trend_slope": 0.0,
+      "rank": 31
+    },
+    {
+      "topic": "Statistics",
+      "subject": "Mathematics",
+      "score": 0.1833,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0238,
+      "trend_norm": 0.5,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2021": 3,
+        "2020": 3
+      },
+      "trend": "stable",
+      "trend_slope": 0.0,
+      "rank": 32
+    },
+    {
+      "topic": "Complex Numbers",
+      "subject": "Mathematics",
+      "score": 0.1754,
+      "freq_norm": 0.1146,
+      "recency_norm": 0.0986,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 29,
+      "yearly_counts": {
+        "2020": 25,
+        "2021": 4
+      },
+      "trend": "falling",
+      "trend_slope": -21.0,
+      "rank": 33
+    },
+    {
+      "topic": "Vectors",
+      "subject": "Mathematics",
+      "score": 0.1746,
+      "freq_norm": 0.1067,
+      "recency_norm": 0.1065,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 27,
+      "yearly_counts": {
+        "2020": 14,
+        "2021": 13
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 34
+    },
+    {
+      "topic": "Electrostatics",
+      "subject": "Physics",
+      "score": 0.1639,
+      "freq_norm": 0.0988,
+      "recency_norm": 0.0811,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 25,
+      "yearly_counts": {
+        "2020": 24,
+        "2021": 1
+      },
+      "trend": "falling",
+      "trend_slope": -23.0,
+      "rank": 35
+    },
+    {
+      "topic": "Wave Optics",
+      "subject": "Physics",
+      "score": 0.1583,
+      "freq_norm": 0.0909,
+      "recency_norm": 0.0731,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 23,
+      "yearly_counts": {
+        "2020": 23,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -23.0,
+      "rank": 36
+    },
+    {
+      "topic": "Current Electricity",
+      "subject": "Physics",
+      "score": 0.1537,
+      "freq_norm": 0.083,
+      "recency_norm": 0.0684,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 21,
+      "yearly_counts": {
+        "2020": 20,
+        "2021": 1
+      },
+      "trend": "falling",
+      "trend_slope": -19.0,
+      "rank": 37
+    },
+    {
+      "topic": "Binomial Theorem",
+      "subject": "Mathematics",
+      "score": 0.1535,
+      "freq_norm": 0.1265,
+      "recency_norm": 0.1208,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 32,
+      "yearly_counts": {
+        "2020": 20,
+        "2021": 12
+      },
+      "trend": "falling",
+      "trend_slope": -8.0,
+      "rank": 38
+    },
+    {
+      "topic": "Ray Optics",
+      "subject": "Physics",
+      "score": 0.1532,
+      "freq_norm": 0.083,
+      "recency_norm": 0.0668,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 21,
+      "yearly_counts": {
+        "2020": 21,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -21.0,
+      "rank": 39
+    },
+    {
+      "topic": "Matrices & Determinants",
+      "subject": "Mathematics",
+      "score": 0.1526,
+      "freq_norm": 0.0791,
+      "recency_norm": 0.07,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 20,
+      "yearly_counts": {
+        "2020": 16,
+        "2021": 4
+      },
+      "trend": "falling",
+      "trend_slope": -12.0,
+      "rank": 40
+    },
+    {
+      "topic": "Quadratic Equations",
+      "subject": "Mathematics",
+      "score": 0.1472,
+      "freq_norm": 0.1225,
+      "recency_norm": 0.1049,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 31,
+      "yearly_counts": {
+        "2020": 27,
+        "2021": 4
+      },
+      "trend": "falling",
+      "trend_slope": -23.0,
+      "rank": 41
+    },
+    {
+      "topic": "Magnetism",
+      "subject": "Physics",
+      "score": 0.1431,
+      "freq_norm": 0.0672,
+      "recency_norm": 0.0541,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 17,
+      "yearly_counts": {
+        "2020": 17,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -17.0,
+      "rank": 42
+    },
+    {
+      "topic": "Semiconductors",
+      "subject": "Physics",
+      "score": 0.1431,
+      "freq_norm": 0.0672,
+      "recency_norm": 0.0541,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 17,
+      "yearly_counts": {
+        "2020": 17,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -17.0,
+      "rank": 43
+    },
+    {
+      "topic": "Trigonometry",
+      "subject": "Mathematics",
+      "score": 0.1395,
+      "freq_norm": 0.0593,
+      "recency_norm": 0.0525,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 15,
+      "yearly_counts": {
+        "2021": 3,
+        "2020": 12
+      },
+      "trend": "falling",
+      "trend_slope": -9.0,
+      "rank": 44
+    },
+    {
+      "topic": "Sequences & Series",
+      "subject": "Mathematics",
+      "score": 0.138,
+      "freq_norm": 0.1067,
+      "recency_norm": 0.0954,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 27,
+      "yearly_counts": {
+        "2021": 6,
+        "2020": 21
+      },
+      "trend": "falling",
+      "trend_slope": -15.0,
+      "rank": 45
+    },
+    {
+      "topic": "Permutations & Combinations",
+      "subject": "Mathematics",
+      "score": 0.1375,
+      "freq_norm": 0.1067,
+      "recency_norm": 0.0938,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 27,
+      "yearly_counts": {
+        "2020": 22,
+        "2021": 5
+      },
+      "trend": "falling",
+      "trend_slope": -17.0,
+      "rank": 46
+    },
+    {
+      "topic": "Functions",
+      "subject": "Mathematics",
+      "score": 0.1361,
+      "freq_norm": 0.1067,
+      "recency_norm": 0.089,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 27,
+      "yearly_counts": {
+        "2020": 25,
+        "2021": 2
+      },
+      "trend": "falling",
+      "trend_slope": -23.0,
+      "rank": 47
+    },
+    {
+      "topic": "Coordination Compounds",
+      "subject": "Chemistry",
+      "score": 0.1323,
+      "freq_norm": 0.0474,
+      "recency_norm": 0.0445,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 12,
+      "yearly_counts": {
+        "2021": 4,
+        "2020": 8
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 48
+    },
+    {
+      "topic": "Chemical Bonding",
+      "subject": "Chemistry",
+      "score": 0.1304,
+      "freq_norm": 0.0474,
+      "recency_norm": 0.0382,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 12,
+      "yearly_counts": {
+        "2020": 12,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -12.0,
+      "rank": 49
+    },
+    {
+      "topic": "Newton's Laws of Motion",
+      "subject": "Physics",
+      "score": 0.13,
+      "freq_norm": 0.0988,
+      "recency_norm": 0.0795,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 25,
+      "yearly_counts": {
+        "2020": 25,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -25.0,
+      "rank": 50
+    },
+    {
+      "topic": "Properties of Triangles",
+      "subject": "Mathematics",
+      "score": 0.1297,
+      "freq_norm": 0.0909,
+      "recency_norm": 0.089,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 23,
+      "yearly_counts": {
+        "2020": 13,
+        "2021": 10
+      },
+      "trend": "falling",
+      "trend_slope": -3.0,
+      "rank": 51
+    },
+    {
+      "topic": "Chemical Kinetics",
+      "subject": "Chemistry",
+      "score": 0.1279,
+      "freq_norm": 0.0435,
+      "recency_norm": 0.035,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 11,
+      "yearly_counts": {
+        "2020": 11,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -11.0,
+      "rank": 52
+    },
+    {
+      "topic": "Centre of Mass",
+      "subject": "Physics",
+      "score": 0.125,
+      "freq_norm": 0.0909,
+      "recency_norm": 0.0731,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 23,
+      "yearly_counts": {
+        "2020": 23,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -23.0,
+      "rank": 53
+    },
+    {
+      "topic": "Theory of Equations",
+      "subject": "Mathematics",
+      "score": 0.1218,
+      "freq_norm": 0.083,
+      "recency_norm": 0.0731,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 21,
+      "yearly_counts": {
+        "2020": 17,
+        "2021": 4
+      },
+      "trend": "falling",
+      "trend_slope": -13.0,
+      "rank": 54
+    },
+    {
+      "topic": "Limits",
+      "subject": "Mathematics",
+      "score": 0.1213,
+      "freq_norm": 0.083,
+      "recency_norm": 0.0715,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 21,
+      "yearly_counts": {
+        "2021": 3,
+        "2020": 18
+      },
+      "trend": "falling",
+      "trend_slope": -15.0,
+      "rank": 55
+    },
+    {
+      "topic": "Parabola",
+      "subject": "Mathematics",
+      "score": 0.1212,
+      "freq_norm": 0.0791,
+      "recency_norm": 0.0763,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 20,
+      "yearly_counts": {
+        "2020": 12,
+        "2021": 8
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 56
+    },
+    {
+      "topic": "Work, Power & Energy",
+      "subject": "Physics",
+      "score": 0.1199,
+      "freq_norm": 0.083,
+      "recency_norm": 0.0668,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 21,
+      "yearly_counts": {
+        "2020": 21,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -21.0,
+      "rank": 57
+    },
+    {
+      "topic": "Definite Integration",
+      "subject": "Mathematics",
+      "score": 0.1158,
+      "freq_norm": 0.0751,
+      "recency_norm": 0.0636,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 19,
+      "yearly_counts": {
+        "2020": 17,
+        "2021": 2
+      },
+      "trend": "falling",
+      "trend_slope": -15.0,
+      "rank": 58
+    },
+    {
+      "topic": "Modern Physics",
+      "subject": "Physics",
+      "score": 0.1152,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 59
+    },
+    {
+      "topic": "Moving Charges and Magnetism",
+      "subject": "Physics",
+      "score": 0.1101,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 60
+    },
+    {
+      "topic": "Electrochemistry",
+      "subject": "Chemistry",
+      "score": 0.1101,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 61
+    },
+    {
+      "topic": "Capacitance",
+      "subject": "Physics",
+      "score": 0.1098,
+      "freq_norm": 0.0672,
+      "recency_norm": 0.0541,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 17,
+      "yearly_counts": {
+        "2020": 17,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -17.0,
+      "rank": 62
+    },
+    {
+      "topic": "Moving charges and magnetism",
+      "subject": "Physics",
+      "score": 0.1025,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 1.0,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 63
+    },
+    {
+      "topic": "Ellipse",
+      "subject": "Mathematics",
+      "score": 0.1015,
+      "freq_norm": 0.0514,
+      "recency_norm": 0.0477,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 13,
+      "yearly_counts": {
+        "2020": 9,
+        "2021": 4
+      },
+      "trend": "falling",
+      "trend_slope": -5.0,
+      "rank": 64
+    },
+    {
+      "topic": "Differentiation",
+      "subject": "Mathematics",
+      "score": 0.0996,
+      "freq_norm": 0.0514,
+      "recency_norm": 0.0413,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 13,
+      "yearly_counts": {
+        "2020": 13,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -13.0,
+      "rank": 65
+    },
+    {
+      "topic": "Sets",
+      "subject": "Mathematics",
+      "score": 0.098,
+      "freq_norm": 0.0474,
+      "recency_norm": 0.0413,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 12,
+      "yearly_counts": {
+        "2020": 10,
+        "2021": 2
+      },
+      "trend": "falling",
+      "trend_slope": -8.0,
+      "rank": 66
+    },
+    {
+      "topic": "Dual Nature of Matter",
+      "subject": "Physics",
+      "score": 0.0976,
+      "freq_norm": 0.0474,
+      "recency_norm": 0.0397,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 12,
+      "yearly_counts": {
+        "2020": 11,
+        "2021": 1
+      },
+      "trend": "falling",
+      "trend_slope": -10.0,
+      "rank": 67
+    },
+    {
+      "topic": "Differential Equations",
+      "subject": "Mathematics",
+      "score": 0.0969,
+      "freq_norm": 0.0435,
+      "recency_norm": 0.0429,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 11,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 5
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 68
+    },
+    {
+      "topic": "Simple Harmonic Motion",
+      "subject": "Physics",
+      "score": 0.0946,
+      "freq_norm": 0.0435,
+      "recency_norm": 0.035,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 11,
+      "yearly_counts": {
+        "2020": 11,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -11.0,
+      "rank": 69
+    },
+    {
+      "topic": "Projectile Motion",
+      "subject": "Physics",
+      "score": 0.0946,
+      "freq_norm": 0.0435,
+      "recency_norm": 0.035,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 11,
+      "yearly_counts": {
+        "2020": 11,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -11.0,
+      "rank": 70
+    },
+    {
+      "topic": "Gravitation",
+      "subject": "Physics",
+      "score": 0.0946,
+      "freq_norm": 0.0435,
+      "recency_norm": 0.035,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 11,
+      "yearly_counts": {
+        "2020": 11,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -11.0,
+      "rank": 71
+    },
+    {
+      "topic": "Limits, Continuity & Differentiability",
+      "subject": "Mathematics",
+      "score": 0.0946,
+      "freq_norm": 0.0435,
+      "recency_norm": 0.035,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 11,
+      "yearly_counts": {
+        "2020": 11,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -11.0,
+      "rank": 72
+    },
+    {
+      "topic": "Inverse Trigonometric Functions",
+      "subject": "Mathematics",
+      "score": 0.0939,
+      "freq_norm": 0.0395,
+      "recency_norm": 0.0382,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 10,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 4
+      },
+      "trend": "falling",
+      "trend_slope": -2.0,
+      "rank": 73
+    },
+    {
+      "topic": "EMI",
+      "subject": "Physics",
+      "score": 0.092,
+      "freq_norm": 0.0395,
+      "recency_norm": 0.0318,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 10,
+      "yearly_counts": {
+        "2020": 10,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -10.0,
+      "rank": 74
+    },
+    {
+      "topic": "Magnetic Effects of Current",
+      "subject": "Physics",
+      "score": 0.0895,
+      "freq_norm": 0.0356,
+      "recency_norm": 0.0286,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 9,
+      "yearly_counts": {
+        "2020": 9,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -9.0,
+      "rank": 75
+    },
+    {
+      "topic": "Surface Chemistry",
+      "subject": "Chemistry",
+      "score": 0.0895,
+      "freq_norm": 0.0356,
+      "recency_norm": 0.0286,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 9,
+      "yearly_counts": {
+        "2020": 9,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -9.0,
+      "rank": 76
+    },
+    {
+      "topic": "Logarithms & Applications",
+      "subject": "Mathematics",
+      "score": 0.0895,
+      "freq_norm": 0.0356,
+      "recency_norm": 0.0286,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 9,
+      "yearly_counts": {
+        "2020": 9,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -9.0,
+      "rank": 77
+    },
+    {
+      "topic": "Inequalities & Absolute Value",
+      "subject": "Mathematics",
+      "score": 0.0895,
+      "freq_norm": 0.0356,
+      "recency_norm": 0.0286,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 9,
+      "yearly_counts": {
+        "2020": 9,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -9.0,
+      "rank": 78
+    },
+    {
+      "topic": "Heat",
+      "subject": "Physics",
+      "score": 0.0874,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.027,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2020": 7,
+        "2021": 1
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 79
+    },
+    {
+      "topic": "Indefinite Integration",
+      "subject": "Mathematics",
+      "score": 0.0874,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.027,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2020": 7,
+        "2021": 1
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 80
+    },
+    {
+      "topic": "Kinematics",
+      "subject": "Physics",
+      "score": 0.0869,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.0254,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2020": 8,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -8.0,
+      "rank": 81
+    },
+    {
+      "topic": "Waves",
+      "subject": "Physics",
+      "score": 0.0869,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.0254,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2020": 8,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -8.0,
+      "rank": 82
+    },
+    {
+      "topic": "Motion in 1D",
+      "subject": "Physics",
+      "score": 0.0869,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.0254,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2020": 8,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -8.0,
+      "rank": 83
+    },
+    {
+      "topic": "Series & Progressions",
+      "subject": "Mathematics",
+      "score": 0.0869,
+      "freq_norm": 0.0316,
+      "recency_norm": 0.0254,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 8,
+      "yearly_counts": {
+        "2020": 8,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -8.0,
+      "rank": 84
+    },
+    {
+      "topic": "Relative motion",
+      "subject": "Physics",
+      "score": 0.0844,
+      "freq_norm": 0.0277,
+      "recency_norm": 0.0223,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 7,
+      "yearly_counts": {
+        "2020": 7,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -7.0,
+      "rank": 85
+    },
+    {
+      "topic": "IUPAC & Structural Isomerism",
+      "subject": "Chemistry",
+      "score": 0.0844,
+      "freq_norm": 0.0277,
+      "recency_norm": 0.0223,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 7,
+      "yearly_counts": {
+        "2020": 7,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -7.0,
+      "rank": 86
+    },
+    {
+      "topic": "Periodic Table",
+      "subject": "Chemistry",
+      "score": 0.0844,
+      "freq_norm": 0.0277,
+      "recency_norm": 0.0223,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 7,
+      "yearly_counts": {
+        "2020": 7,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -7.0,
+      "rank": 87
+    },
+    {
+      "topic": "Equivalent Concept",
+      "subject": "Chemistry",
+      "score": 0.0844,
+      "freq_norm": 0.0277,
+      "recency_norm": 0.0223,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 7,
+      "yearly_counts": {
+        "2020": 7,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -7.0,
+      "rank": 88
+    },
+    {
+      "topic": "Monotonicity",
+      "subject": "Mathematics",
+      "score": 0.0844,
+      "freq_norm": 0.0277,
+      "recency_norm": 0.0223,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 7,
+      "yearly_counts": {
+        "2020": 7,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -7.0,
+      "rank": 89
+    },
+    {
+      "topic": "Nuclear Physics",
+      "subject": "Physics",
+      "score": 0.0819,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 90
+    },
+    {
+      "topic": "Collision",
+      "subject": "Physics",
+      "score": 0.0819,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 91
+    },
+    {
+      "topic": "EM Waves",
+      "subject": "Physics",
+      "score": 0.0819,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 92
+    },
+    {
+      "topic": "Atomic Physics",
+      "subject": "Physics",
+      "score": 0.0819,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 93
+    },
+    {
+      "topic": "Mole Concept",
+      "subject": "Chemistry",
+      "score": 0.0819,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 94
+    },
+    {
+      "topic": "P-Block Elements",
+      "subject": "Chemistry",
+      "score": 0.0819,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 95
+    },
+    {
+      "topic": "Logarithms",
+      "subject": "Mathematics",
+      "score": 0.0819,
+      "freq_norm": 0.0237,
+      "recency_norm": 0.0191,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 6,
+      "yearly_counts": {
+        "2020": 6,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -6.0,
+      "rank": 96
+    },
+    {
+      "topic": "Hyperbola",
+      "subject": "Mathematics",
+      "score": 0.0798,
+      "freq_norm": 0.0198,
+      "recency_norm": 0.0175,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 5,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 1
+      },
+      "trend": "falling",
+      "trend_slope": -3.0,
+      "rank": 97
+    },
+    {
+      "topic": "Communication Systems",
+      "subject": "Physics",
+      "score": 0.0793,
+      "freq_norm": 0.0198,
+      "recency_norm": 0.0159,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 5,
+      "yearly_counts": {
+        "2020": 5,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -5.0,
+      "rank": 98
+    },
+    {
+      "topic": "Error Analysis",
+      "subject": "Physics",
+      "score": 0.0793,
+      "freq_norm": 0.0198,
+      "recency_norm": 0.0159,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 5,
+      "yearly_counts": {
+        "2020": 5,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -5.0,
+      "rank": 99
+    },
+    {
+      "topic": "Isomerism",
+      "subject": "Chemistry",
+      "score": 0.0793,
+      "freq_norm": 0.0198,
+      "recency_norm": 0.0159,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 5,
+      "yearly_counts": {
+        "2020": 5,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -5.0,
+      "rank": 100
+    },
+    {
+      "topic": "Relation",
+      "subject": "Mathematics",
+      "score": 0.0793,
+      "freq_norm": 0.0198,
+      "recency_norm": 0.0159,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 5,
+      "yearly_counts": {
+        "2020": 5,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -5.0,
+      "rank": 101
+    },
+    {
+      "topic": "Units & Dimensions",
+      "subject": "Physics",
+      "score": 0.0768,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 102
+    },
+    {
+      "topic": "Sound Waves",
+      "subject": "Physics",
+      "score": 0.0768,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 103
+    },
+    {
+      "topic": "Carbonyl Compounds",
+      "subject": "Chemistry",
+      "score": 0.0768,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 104
+    },
+    {
+      "topic": "Amines",
+      "subject": "Chemistry",
+      "score": 0.0768,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 105
+    },
+    {
+      "topic": "S-Block Elements",
+      "subject": "Chemistry",
+      "score": 0.0768,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 106
+    },
+    {
+      "topic": "Mathematical Reasoning",
+      "subject": "Mathematics",
+      "score": 0.0768,
+      "freq_norm": 0.0158,
+      "recency_norm": 0.0127,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 4,
+      "yearly_counts": {
+        "2020": 4,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -4.0,
+      "rank": 107
+    },
+    {
+      "topic": "AC",
+      "subject": "Physics",
+      "score": 0.0743,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0095,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2020": 3,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -3.0,
+      "rank": 108
+    },
+    {
+      "topic": "Oscillation",
+      "subject": "Physics",
+      "score": 0.0743,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0095,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2020": 3,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -3.0,
+      "rank": 109
+    },
+    {
+      "topic": "System of Particles",
+      "subject": "Physics",
+      "score": 0.0743,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0095,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2020": 3,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -3.0,
+      "rank": 110
+    },
+    {
+      "topic": "IUPAC Nomenclature",
+      "subject": "Chemistry",
+      "score": 0.0743,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0095,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2020": 3,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -3.0,
+      "rank": 111
+    },
+    {
+      "topic": "Stereoisomerism",
+      "subject": "Chemistry",
+      "score": 0.0743,
+      "freq_norm": 0.0119,
+      "recency_norm": 0.0095,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 3,
+      "yearly_counts": {
+        "2020": 3,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -3.0,
+      "rank": 112
+    },
+    {
+      "topic": "Electric current",
+      "subject": "Physics",
+      "score": 0.0717,
+      "freq_norm": 0.0079,
+      "recency_norm": 0.0064,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 2,
+      "yearly_counts": {
+        "2020": 2,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -2.0,
+      "rank": 113
+    },
+    {
+      "topic": "Circular motion",
+      "subject": "Physics",
+      "score": 0.0717,
+      "freq_norm": 0.0079,
+      "recency_norm": 0.0064,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 2,
+      "yearly_counts": {
+        "2020": 2,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -2.0,
+      "rank": 114
+    },
+    {
+      "topic": "Mechanics",
+      "subject": "Physics",
+      "score": 0.0717,
+      "freq_norm": 0.0079,
+      "recency_norm": 0.0064,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 2,
+      "yearly_counts": {
+        "2020": 2,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -2.0,
+      "rank": 115
+    },
+    {
+      "topic": "Ideal Gas",
+      "subject": "Chemistry",
+      "score": 0.0717,
+      "freq_norm": 0.0079,
+      "recency_norm": 0.0064,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 2,
+      "yearly_counts": {
+        "2020": 2,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -2.0,
+      "rank": 116
+    },
+    {
+      "topic": "Real Gas",
+      "subject": "Chemistry",
+      "score": 0.0717,
+      "freq_norm": 0.0079,
+      "recency_norm": 0.0064,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 2,
+      "yearly_counts": {
+        "2020": 2,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -2.0,
+      "rank": 117
+    },
+    {
+      "topic": "Trigonometric Ratios & Equations",
+      "subject": "Mathematics",
+      "score": 0.0717,
+      "freq_norm": 0.0079,
+      "recency_norm": 0.0064,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 2,
+      "yearly_counts": {
+        "2020": 2,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -2.0,
+      "rank": 118
+    },
+    {
+      "topic": "Digital Electronics",
+      "subject": "Physics",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 119
+    },
+    {
+      "topic": "AC Circuits",
+      "subject": "Physics",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 120
+    },
+    {
+      "topic": "Wave",
+      "subject": "Physics",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 121
+    },
+    {
+      "topic": "Sound",
+      "subject": "Physics",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 122
+    },
+    {
+      "topic": "Eudiometry",
+      "subject": "Chemistry",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 123
+    },
+    {
+      "topic": "Sub",
+      "subject": "Chemistry",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 124
+    },
+    {
+      "topic": "Redox Reactions",
+      "subject": "Chemistry",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 125
+    },
+    {
+      "topic": "Compound Angles",
+      "subject": "Mathematics",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 126
+    },
+    {
+      "topic": "Mathematical Induction",
+      "subject": "Mathematics",
+      "score": 0.0692,
+      "freq_norm": 0.004,
+      "recency_norm": 0.0032,
+      "trend_norm": 0.0,
+      "syllabus_norm": 0.6667,
+      "total_frequency": 1,
+      "yearly_counts": {
+        "2020": 1,
+        "2021": 0
+      },
+      "trend": "falling",
+      "trend_slope": -1.0,
+      "rank": 127
+    }
+  ],
+  "gaps": [],
+  "expected_counts": {
+    "Current Electricity": 0,
+    "Mechanical Properties of Fluids": 35.5,
+    "Rigid Body Dynamics": 0,
+    "Thermodynamics": 43.5,
+    "Simple Harmonic Motion": 0,
+    "Work, Power & Energy": 0,
+    "Magnetism": 0,
+    "Electrostatics": 0,
+    "Kinematics": 0,
+    "Semiconductors": 0,
+    "Magnetic Effects of Current": 0,
+    "Projectile Motion": 0,
+    "Dual Nature of Matter": 0,
+    "Kinetic Theory of Gases": 22.0,
+    "AC": 0,
+    "Wave Optics": 0,
+    "Gravitation": 0,
+    "Centre of Mass": 0,
+    "Mechanical Properties of Solids": 8.0,
+    "Thermal Properties of Matter": 10.0,
+    "Nuclear Physics": 0,
+    "Ray Optics": 0,
+    "Heat": 0,
+    "Collision": 0,
+    "Digital Electronics": 0,
+    "Modern Physics": 0,
+    "Moving charges and magnetism": 0,
+    "Behaviour of Perfect Gases": 18.0,
+    "Newton's Laws of Motion": 0,
+    "Elasticity": 6.5,
+    "Capacitance": 0,
+    "Waves": 0,
+    "EMI": 0,
+    "Moving Charges and Magnetism": 0,
+    "Communication Systems": 0,
+    "Relative motion": 0,
+    "Vectors": 12.5,
+    "Units & Dimensions": 0,
+    "EM Waves": 0,
+    "Electric current": 0,
+    "Atomic Physics": 0,
+    "Motion in 1D": 0,
+    "Error Analysis": 0,
+    "Sound Waves": 0,
+    "Isobaric process": 4.0,
+    "Oscillation": 0,
+    "Circular motion": 0,
+    "System of Particles": 0,
+    "Mechanics": 0,
+    "AC Circuits": 0,
+    "Wave": 0,
+    "Sound": 0,
+    "Physical Chemistry": 119.5,
+    "Organic Chemistry": 88.0,
+    "IUPAC & Structural Isomerism": 0,
+    "Inorganic Chemistry": 46.5,
+    "Ideal Gas": 0,
+    "Atomic Structure": 4.0,
+    "Chemical Bonding": 0,
+    "Carbonyl Compounds": 0,
+    "Chemical Kinetics": 0,
+    "Mole Concept": 0,
+    "Hydrocarbons": 6.0,
+    "Coordination Compounds": 2.0,
+    "IUPAC Nomenclature": 0,
+    "Periodic Table": 0,
+    "P-Block Elements": 0,
+    "Electrochemistry": 0,
+    "Surface Chemistry": 0,
+    "Halogen Chemistry": 6.0,
+    "Equivalent Concept": 0,
+    "Eudiometry": 0,
+    "Real Gas": 0,
+    "Alcohols, Phenols & Ethers": 6.0,
+    "Isomerism": 0,
+    "Salt Analysis": 8.0,
+    "Amines": 0,
+    "Stereoisomerism": 0,
+    "S-Block Elements": 0,
+    "Sub": 0,
+    "Redox Reactions": 0,
+    "Straight Lines": 31.5,
+    "Ellipse": 1.5,
+    "Special functions": 2.0,
+    "Complex Numbers": 0,
+    "Integration": 14.0,
+    "Definite Integration": 0,
+    "Relation": 0,
+    "Limits": 0,
+    "Sequences & Series": 0,
+    "Differentiation": 0,
+    "Circles": 92.0,
+    "Theory of Equations": 0,
+    "Monotonicity": 0,
+    "Matrices & Determinants": 0,
+    "Quadratic Equations": 0,
+    "Logarithms": 0,
+    "Binomial Theorem": 8.0,
+    "Permutations & Combinations": 0,
+    "Parabola": 6.0,
+    "Area Under Curve": 8.0,
+    "Trigonometry": 0,
+    "Functions": 0,
+    "Conic Sections": 48.0,
+    "Indefinite Integration": 0,
+    "Limits, Continuity & Differentiability": 0,
+    "Series & Progressions": 0,
+    "3D Geometry": 5.5,
+    "Mathematical Reasoning": 0,
+    "Hyperbola": 0,
+    "Sets": 0,
+    "Application of Derivatives": 16.0,
+    "Inverse Trigonometric Functions": 3.0,
+    "Statistics": 3.0,
+    "Continuity & Differentiability": 8.5,
+    "Compound Angles": 0,
+    "Properties of Triangles": 8.5,
+    "Probability": 14.0,
+    "Logarithms & Applications": 0,
+    "Inequalities & Absolute Value": 0,
+    "Trigonometric Ratios & Equations": 0,
+    "Differential Equations": 4.5,
+    "Circles & Parabola": 2.0,
+    "Matrices": 2.0,
+    "Mathematical Induction": 0,
+    "Inequalities": 2.0,
+    "Logical Reasoning": 2.0
+  },
+  "metadata": {
+    "total_questions": 1945,
+    "years_covered": [
+      2020,
+      2021
+    ],
+    "total_topics": 127
+  }
+}

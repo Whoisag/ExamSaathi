@@ -34,44 +34,44 @@ export function ConfidenceSelector({
   }
 
   return (
-    <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
+    <div className="bg-white border-2 border-black p-4 sm:p-6 shadow-[4px_4px_0px_0px_#000000] space-y-4 font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b-2 border-neutral-100">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-[#3730A3]" />
-            Self-Assessed Confidence Tracker
+          <h3 className="font-headline text-base sm:text-xl text-black flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#FF4D00]" />
+            SELF-ASSESSED CONFIDENCE TRACKER
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="font-meta text-xs text-neutral-500 mt-0.5">
             Classify your current mastery to dynamically calibrate your revision queue
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs">
-          <span className="flex items-center gap-1 font-semibold text-[#059669]">
-            <span className="w-2 h-2 rounded-full bg-[#059669]" />
-            Mastered ({topics.filter((t) => t.confidence === "mastered").length})
+        <div className="flex items-center gap-2.5 font-meta text-xs flex-wrap">
+          <span className="flex items-center gap-1 font-bold text-black bg-neutral-100 px-2 py-0.5 border border-black">
+            <span className="w-2 h-2 bg-black" />
+            MASTERED ({topics.filter((t) => t.confidence === "mastered").length})
           </span>
-          <span className="flex items-center gap-1 font-semibold text-[#D97706]">
-            <span className="w-2 h-2 rounded-full bg-[#D97706]" />
-            Revising ({topics.filter((t) => t.confidence === "revising").length})
+          <span className="flex items-center gap-1 font-bold text-black bg-orange-100 px-2 py-0.5 border border-black">
+            <span className="w-2 h-2 bg-[#FF4D00]" />
+            REVISING ({topics.filter((t) => t.confidence === "revising").length})
           </span>
-          <span className="flex items-center gap-1 font-semibold text-[#EA580C]">
-            <span className="w-2 h-2 rounded-full bg-[#EA580C]" />
-            Weak ({topics.filter((t) => t.confidence === "weak").length})
+          <span className="flex items-center gap-1 font-bold text-white bg-black px-2 py-0.5 border border-black">
+            <span className="w-2 h-2 bg-[#FF4D00]" />
+            WEAK ({topics.filter((t) => t.confidence === "weak").length})
           </span>
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-slate-200">
+      <div className="overflow-x-auto border-2 border-black">
         <table className="w-full text-left text-xs min-w-[540px]">
-          <thead className="bg-slate-50 text-[11px] font-bold text-slate-600 uppercase border-b border-slate-200">
+          <thead className="bg-black text-white font-meta text-[11px] uppercase border-b-2 border-black">
             <tr>
-              <th className="py-3 px-4">Topic / Chapter</th>
-              <th className="py-3 px-3 text-center">Mock Accuracy</th>
-              <th className="py-3 px-3 text-center">Last Active</th>
-              <th className="py-3 px-4 text-right">Confidence Status</th>
+              <th className="py-3 px-4">TOPIC / CHAPTER</th>
+              <th className="py-3 px-3 text-center">MOCK ACCURACY</th>
+              <th className="py-3 px-3 text-center">LAST ACTIVE</th>
+              <th className="py-3 px-4 text-right">CONFIDENCE STATUS</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-neutral-200">
             {topics.map((item) => (
               <tr key={item.id} className="hover:bg-slate-50/60 transition-colors">
                 <td className="py-3 px-4 font-semibold text-slate-900">

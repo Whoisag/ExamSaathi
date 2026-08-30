@@ -20,19 +20,19 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`rounded-[12px] border border-dashed border-slate-300 bg-white/80 p-8 text-center flex flex-col items-center justify-center my-4 ${className}`}
+      className={`border-2 border-black bg-white p-8 text-center flex flex-col items-center justify-center my-4 shadow-[4px_4px_0px_0px_#000000] font-sans ${className}`}
     >
-      <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-3">
+      <div className="w-12 h-12 bg-black border-2 border-black text-[#FF4D00] flex items-center justify-center mb-3 shadow-[2px_2px_0px_0px_#FF4D00]">
         {icon || <Inbox className="w-6 h-6" />}
       </div>
-      <h4 className="text-base font-semibold text-slate-800 mb-1">{title}</h4>
-      <p className="text-sm text-slate-500 max-w-sm mb-4 leading-relaxed">
+      <h4 className="font-headline text-base sm:text-lg text-black mb-1">{title}</h4>
+      <p className="font-sans text-xs sm:text-sm text-neutral-600 max-w-sm mb-4 leading-relaxed">
         {description}
       </p>
       {actionText && onAction && (
         <button
           onClick={onAction}
-          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-[#3730A3] bg-[#EEF2FF] rounded-lg hover:bg-indigo-100 transition-colors"
+          className="inline-flex items-center gap-1.5 px-4 py-2 font-headline text-xs font-bold text-black bg-[#FF4D00] border-2 border-black hover:bg-black hover:text-white transition-colors shadow-[2px_2px_0px_0px_#000000] active:translate-y-0.5"
         >
           <RefreshCcw className="w-3.5 h-3.5" />
           {actionText}

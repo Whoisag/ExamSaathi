@@ -54,94 +54,90 @@ export function TopicHeatmap({
   );
 
   const getCellBgColor = (count: number) => {
-    if (count === 0) return "bg-slate-50 text-slate-300";
+    if (count === 0) return "bg-neutral-100 text-neutral-400";
     const ratio = count / maxCount;
-    if (ratio <= 0.25) return "bg-indigo-50 text-[#3730A3] hover:bg-indigo-100 font-medium";
-    if (ratio <= 0.5) return "bg-indigo-100 text-[#3730A3] hover:bg-indigo-200 font-semibold";
-    if (ratio <= 0.75) return "bg-indigo-300 text-indigo-950 hover:bg-indigo-400 font-bold";
-    return "bg-[#3730A3] text-white hover:bg-[#312E81] font-bold";
+    if (ratio <= 0.25) return "bg-orange-50 text-neutral-800 hover:bg-orange-100 font-medium";
+    if (ratio <= 0.5) return "bg-orange-200 text-black hover:bg-orange-300 font-semibold";
+    if (ratio <= 0.75) return "bg-[#FF4D00]/80 text-black hover:bg-[#FF4D00] font-bold";
+    return "bg-black text-[#FF4D00] hover:bg-neutral-900 font-bold";
   };
 
   return (
-    <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
+    <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-4 sm:p-6 space-y-4 font-sans">
       {/* Header with Mode Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b-2 border-neutral-100">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Grid className="w-4 h-4 text-[#3730A3]" />
+          <h3 className="font-headline text-base sm:text-xl text-black flex items-center gap-2">
+            <Grid className="w-4 h-4 text-[#FF4D00]" />
             {title}
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
+          <p className="font-meta text-xs text-neutral-500 mt-0.5">{subtitle}</p>
         </div>
 
         {/* Count / Percentage Switcher */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg self-start sm:self-auto shrink-0">
+        <div className="flex items-center gap-1.5 self-start sm:self-auto shrink-0">
           <button
             onClick={() => setDisplayMode("count")}
-            className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+            className={`flex items-center gap-1 px-3 py-1.5 font-meta text-xs transition-all border-2 border-black ${
               displayMode === "count"
-                ? "bg-white text-[#3730A3] shadow-xs"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-black text-[#FF4D00] font-bold shadow-[2px_2px_0px_0px_#000000]"
+                : "bg-white text-black hover:bg-[#FF4D00] hover:text-black"
             }`}
           >
             <Hash className="w-3 h-3" />
-            Question Count
+            COUNT
           </button>
           <button
             onClick={() => setDisplayMode("percentage")}
-            className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-all ${
+            className={`flex items-center gap-1 px-3 py-1.5 font-meta text-xs transition-all border-2 border-black ${
               displayMode === "percentage"
-                ? "bg-white text-[#3730A3] shadow-xs"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-black text-[#FF4D00] font-bold shadow-[2px_2px_0px_0px_#000000]"
+                : "bg-white text-black hover:bg-[#FF4D00] hover:text-black"
             }`}
           >
             <Percent className="w-3 h-3" />
-            % Weightage
+            PERCENTAGE
           </button>
         </div>
       </div>
 
-      {/* Interactive Tooltip Banner */}
-      <div className="min-h-[38px] px-3.5 py-2 rounded-lg bg-indigo-50/50 border border-indigo-100/70 text-xs flex items-center justify-between transition-all">
-        {hoveredCell ? (
-          <div className="flex items-center gap-3 text-slate-700 flex-wrap">
-            <span className="font-bold text-[#3730A3]">{hoveredCell.topicName}</span>
-            <span className="text-slate-400">|</span>
-            <span>Year: <strong>{hoveredCell.year}</strong></span>
-            <span className="text-slate-400">|</span>
-            <span>Questions: <strong>{hoveredCell.count} Qs</strong></span>
-            <span className="text-slate-400">|</span>
-            <span>Weightage: <strong>{hoveredCell.percentage}%</strong></span>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2 text-slate-400">
-            <Info className="w-3.5 h-3.5 text-[#3730A3]" />
-            <span>Hover or tap any cell to inspect year-specific question counts and shift weightage.</span>
-          </div>
-        )}
-      </div>
+      {/* Hover Info Tooltip Banner */}
+      {hoveredCell && (
+        <div className="bg-black border-2 border-black text-white p-3 font-meta text-xs flex items-center justify-between shadow-[2px_2px_0px_0px_#FF4D00]">
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 bg-[#FF4D00] inline-block"></span>
+            <span className="font-bold text-[#FF4D00]">{hoveredCell.topicName}</span>
+            <span className="text-neutral-400">({hoveredCell.year})</span>
+          </span>
+          <span className="font-bold text-white font-mono">
+            {hoveredCell.count} QUESTIONS ({hoveredCell.percentage}% OF SHIFT)
+          </span>
+        </div>
+      )}
 
-      {/* Heatmap Grid Table */}
-      <div className="overflow-x-auto rounded-lg border border-slate-200">
-        <table className="w-full text-left border-collapse min-w-[580px]">
+      {/* Responsive Matrix Grid */}
+      <div className="overflow-x-auto w-full no-scrollbar pb-1 border-2 border-black">
+        <table className="w-full border-collapse text-left min-w-[580px]">
           <thead>
-            <tr className="bg-slate-50/90 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-              <th className="py-2.5 px-3 min-w-[200px] border-r border-slate-200">Topic / Chapter</th>
+            <tr className="border-b-2 border-black bg-black text-white font-meta text-[11px]">
+              <th className="py-2.5 px-3 font-bold border-r border-neutral-700 w-52">
+                TOPIC / CHAPTER
+              </th>
               {years.map((year) => (
-                <th key={year} className="py-2.5 px-2 text-center border-r border-slate-200 last:border-r-0">
+                <th key={year} className="py-2.5 px-2 text-center border-r border-neutral-700 last:border-r-0">
                   {year}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 text-xs">
+          <tbody className="divide-y divide-black text-xs">
             {topics.map((topic) => (
-              <tr key={topic.id} className="hover:bg-slate-50/60 transition-colors">
-                <td className="py-2.5 px-3 font-medium text-slate-900 border-r border-slate-200 bg-white">
-                  <div className="truncate max-w-[220px]" title={topic.name}>
+              <tr key={topic.id} className="hover:bg-neutral-50 transition-colors">
+                <td className="py-2.5 px-3 font-bold text-black border-r-2 border-black bg-white">
+                  <div className="truncate max-w-[200px]" title={topic.name}>
                     {topic.name}
                   </div>
-                  <span className="text-[10px] text-slate-400 font-normal">{topic.category}</span>
+                  <span className="text-[10px] font-meta text-neutral-500 font-normal">{topic.category}</span>
                 </td>
                 {years.map((year) => {
                   const cell = topic.yearsData[year] || { count: 0, percentage: 0 };
@@ -160,11 +156,11 @@ export function TopicHeatmap({
                         })
                       }
                       onMouseLeave={() => setHoveredCell(null)}
-                      className={`py-2 px-1 text-center border-r border-slate-200 last:border-r-0 transition-all cursor-pointer select-none ${getCellBgColor(
+                      className={`py-2 px-1 text-center border-r border-black last:border-r-0 transition-all cursor-pointer select-none ${getCellBgColor(
                         cell.count
-                      )} ${isHovered ? "ring-2 ring-inset ring-[#EA580C] shadow-sm z-10" : ""}`}
+                      )} ${isHovered ? "ring-2 ring-inset ring-black shadow-sm z-10" : ""}`}
                     >
-                      <span className="block text-[11px] font-mono">
+                      <span className="block text-[11px] font-mono font-bold">
                         {displayMode === "count" ? `${cell.count}Q` : `${cell.percentage}%`}
                       </span>
                     </td>
@@ -177,16 +173,16 @@ export function TopicHeatmap({
       </div>
 
       {/* Heatmap Legend */}
-      <div className="flex items-center justify-between pt-1 text-[11px] text-slate-500">
-        <span>Low frequency (0-1 Qs)</span>
-        <div className="flex items-center gap-1">
-          <span className="w-4 h-3 rounded-xs bg-slate-100 inline-block border border-slate-200" />
-          <span className="w-4 h-3 rounded-xs bg-indigo-50 inline-block" />
-          <span className="w-4 h-3 rounded-xs bg-indigo-100 inline-block" />
-          <span className="w-4 h-3 rounded-xs bg-indigo-300 inline-block" />
-          <span className="w-4 h-3 rounded-xs bg-[#3730A3] inline-block" />
+      <div className="flex items-center justify-between pt-1 font-meta text-[10px] text-neutral-600">
+        <span>0-1 QS (LOW)</span>
+        <div className="flex items-center gap-1.5">
+          <span className="w-4 h-3 bg-neutral-100 inline-block border border-black" />
+          <span className="w-4 h-3 bg-orange-50 inline-block border border-black" />
+          <span className="w-4 h-3 bg-orange-200 inline-block border border-black" />
+          <span className="w-4 h-3 bg-[#FF4D00] inline-block border border-black" />
+          <span className="w-4 h-3 bg-black inline-block border border-black" />
         </div>
-        <span>High yield (4-6 Qs)</span>
+        <span className="font-bold text-black">4-6 QS (HIGH YIELD)</span>
       </div>
     </div>
   );

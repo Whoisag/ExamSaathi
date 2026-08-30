@@ -2,13 +2,14 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, ArrowRight, Terminal, Activity, Layers } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight, ArrowRight, Terminal, Activity, Layers, Menu, X } from "lucide-react";
 import { PortalHero } from "@/components/landing/PortalHero";
 import { SleeveDeckCatalogue } from "@/components/landing/SleeveDeckCatalogue";
 
 export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -114,7 +115,7 @@ export default function LandingPage() {
             </Link>
           </nav>
 
-          {/* Auth Actions */}
+          {/* Auth & Mobile Toggle */}
           <div className="flex items-center gap-2 flex-shrink-0">
             <Link
               href="/login"
@@ -122,8 +123,89 @@ export default function LandingPage() {
             >
               LOGIN
             </Link>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden bg-black text-white p-2 border-brutal hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-center"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="md:hidden max-w-7xl mx-auto mt-2 bg-black border-2 border-black text-white p-4 shadow-[6px_6px_0px_0px_#FF4D00] flex flex-col gap-2.5 pointer-events-auto"
+            >
+              <div className="text-[10px] text-[#FF4D00] font-mono font-bold tracking-wider">// NAVIGATION MENU</div>
+              <div className="grid grid-cols-1 gap-1.5 font-meta text-xs">
+                <Link
+                  href="/dashboard/exams"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
+                >
+                  <span>[EXAMS DIRECTORY]</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/analyzer/jee-main/modern-physics"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
+                >
+                  <span>[TOPIC ANALYZER]</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/assistant"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
+                >
+                  <span>[AI STRATEGY ASSISTANT]</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/evaluation"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
+                >
+                  <span>[ACCURACY EVALUATION]</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
+                >
+                  <span>[METHODOLOGY & WHITE PAPER]</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+              <div className="pt-2 border-t border-neutral-800 flex items-center gap-2">
+                <Link
+                  href="/signup"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 bg-[#FF4D00] text-black font-headline text-center py-2.5 text-xs hover:bg-white transition-colors"
+                >
+                  CREATE ACCOUNT
+                </Link>
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="bg-white text-black font-meta text-center py-2.5 px-4 text-xs font-bold hover:bg-neutral-200 transition-colors"
+                >
+                  LOGIN
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* 2. FULLSCREEN INTERACTIVE PORTAL HERO */}

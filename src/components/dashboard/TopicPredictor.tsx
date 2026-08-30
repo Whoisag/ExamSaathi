@@ -44,41 +44,41 @@ export function TopicPredictor({
     switch (trend) {
       case "rising":
         return (
-          <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-orange-50 text-[#EA580C] border border-orange-200/60">
+          <span className="inline-flex items-center gap-1 font-meta text-[10px] font-bold px-2.5 py-0.5 bg-[#FF4D00] text-black border border-black shadow-[1px_1px_0px_0px_#000000]">
             <TrendingUp className="w-3 h-3" />
-            Rising
+            RISING
           </span>
         );
       case "falling":
         return (
-          <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200">
+          <span className="inline-flex items-center gap-1 font-meta text-[10px] font-bold px-2.5 py-0.5 bg-neutral-200 text-black border border-black">
             <TrendingDown className="w-3 h-3" />
-            Falling
+            FALLING
           </span>
         );
       case "stable":
       default:
         return (
-          <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-indigo-50 text-[#3730A3] border border-indigo-200/60">
+          <span className="inline-flex items-center gap-1 font-meta text-[10px] font-bold px-2.5 py-0.5 bg-white text-black border border-black">
             <Minus className="w-3 h-3" />
-            Stable
+            STABLE
           </span>
         );
     }
   };
 
   return (
-    <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
-      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+    <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-4 sm:p-6 space-y-4 font-sans">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-2 border-neutral-100 gap-2">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#EA580C]" />
+          <h3 className="font-headline text-base sm:text-xl text-black flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#FF4D00]" />
             {title}
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
+          <p className="font-meta text-xs text-neutral-500 mt-0.5">{subtitle}</p>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-          Top {predictions.length} High-Yield
+        <span className="font-meta text-[10px] font-bold px-3 py-1 bg-black text-[#FF4D00] border border-black shadow-[2px_2px_0px_0px_#FF4D00] self-start sm:self-auto">
+          TOP {predictions.length} HIGH-YIELD
         </span>
       </div>
 
@@ -86,34 +86,34 @@ export function TopicPredictor({
         {predictions.map((item) => (
           <div
             key={item.id}
-            className="p-3.5 sm:p-4 rounded-xl border border-slate-200/90 hover:border-indigo-300 transition-all bg-slate-50/50 hover:bg-white space-y-2.5 group"
+            className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000] group"
           >
             {/* Header: Rank + Title + Trend Badge */}
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-2.5 min-w-0">
                 <span
-                  className={`w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0 mt-0.5 ${
+                  className={`w-7 h-7 border-2 border-black flex items-center justify-center font-headline text-xs font-bold shrink-0 mt-0.5 ${
                     item.rank === 1
-                      ? "bg-[#3730A3] text-white shadow-xs"
+                      ? "bg-[#FF4D00] text-black shadow-[2px_2px_0px_0px_#000000]"
                       : item.rank === 2
-                      ? "bg-indigo-100 text-[#3730A3] font-bold"
+                      ? "bg-black text-white"
                       : item.rank === 3
-                      ? "bg-orange-100 text-[#EA580C] font-bold"
-                      : "bg-slate-200 text-slate-700"
+                      ? "bg-neutral-200 text-black"
+                      : "bg-white text-neutral-700"
                   }`}
                 >
                   #{item.rank}
                 </span>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900 group-hover:text-[#3730A3] transition-colors leading-snug">
+                  <h4 className="font-headline text-sm sm:text-base text-black group-hover:text-[#FF4D00] transition-colors leading-snug">
                     {item.topicName}
                   </h4>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
-                    <span className="font-medium text-slate-600">{item.category}</span>
+                  <div className="flex items-center gap-2 font-meta text-[11px] text-neutral-600 mt-1 flex-wrap">
+                    <span className="font-bold text-black">{item.category}</span>
                     <span>•</span>
-                    <span className="font-semibold text-slate-800">{item.expectedQuestions}</span>
+                    <span className="font-mono text-black">{item.expectedQuestions}</span>
                     <span>•</span>
-                    <span className="text-[#059669] font-semibold">{item.shiftCoverage}</span>
+                    <span className="text-[#FF4D00] font-bold">{item.shiftCoverage}</span>
                   </div>
                 </div>
               </div>
@@ -122,33 +122,27 @@ export function TopicPredictor({
             </div>
 
             {/* Probability Progress Bar */}
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-500 text-[11px] font-medium">
+                <span className="font-meta text-[10px] text-neutral-600 uppercase font-bold">
                   Appearance Probability in Shift
                 </span>
-                <span className="font-mono font-bold text-slate-900">
+                <span className="font-mono font-bold text-black text-xs">
                   {item.predictedProbability}%
                 </span>
               </div>
-              <div className="w-full bg-slate-200/80 rounded-full h-2 overflow-hidden">
+              <div className="w-full bg-neutral-100 border border-black h-2.5 overflow-hidden">
                 <div
-                  className="h-full rounded-full transition-all duration-500"
+                  className="h-full transition-all duration-500 bg-[#FF4D00]"
                   style={{
                     width: `${item.predictedProbability}%`,
-                    backgroundColor:
-                      item.predictedProbability >= 90
-                        ? "#3730A3"
-                        : item.predictedProbability >= 80
-                        ? "#059669"
-                        : "#EA580C",
                   }}
                 />
               </div>
             </div>
 
             {/* Reasoning Note */}
-            <p className="text-[11px] text-slate-500 italic bg-white p-2 rounded-lg border border-slate-100/90 leading-relaxed">
+            <p className="font-meta text-[11px] text-neutral-800 bg-neutral-50 p-2.5 border border-black leading-relaxed">
               💡 {item.trendReason}
             </p>
           </div>

@@ -43,41 +43,41 @@ export function AppShell({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-8 bg-[#FF4D00]">
         {/* Mobile Header */}
-        <header className="md:hidden sticky top-0 z-30 bg-white border-b-2 border-black px-4 py-3 flex items-center justify-between">
+        <header className="md:hidden sticky top-0 z-30 bg-white border-b-2 border-black px-4 py-3 flex items-center justify-between shadow-[0px_2px_0px_0px_#000000]">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-black flex items-center justify-center text-white">
-              <Sparkles className="w-4 h-4 text-[#FF4D00]" />
+            <div className="w-7 h-7 bg-[#FF4D00] border border-black flex items-center justify-center text-black font-bold text-xs">
+              ES
             </div>
             <span className="font-headline text-lg tracking-tight text-black">
               EXAM<span className="text-[#FF4D00]">SAATHI</span>
             </span>
           </Link>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold px-2.5 py-1 bg-black text-white border border-black">
+            <span className="text-[11px] font-headline px-3 py-1 bg-[#FF4D00] text-black border-2 border-black font-bold shadow-[2px_2px_0px_0px_#000000]">
               {exam.shortName}
             </span>
           </div>
         </header>
 
-        {/* Desktop Top Sub-Header */}
+        {/* Desktop / Tablet Top Sub-Header */}
         {(breadcrumbs || title || actionSlot) && (
           <div className="bg-white border-b-2 border-black px-4 md:px-8 py-4 sm:py-5 shrink-0">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 {breadcrumbs && (
-                  <nav className="flex items-center gap-1.5 text-xs text-slate-400 mb-1.5 flex-wrap">
-                    <Link href="/" className="hover:text-slate-600 transition-colors">
-                      Home
+                  <nav className="flex items-center gap-1.5 text-xs font-meta text-neutral-500 mb-1.5 flex-wrap">
+                    <Link href="/" className="hover:text-[#FF4D00] transition-colors">
+                      [HOME]
                     </Link>
                     {breadcrumbs.map((b, idx) => (
                       <React.Fragment key={idx}>
-                        <ChevronRight className="w-3 h-3 text-slate-300" />
+                        <ChevronRight className="w-3 h-3 text-neutral-400" />
                         {b.href ? (
-                          <Link href={b.href} className="hover:text-slate-600 transition-colors">
-                            {b.label}
+                          <Link href={b.href} className="hover:text-[#FF4D00] transition-colors">
+                            [{b.label.toUpperCase()}]
                           </Link>
                         ) : (
-                          <span className="text-slate-700 font-medium">{b.label}</span>
+                          <span className="text-black font-bold">[{b.label.toUpperCase()}]</span>
                         )}
                       </React.Fragment>
                     ))}
@@ -85,13 +85,13 @@ export function AppShell({
                 )}
 
                 {title && (
-                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
+                  <h1 className="font-headline text-xl sm:text-2xl md:text-3xl tracking-tight text-black flex items-center gap-2.5">
                     {title}
                   </h1>
                 )}
 
                 {subtitle && (
-                  <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+                  <p className="text-xs sm:text-sm text-neutral-600 mt-1 max-w-2xl leading-relaxed font-sans">
                     {subtitle}
                   </p>
                 )}
@@ -103,9 +103,9 @@ export function AppShell({
 
             {/* Subject Selector Tabs if applicable */}
             {availableSubjects && availableSubjects.length > 1 && (
-              <div className="max-w-7xl mx-auto mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-2 hidden sm:inline-flex items-center gap-1">
-                  <Layers className="w-3.5 h-3.5" /> Subjects:
+              <div className="max-w-7xl mx-auto mt-4 pt-3 border-t-2 border-neutral-100 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <span className="text-xs font-bold font-meta text-neutral-400 uppercase tracking-wider mr-2 hidden sm:inline-flex items-center gap-1">
+                  <Layers className="w-3.5 h-3.5" /> SUBJECTS:
                 </span>
                 {availableSubjects.map((sub) => {
                   const isSelected =
@@ -114,14 +114,14 @@ export function AppShell({
                     <Link
                       key={sub}
                       href={`/dashboard/${currentExam}/${sub.toLowerCase()}`}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                      className={`px-4 py-1.5 font-headline text-xs tracking-wider whitespace-nowrap transition-all flex items-center gap-1.5 border-2 border-black ${
                         isSelected
-                          ? "bg-[#3730A3] text-white shadow-xs shadow-indigo-300"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900"
+                          ? "bg-black text-[#FF4D00] shadow-[2px_2px_0px_0px_#FF4D00]"
+                          : "bg-white text-black hover:bg-[#FF4D00] hover:text-black shadow-[2px_2px_0px_0px_#000000]"
                       }`}
                     >
                       <BookOpen className="w-3 h-3" />
-                      {sub}
+                      {sub.toUpperCase()}
                     </Link>
                   );
                 })}
@@ -131,7 +131,7 @@ export function AppShell({
         )}
 
         {/* Content Body */}
-        <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8">
+        <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 md:p-8">
           {children}
         </main>
       </div>
