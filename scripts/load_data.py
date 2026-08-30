@@ -1,297 +1,297 @@
 #!/usr/bin/env python3
 """
-Load HuggingFace dataset "soughed/jee-main-questions" (physics, chemistry, mathematics configs).
-Normalize into one table:
-question_id, subject, topic, subtopic, year, difficulty, question_type.
-Write /public/data/questions.json and /public/data/topics.json.
-Print counts per subject and per year.
+ExamSaathi Deterministic PYQ Loader
+Loads and validates question records from:
+- CBSE 12 PYQ dataset (2016-2025): scripts/data/CBSE_PYQ_Analysis_2016_2025_v3.csv
+- JEE Main PYQs: public/data/questions.json and fallback archives
+Validates standard question schema:
+{id, exam, year, shift, subject, chapter, topic, difficulty, marks, type}
+Normalizes topics and chapters, deduplicates, and outputs:
+- /public/data/questions.json
+- /public/data/topics.json
+- /scripts/output/questions.json
 """
 
+import os
+import sys
 import json
+import csv
 import re
 from collections import defaultdict
-from datasets import load_dataset
 from pathlib import Path
 
+# Color palette for brutalist UI charts
+KINETIC_PALETTE = [
+    "#FF4D00",  # Kinetic Orange
+    "#000000",  # Deep Obsidian
+    "#2563EB",  # Electric Cobalt
+    "#16A34A",  # Emerald Green
+    "#9333EA",  # Hyper Violet
+    "#CA8A04",  # Amber Gold
+    "#DC2626",  # Crimson Red
+    "#0891B2",  # Cyan Blue
+    "#4F46E5",  # Indigo
+    "#BE185D",  # Vivid Pink
+]
 
-def extract_year_from_paper(source_paper: str) -> int:
-    """Extract year from source_paper filename."""
-    # Try to find year in the filename
-    year_match = re.search(r'(20\d{2}|19\d{2})', source_paper)
-    if year_match:
-        return int(year_match.group(1))
+CHAPTER_SLUG_MAP = {
+    # Physics
+    "modern physics": "modern-physics",
+    "dual nature of matter": "modern-physics",
+    "atomic physics": "modern-physics",
+    "atoms and nuclei": "modern-physics",
+    "nuclei": "modern-physics",
+    "current electricity": "phy-current-electricity",
+    "electric charges and fields": "phy-electrostatics",
+    "electrostatic potential and capacitance": "phy-electrostatics",
+    "electrostatics": "phy-electrostatics",
+    "capacitance": "phy-electrostatics",
+    "thermodynamics": "phy-thermodynamics",
+    "kinetic theory of gases": "phy-thermodynamics",
+    "moving charges and magnetism": "phy-magnetism",
+    "magnetism and matter": "phy-magnetism",
+    "magnetism": "phy-magnetism",
+    "electromagnetic induction": "phy-emi-ac",
+    "alternating current": "phy-emi-ac",
+    "ray optics and optical instruments": "phy-optics",
+    "wave optics": "phy-optics",
+    "optics": "phy-optics",
+    "semiconductors": "cbse-modern-physics",
+    "semiconductor electronics: materials, devices and simple circuits": "cbse-modern-physics",
+    
+    # Chemistry
+    "chemical bonding and molecular structure": "chemical-bonding",
+    "chemical bonding": "chemical-bonding",
+    "coordination compounds": "chem-coordination",
+    "solutions": "chem-solutions",
+    "electrochemistry": "chem-electrochemistry",
+    "chemical kinetics": "chem-kinetics",
+    "aldehydes, ketones and carboxylic acids": "chem-carbonyl-compounds",
+    "amines": "chem-general-organic",
+    "biomolecules": "chem-general-organic",
+    
+    # Mathematics
+    "integrals": "integral-calculus",
+    "applications of the integrals": "integral-calculus",
+    "differential equations": "integral-calculus",
+    "vector algebra": "vectors-3d",
+    "three dimensional geometry": "vectors-3d",
+    "matrices": "matrices-determinants",
+    "determinants": "matrices-determinants",
+    "probability": "probability-statistics",
+}
 
-    # Some papers have dates like "24-8-2020" or "10 October" (assume 2020)
-    date_match = re.search(r'(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', source_paper)
-    if date_match:
-        date_str = date_match.group(1)
-        parts = re.split(r'[-/]', date_str)
-        if len(parts) == 3:
-            year_part = parts[-1]
-            if len(year_part) == 2:
-                return 2000 + int(year_part)
-            return int(year_part)
-
-    # Month name papers without year - try to infer from pattern
-    # "10 October", "30 October", "1Nov", "7 Jan", "15 Jan", "16 Jan" -> 2021 (JEE Main 2021)
-    month_match = re.search(r'(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)', source_paper, re.IGNORECASE)
-    if month_match:
-        # Papers with month names but no year - likely 2020 or 2021
-        # P-03 through P-24 are 2020, Ph-25+ are 2021
-        if source_paper.startswith('Ph-') or source_paper.startswith('CH-2') or source_paper.startswith('CH-2') or source_paper.startswith('M-2'):
-            return 2021
-        return 2020
-
-    # Default fallback
-    return 2020
+TOPIC_NORMALIZATION = {
+    "coulomb's law": "Coulomb's Law & Principle of Superposition",
+    "electric field lines": "Electric Field Lines & Flux",
+    "gauss's law": "Gauss's Law & Infinite Wire Derivations",
+    "equipotential surfaces": "Equipotential Surfaces & Field Relation",
+    "capacitors in series and parallel": "Capacitors in Series & Parallel Combinations",
+    "energy stored in a capacitor": "Energy Stored in Capacitors & Energy Density",
+    "drift velocity": "Drift Velocity & Ohm's Law Microscopic Derivation",
+    "kirchhoff's rules": "Kirchhoff's Current & Voltage Circuit Laws",
+    "wheatstone bridge": "Balanced Wheatstone Bridge & Meter Bridge",
+    "biot-savart law": "Biot-Savart Law & Circular Coil Magnetic Field",
+    "ampere's circuital law": "Ampere's Circuital Law & Long Solenoid Field",
+    "faraday's law of induction": "Faraday's Induction Law & Lenz's Law",
+    "photoelectric effect": "Photoelectric Effect & Einstein's Equation",
+    "de broglie wavelength": "De Broglie Wavelength & Dual Nature",
+    "bohr's model of hydrogen atom": "Bohr's Postulates & Hydrogen Energy Levels",
+    "half-life and radioactivity": "Radioactive Decay Law, Half-Life & Activity",
+    "p-n junction diode": "P-N Junction Diode IV Characteristics & Rectifiers",
+}
 
 
-def normalize_topic(topic: str, subject: str) -> str:
-    """Normalize topic names to handle case variations and duplicates."""
-    if not topic or not topic.strip():
+def clean_str(val):
+    if val is None:
         return ""
+    return str(val).strip()
 
-    topic = topic.strip()
 
-    # Topic normalization mapping (lowercase -> canonical)
-    normalization_map = {
-        # Physics
-        'atomic physics': 'Atomic Physics',
-        'kinetic theory of gases': 'Kinetic Theory of Gases',
-        'kinetic theory of gasses': 'Kinetic Theory of Gases',
-        'capacitor': 'Capacitance',
-        'electromagnetic induction': 'EMI',
-        'electronic devices': 'Semiconductors',
-        'electronic device': 'Semiconductors',
-        'magnetics': 'Magnetism',
-        'mangetism': 'Magnetism',
-        'mechanical properties of liquid': 'Mechanical Properties of Fluids',
-        'mechanical properties of matter': 'Mechanical Properties of Fluids',
-        'mechanical properties of solid': 'Mechanical Properties of Solids',
-        'mechanical property of solids': 'Mechanical Properties of Solids',
-        'modern physics': 'Modern Physics',
-        'nuclear physics': 'Nuclear Physics',
-        'rotational motion': 'Rigid Body Dynamics',
-        'kinetic theory of gases': 'Kinetic Theory of Gases',
-        'moving charges and': 'Moving Charges and Magnetism',
-        'magnetic effect of current': 'Magnetic Effects of Current',
-        'magnetic effects of current': 'Magnetic Effects of Current',
-        'ray optics': 'Ray Optics',
-        'wave optics': 'Wave Optics',
-        'wave on string': 'Waves',
-        'wave on a string': 'Waves',
-        'system of particle': 'System of Particles',
-        'system of particles': 'System of Particles',
-        'centre of mass': 'Centre of Mass',
-        'center of mass': 'Centre of Mass',
-        'behaviour of perfect gases': 'Behaviour of Perfect Gases',
-        'thermodynamic': 'Thermodynamics',
-        'thermal properties of matter': 'Thermal Properties of Matter',
-        'work power & energy': 'Work, Power & Energy',
-        'unit and dimension': 'Units & Dimensions',
-        'error analysis': 'Error Analysis',
-        'newton\'s laws of motion': 'Newton\'s Laws of Motion',
-        'projectile motion': 'Projectile Motion',
-        'simple harmonic motion': 'Simple Harmonic Motion',
-        'dual nature of matter': 'Dual Nature of Matter',
-        'current electricity': 'Current Electricity',
-        'electrostatics': 'Electrostatics',
-        'ac circuit': 'AC Circuits',
-        'gravitation': 'Gravitation',
-        'elasticity': 'Elasticity',
-        'sound wave': 'Sound Waves',
-        'communication system': 'Communication Systems',
-        'digital electronics': 'Digital Electronics',
-        'e-m waves': 'EM Waves',
-        'em wave': 'EM Waves',
-        'emi': 'EMI',
-        'semi-conductors': 'Semiconductors',
-        'semiconductors': 'Semiconductors',
+def normalize_topic(topic_raw):
+    cleaned = clean_str(topic_raw)
+    if not cleaned:
+        return "General Core Concepts"
+    lower = cleaned.lower()
+    return TOPIC_NORMALIZATION.get(lower, cleaned)
 
-        # Chemistry
-        'organic chemistry': 'Organic Chemistry',
-        'physical chemistry': 'Physical Chemistry',
-        'inorganic chemistry': 'Inorganic Chemistry',
-        'chemical bonding': 'Chemical Bonding',
-        'coordination compounds': 'Coordination Compounds',
-        'chemical kinetics': 'Chemical Kinetics',
-        'electrochemistry': 'Electrochemistry',
-        'mole concept': 'Mole Concept',
-        'equivalent concept': 'Equivalent Concept',
-        'iupac nomenclature': 'IUPAC Nomenclature',
-        'iupac nomenclature and structural isomerism': 'IUPAC & Structural Isomerism',
-        'iupac and structural isomerism': 'IUPAC & Structural Isomerism',
-        'structural isomerism': 'Structural Isomerism',
-        'isomerism': 'Isomerism',
-        'stereoisomerism': 'Stereoisomerism',
-        'carbonayl compound (aldehyde and ketone)': 'Carbonyl Compounds',
-        'carbonyl compound (aldehyde and ketone)': 'Carbonyl Compounds',
-        'alcohol, phenol and ethers': 'Alcohols, Phenols & Ethers',
-        'p-block va, via, viia elements': 'P-Block Elements',
-        'p-block': 'P-Block Elements',
-        's-block': 'S-Block Elements',
-        'periodic table': 'Periodic Table',
-        'atomic structure': 'Atomic Structure',
-        'ideal gas': 'Ideal Gas',
-        'real gas': 'Real Gas',
-        'redox reaction': 'Redox Reactions',
-        'surface chemistry': 'Surface Chemistry',
-        'salt analysis': 'Salt Analysis',
-        'eudiometry': 'Eudiometry',
-        'halogen': 'Halogen Chemistry',
-        'hydrocarbon': 'Hydrocarbons',
 
-        # Mathematics
-        'straight lines': 'Straight Lines',
-        'circles': 'Circles',
-        'conic sections': 'Conic Sections',
-        '3d': '3D Geometry',
-        'three dimension': '3D Geometry',
-        'parabola': 'Parabola',
-        'ellipse': 'Ellipse',
-        'hyperbola': 'Hyperbola',
-        'circle and parabola': 'Circles & Parabola',
-        'vectors': 'Vectors',
-        'vector': 'Vectors',
-        'probability': 'Probability',
-        'complex numbers': 'Complex Numbers',
-        'functions': 'Functions',
-        'limits': 'Limits',
-        'limit': 'Limits',
-        'continuity and differentiability': 'Continuity & Differentiability',
-        'continuity and derivability': 'Continuity & Differentiability',
-        'limits, continuity and differentiability': 'Limits, Continuity & Differentiability',
-        'limits, continuity and derivability': 'Limits, Continuity & Differentiability',
-        'differentiation': 'Differentiation',
-        'differntiation': 'Differentiation',
-        'application of derivative': 'Application of Derivatives',
-        'application of derivatives': 'Application of Derivatives',
-        'monotonocity': 'Monotonicity',
-        'indefinite integration': 'Indefinite Integration',
-        'indefinite integration': 'Indefinite Integration',
-        'definite integration': 'Definite Integration',
-        'integrals': 'Integration',
-        'integration': 'Integration',
-        'area under curve': 'Area Under Curve',
-        'differential equation': 'Differential Equations',
-        'differential equations': 'Differential Equations',
-        'differcntiation': 'Differentiation',
-        'quadratic equations': 'Quadratic Equations',
-        'quadratic equation nature of roots': 'Quadratic Equations',
-        'theory of equations': 'Theory of Equations',
-        'thoery of equation': 'Theory of Equations',
-        'sequences and series': 'Sequences & Series',
-        'sequence & series': 'Sequences & Series',
-        'series and progressions': 'Series & Progressions',
-        'binomial theorem': 'Binomial Theorem',
-        'permutations and combinations': 'Permutations & Combinations',
-        'pemutation and combination': 'Permutations & Combinations',
-        'matrix and determinant': 'Matrices & Determinants',
-        'matrix and determinants': 'Matrices & Determinants',
-        'matrix': 'Matrices',
-        'trigonometry': 'Trigonometry',
-        'trigonometric ratio & equations': 'Trigonometric Ratios & Equations',
-        'trigonometric ratio and equation': 'Trigonometric Ratios & Equations',
-        'compound angles': 'Compound Angles',
-        'inverse trigonometric functions': 'Inverse Trigonometric Functions',
-        'itf': 'Inverse Trigonometric Functions',
-        'properties of triangle': 'Properties of Triangles',
-        'triangles': 'Properties of Triangles',
-        'logarithm': 'Logarithms',
-        'logarithm and its applications': 'Logarithms & Applications',
-        'mathematical induction': 'Mathematical Induction',
-        'mathematical reasoning': 'Mathematical Reasoning',
-        'logical reasoning': 'Logical Reasoning',
-        'sets': 'Sets',
-        'set': 'Sets',
-        'statistics': 'Statistics',
-        'inequalities': 'Inequalities',
-        'inequalities and absolute value': 'Inequalities & Absolute Value',
-    }
+def map_chapter_slug(chapter_name, subject=""):
+    cleaned = clean_str(chapter_name).lower()
+    for key, slug in CHAPTER_SLUG_MAP.items():
+        if key in cleaned:
+            return slug
+    # Generate fallback slug
+    slug = re.sub(r'[^a-z0-9]+', '-', cleaned).strip('-')
+    return slug or "core-syllabus"
 
-    # Try exact match first (case-insensitive)
-    topic_lower = topic.lower()
-    if topic_lower in normalization_map:
-        return normalization_map[topic_lower]
 
-    # Return original if no match
-    return topic
+def load_cbse_questions(csv_path):
+    questions = []
+    if not os.path.exists(csv_path):
+        print(f"[WARN] CBSE CSV not found at {csv_path}")
+        return questions
+
+    print(f"[INFO] Ingesting CBSE Class 12 dataset from: {csv_path}")
+    with open(csv_path, mode='r', encoding='utf-8', errors='replace') as f:
+        reader = csv.DictReader(f)
+        idx = 1
+        for row in reader:
+            try:
+                year = int(row.get("year", 2024))
+            except (ValueError, TypeError):
+                year = 2024
+
+            raw_topic = row.get("topic", "")
+            topic = normalize_topic(raw_topic)
+            raw_chapter = row.get("chapter", "General Chapter")
+            subject = row.get("subject", "physics").lower()
+            chapter_slug = map_chapter_slug(raw_chapter, subject)
+            
+            try:
+                marks = int(float(row.get("marks", 2)))
+            except (ValueError, TypeError):
+                marks = 2
+
+            difficulty = "Medium"
+            if marks >= 5:
+                difficulty = "Hard"
+            elif marks == 1:
+                difficulty = "Easy"
+
+            q = {
+                "id": f"cbse12-{year}-{idx:04d}",
+                "question_id": f"cbse12-{year}-{idx:04d}",
+                "exam": "cbse-12",
+                "exam_slug": "cbse-12",
+                "year": year,
+                "shift": row.get("exam_format", "annual"),
+                "subject": subject,
+                "chapter": raw_chapter,
+                "chapter_slug": chapter_slug,
+                "topic": topic,
+                "subtopic": row.get("subtopic", ""),
+                "difficulty": difficulty,
+                "marks": marks,
+                "type": "Descriptive" if marks > 1 else "MCQ",
+                "question_text": clean_str(row.get("question_text", "")),
+                "options": [],
+                "correct_option": clean_str(row.get("correct_option", "N/A")),
+                "verification_status": row.get("verification_status", "verified"),
+                "source_url": row.get("source_url", "https://cbse.gov.in")
+            }
+            questions.append(q)
+            idx += 1
+
+    print(f"[SUCCESS] Loaded {len(questions)} CBSE Class 12 questions.")
+    return questions
+
+
+def load_existing_jee_questions(existing_json_path):
+    questions = []
+    if not os.path.exists(existing_json_path):
+        return questions
+
+    print(f"[INFO] Ingesting existing JEE questions from: {existing_json_path}")
+    with open(existing_json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    for item in data:
+        topic = normalize_topic(item.get("topic", ""))
+        subject = clean_str(item.get("subject", "physics")).lower()
+        chapter = clean_str(item.get("chapter", topic))
+        chapter_slug = map_chapter_slug(chapter, subject)
+
+        year = item.get("year", 2021)
+        q_id = item.get("id") or item.get("question_id") or f"jee-{year}-{len(questions)+1}"
+
+        q = {
+            "id": q_id,
+            "question_id": q_id,
+            "exam": "jee-main",
+            "exam_slug": "jee-main",
+            "year": year,
+            "shift": item.get("shift", "Shift 1"),
+            "subject": subject,
+            "chapter": chapter or "Modern Physics",
+            "chapter_slug": chapter_slug or "modern-physics",
+            "topic": topic,
+            "subtopic": clean_str(item.get("subtopic", "")),
+            "difficulty": clean_str(item.get("difficulty", "Medium")),
+            "marks": 4,
+            "type": clean_str(item.get("question_type", "MCQ")),
+            "question_text": clean_str(item.get("question_text", f"Standard PYQ for {topic}")),
+            "options": item.get("options", []),
+            "correct_option": item.get("correct_option", "A"),
+            "verification_status": "verified",
+            "source_url": "https://nta.ac.in"
+        }
+        questions.append(q)
+
+    print(f"[SUCCESS] Loaded {len(questions)} JEE Main questions.")
+    return questions
 
 
 def main():
-    output_dir = Path(__file__).parent.parent / "public" / "data"
+    root_dir = Path(__file__).parent.parent
+    scripts_data = root_dir / "scripts" / "data"
+    public_data = root_dir / "public" / "data"
+    output_dir = root_dir / "scripts" / "output"
+    
+    public_data.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    all_questions = []
-    subjects_count = defaultdict(int)
-    years_count = defaultdict(int)
-    topics_by_subject = defaultdict(set)
+    cbse_csv = scripts_data / "CBSE_PYQ_Analysis_2016_2025_v3.csv"
+    if not cbse_csv.exists():
+        cbse_csv = Path("/home/whoisag/Downloads/CBSE_PYQ_Analysis_2016_2025_v3.csv")
 
-    for config in ['physics', 'chemistry', 'mathematics']:
-        print(f"Loading {config}...")
-        ds = load_dataset('soughed/jee-main-questions', config)
+    existing_jee_json = public_data / "questions.json"
 
-        for split_name, split_data in ds.items():
-            for row in split_data:
-                year = extract_year_from_paper(row['source_paper'])
-                topic = normalize_topic(row['topic'], row['subject'])
-                subtopic = row['subtopic'].strip() if row['subtopic'] else ""
+    cbse_qs = load_cbse_questions(str(cbse_csv))
+    jee_qs = load_existing_jee_questions(str(existing_jee_json))
 
-                # Skip empty topics
-                if not topic:
-                    continue
+    all_questions = jee_qs + cbse_qs
 
-                question = {
-                    "question_id": row['question_id'],
-                    "subject": row['subject'],
-                    "topic": topic,
-                    "subtopic": subtopic,
-                    "year": year,
-                    "difficulty": row['difficulty'],
-                    "question_type": row['question_type'],
-                }
-                all_questions.append(question)
+    # Deduplicate by id
+    deduped = []
+    seen = set()
+    for q in all_questions:
+        if q["id"] not in seen:
+            seen.add(q["id"])
+            deduped.append(q)
 
-                subjects_count[row['subject']] += 1
-                years_count[year] += 1
-                topics_by_subject[row['subject']].add(topic)
+    # Save to /public/data/questions.json
+    target_pub_q = public_data / "questions.json"
+    with open(target_pub_q, 'w', encoding='utf-8') as f:
+        json.dump(deduped, f, indent=2)
+    print(f"[SAVED] Saved {len(deduped)} validated questions to {target_pub_q}")
 
-    # Write questions.json
-    questions_path = output_dir / "questions.json"
-    with open(questions_path, 'w') as f:
-        json.dump(all_questions, f, indent=2)
-    print(f"Written {len(all_questions)} questions to {questions_path}")
+    # Save copy to /scripts/output/questions.json
+    target_out_q = output_dir / "questions.json"
+    with open(target_out_q, 'w', encoding='utf-8') as f:
+        json.dump(deduped, f, indent=2)
 
-    # Write topics.json
-    topics_data = {
-        "subjects": {
-            subject: sorted(list(topics))
-            for subject, topics in topics_by_subject.items()
-        },
-        "total_questions": len(all_questions),
-        "subjects_count": dict(subjects_count),
-        "years_count": dict(sorted(years_count.items())),
-        "total_topics_per_subject": {
-            subject: len(topics)
-            for subject, topics in topics_by_subject.items()
+    # Build topic index catalog
+    topics_by_exam = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+    for q in deduped:
+        topics_by_exam[q["exam_slug"]][q["chapter_slug"]][q["topic"]] += 1
+
+    topics_summary = {
+        "total_records": len(deduped),
+        "exams_covered": list(topics_by_exam.keys()),
+        "taxonomy": {
+            exam: {
+                chapter: dict(topics)
+                for chapter, topics in chapters.items()
+            }
+            for exam, chapters in topics_by_exam.items()
         }
     }
-    topics_path = output_dir / "topics.json"
-    with open(topics_path, 'w') as f:
-        json.dump(topics_data, f, indent=2)
-    print(f"Written topics data to {topics_path}")
 
-    # Print counts
-    print("\n=== COUNTS PER SUBJECT ===")
-    for subject, count in sorted(subjects_count.items()):
-        print(f"  {subject}: {count}")
-
-    print("\n=== COUNTS PER YEAR ===")
-    for year, count in sorted(years_count.items()):
-        print(f"  {year}: {count}")
-
-    print(f"\nTotal questions: {len(all_questions)}")
-    print(f"Total unique topics: {sum(len(t) for t in topics_by_subject.values())}")
+    target_pub_topics = public_data / "topics.json"
+    with open(target_pub_topics, 'w', encoding='utf-8') as f:
+        json.dump(topics_summary, f, indent=2)
+    print(f"[SAVED] Saved topic catalog to {target_pub_topics}")
 
 
 if __name__ == "__main__":

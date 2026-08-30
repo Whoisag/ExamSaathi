@@ -1,153 +1,536 @@
 {
-  "subjects": {
-    "Physics": [
-      "AC",
-      "AC Circuits",
-      "Atomic Physics",
-      "Behaviour of Perfect Gases",
-      "Capacitance",
-      "Centre of Mass",
-      "Circular motion",
-      "Collision",
-      "Communication Systems",
-      "Current Electricity",
-      "Digital Electronics",
-      "Dual Nature of Matter",
-      "EM Waves",
-      "EMI",
-      "Elasticity",
-      "Electric current",
-      "Electrostatics",
-      "Error Analysis",
-      "Gravitation",
-      "Heat",
-      "Isobaric process",
-      "Kinematics",
-      "Kinetic Theory of Gases",
-      "Magnetic Effects of Current",
-      "Magnetism",
-      "Mechanical Properties of Fluids",
-      "Mechanical Properties of Solids",
-      "Mechanics",
-      "Modern Physics",
-      "Motion in 1D",
-      "Moving Charges and Magnetism",
-      "Moving charges and magnetism",
-      "Newton's Laws of Motion",
-      "Nuclear Physics",
-      "Oscillation",
-      "Projectile Motion",
-      "Ray Optics",
-      "Relative motion",
-      "Rigid Body Dynamics",
-      "Semiconductors",
-      "Simple Harmonic Motion",
-      "Sound",
-      "Sound Waves",
-      "System of Particles",
-      "Thermal Properties of Matter",
-      "Thermodynamics",
-      "Units & Dimensions",
-      "Vectors",
-      "Wave",
-      "Wave Optics",
-      "Waves",
-      "Work, Power & Energy"
-    ],
-    "Chemistry": [
-      "Alcohols, Phenols & Ethers",
-      "Amines",
-      "Atomic Structure",
-      "Carbonyl Compounds",
-      "Chemical Bonding",
-      "Chemical Kinetics",
-      "Coordination Compounds",
-      "Electrochemistry",
-      "Equivalent Concept",
-      "Eudiometry",
-      "Halogen Chemistry",
-      "Hydrocarbons",
-      "IUPAC & Structural Isomerism",
-      "IUPAC Nomenclature",
-      "Ideal Gas",
-      "Inorganic Chemistry",
-      "Isomerism",
-      "Mole Concept",
-      "Organic Chemistry",
-      "P-Block Elements",
-      "Periodic Table",
-      "Physical Chemistry",
-      "Real Gas",
-      "Redox Reactions",
-      "S-Block Elements",
-      "Salt Analysis",
-      "Stereoisomerism",
-      "Sub",
-      "Surface Chemistry"
-    ],
-    "Mathematics": [
-      "3D Geometry",
-      "Application of Derivatives",
-      "Area Under Curve",
-      "Binomial Theorem",
-      "Circles",
-      "Circles & Parabola",
-      "Complex Numbers",
-      "Compound Angles",
-      "Conic Sections",
-      "Continuity & Differentiability",
-      "Definite Integration",
-      "Differential Equations",
-      "Differentiation",
-      "Ellipse",
-      "Functions",
-      "Hyperbola",
-      "Indefinite Integration",
-      "Inequalities",
-      "Inequalities & Absolute Value",
-      "Integration",
-      "Inverse Trigonometric Functions",
-      "Limits",
-      "Limits, Continuity & Differentiability",
-      "Logarithms",
-      "Logarithms & Applications",
-      "Logical Reasoning",
-      "Mathematical Induction",
-      "Mathematical Reasoning",
-      "Matrices",
-      "Matrices & Determinants",
-      "Monotonicity",
-      "Parabola",
-      "Permutations & Combinations",
-      "Probability",
-      "Properties of Triangles",
-      "Quadratic Equations",
-      "Relation",
-      "Sequences & Series",
-      "Series & Progressions",
-      "Sets",
-      "Special functions",
-      "Statistics",
-      "Straight Lines",
-      "Theory of Equations",
-      "Trigonometric Ratios & Equations",
-      "Trigonometry",
-      "Vectors"
-    ]
-  },
-  "total_questions": 1945,
-  "subjects_count": {
-    "Physics": 604,
-    "Chemistry": 672,
-    "Mathematics": 669
-  },
-  "years_count": {
-    "2020": 1301,
-    "2021": 644
-  },
-  "total_topics_per_subject": {
-    "Physics": 52,
-    "Chemistry": 29,
-    "Mathematics": 47
+  "total_records": 2853,
+  "exams_covered": [
+    "jee-main",
+    "cbse-12"
+  ],
+  "taxonomy": {
+    "jee-main": {
+      "phy-current-electricity": {
+        "Current Electricity": 21
+      },
+      "mechanical-properties-of-fluids": {
+        "Mechanical Properties of Fluids": 60
+      },
+      "rigid-body-dynamics": {
+        "Rigid Body Dynamics": 56
+      },
+      "phy-thermodynamics": {
+        "Thermodynamics": 53,
+        "Kinetic Theory of Gases": 20
+      },
+      "simple-harmonic-motion": {
+        "Simple Harmonic Motion": 11
+      },
+      "work-power-energy": {
+        "Work, Power & Energy": 21
+      },
+      "phy-magnetism": {
+        "Magnetism": 17,
+        "Moving charges and magnetism": 1,
+        "Moving Charges and Magnetism": 4
+      },
+      "phy-electrostatics": {
+        "Electrostatics": 25,
+        "Capacitance": 17
+      },
+      "kinematics": {
+        "Kinematics": 8
+      },
+      "cbse-modern-physics": {
+        "Semiconductors": 17
+      },
+      "magnetic-effects-of-current": {
+        "Magnetic Effects of Current": 9
+      },
+      "projectile-motion": {
+        "Projectile Motion": 11
+      },
+      "modern-physics": {
+        "Dual Nature of Matter": 12,
+        "Modern Physics": 6,
+        "Atomic Physics": 6
+      },
+      "ac": {
+        "AC": 3
+      },
+      "phy-optics": {
+        "Wave Optics": 23,
+        "Ray Optics": 21
+      },
+      "gravitation": {
+        "Gravitation": 11
+      },
+      "centre-of-mass": {
+        "Centre of Mass": 23
+      },
+      "mechanical-properties-of-solids": {
+        "Mechanical Properties of Solids": 4
+      },
+      "thermal-properties-of-matter": {
+        "Thermal Properties of Matter": 5
+      },
+      "nuclear-physics": {
+        "Nuclear Physics": 6
+      },
+      "heat": {
+        "Heat": 8
+      },
+      "collision": {
+        "Collision": 6
+      },
+      "digital-electronics": {
+        "Digital Electronics": 1
+      },
+      "behaviour-of-perfect-gases": {
+        "Behaviour of Perfect Gases": 9
+      },
+      "newton-s-laws-of-motion": {
+        "Newton's Laws of Motion": 25
+      },
+      "elasticity": {
+        "Elasticity": 7
+      },
+      "waves": {
+        "Waves": 8
+      },
+      "emi": {
+        "EMI": 10
+      },
+      "communication-systems": {
+        "Communication Systems": 5
+      },
+      "relative-motion": {
+        "Relative motion": 7
+      },
+      "vectors": {
+        "Vectors": 27
+      },
+      "units-dimensions": {
+        "Units & Dimensions": 4
+      },
+      "em-waves": {
+        "EM Waves": 6
+      },
+      "electric-current": {
+        "Electric current": 2
+      },
+      "motion-in-1d": {
+        "Motion in 1D": 7
+      },
+      "error-analysis": {
+        "Error Analysis": 5
+      },
+      "sound-waves": {
+        "Sound Waves": 4
+      },
+      "isobaric-process": {
+        "Isobaric process": 2
+      },
+      "oscillation": {
+        "Oscillation": 3
+      },
+      "circular-motion": {
+        "Circular motion": 2
+      },
+      "system-of-particles": {
+        "System of Particles": 3
+      },
+      "mechanics": {
+        "Mechanics": 2
+      },
+      "ac-circuits": {
+        "AC Circuits": 1
+      },
+      "wave": {
+        "Wave": 1
+      },
+      "sound": {
+        "Sound": 1
+      },
+      "physical-chemistry": {
+        "Physical Chemistry": 252
+      },
+      "organic-chemistry": {
+        "Organic Chemistry": 172
+      },
+      "iupac-structural-isomerism": {
+        "IUPAC & Structural Isomerism": 7
+      },
+      "inorganic-chemistry": {
+        "Inorganic Chemistry": 115
+      },
+      "ideal-gas": {
+        "Ideal Gas": 2
+      },
+      "atomic-structure": {
+        "Atomic Structure": 8
+      },
+      "chemical-bonding": {
+        "Chemical Bonding": 12
+      },
+      "carbonyl-compounds": {
+        "Carbonyl Compounds": 4
+      },
+      "chem-kinetics": {
+        "Chemical Kinetics": 11
+      },
+      "mole-concept": {
+        "Mole Concept": 6
+      },
+      "hydrocarbons": {
+        "Hydrocarbons": 3
+      },
+      "chem-coordination": {
+        "Coordination Compounds": 12
+      },
+      "iupac-nomenclature": {
+        "IUPAC Nomenclature": 3
+      },
+      "periodic-table": {
+        "Periodic Table": 7
+      },
+      "p-block-elements": {
+        "P-Block Elements": 6
+      },
+      "chem-electrochemistry": {
+        "Electrochemistry": 4
+      },
+      "surface-chemistry": {
+        "Surface Chemistry": 9
+      },
+      "halogen-chemistry": {
+        "Halogen Chemistry": 3
+      },
+      "equivalent-concept": {
+        "Equivalent Concept": 7
+      },
+      "eudiometry": {
+        "Eudiometry": 1
+      },
+      "real-gas": {
+        "Real Gas": 2
+      },
+      "alcohols-phenols-ethers": {
+        "Alcohols, Phenols & Ethers": 3
+      },
+      "isomerism": {
+        "Isomerism": 5
+      },
+      "salt-analysis": {
+        "Salt Analysis": 4
+      },
+      "chem-general-organic": {
+        "Amines": 4
+      },
+      "stereoisomerism": {
+        "Stereoisomerism": 3
+      },
+      "s-block-elements": {
+        "S-Block Elements": 4
+      },
+      "sub": {
+        "Sub": 1
+      },
+      "redox-reactions": {
+        "Redox Reactions": 1
+      },
+      "straight-lines": {
+        "Straight Lines": 53
+      },
+      "ellipse": {
+        "Ellipse": 13
+      },
+      "special-functions": {
+        "Special functions": 1
+      },
+      "complex-numbers": {
+        "Complex Numbers": 29
+      },
+      "integration": {
+        "Integration": 7
+      },
+      "definite-integration": {
+        "Definite Integration": 19
+      },
+      "relation": {
+        "Relation": 5
+      },
+      "limits": {
+        "Limits": 21
+      },
+      "sequences-series": {
+        "Sequences & Series": 27
+      },
+      "differentiation": {
+        "Differentiation": 13
+      },
+      "circles": {
+        "Circles": 46
+      },
+      "theory-of-equations": {
+        "Theory of Equations": 21
+      },
+      "monotonicity": {
+        "Monotonicity": 7
+      },
+      "matrices-determinants": {
+        "Matrices & Determinants": 20,
+        "Matrices": 1
+      },
+      "quadratic-equations": {
+        "Quadratic Equations": 31
+      },
+      "logarithms": {
+        "Logarithms": 6
+      },
+      "binomial-theorem": {
+        "Binomial Theorem": 32
+      },
+      "permutations-combinations": {
+        "Permutations & Combinations": 27
+      },
+      "parabola": {
+        "Parabola": 20
+      },
+      "area-under-curve": {
+        "Area Under Curve": 4
+      },
+      "trigonometry": {
+        "Trigonometry": 15
+      },
+      "functions": {
+        "Functions": 26
+      },
+      "conic-sections": {
+        "Conic Sections": 24
+      },
+      "indefinite-integration": {
+        "Indefinite Integration": 8
+      },
+      "limits-continuity-differentiability": {
+        "Limits, Continuity & Differentiability": 11
+      },
+      "series-progressions": {
+        "Series & Progressions": 8
+      },
+      "3d-geometry": {
+        "3D Geometry": 9
+      },
+      "mathematical-reasoning": {
+        "Mathematical Reasoning": 4
+      },
+      "hyperbola": {
+        "Hyperbola": 5
+      },
+      "sets": {
+        "Sets": 12
+      },
+      "application-of-derivatives": {
+        "Application of Derivatives": 8
+      },
+      "inverse-trigonometric-functions": {
+        "Inverse Trigonometric Functions": 10
+      },
+      "statistics": {
+        "Statistics": 6
+      },
+      "continuity-differentiability": {
+        "Continuity & Differentiability": 15
+      },
+      "compound-angles": {
+        "Compound Angles": 1
+      },
+      "properties-of-triangles": {
+        "Properties of Triangles": 23
+      },
+      "probability-statistics": {
+        "Probability": 20
+      },
+      "logarithms-applications": {
+        "Logarithms & Applications": 9
+      },
+      "inequalities-absolute-value": {
+        "Inequalities & Absolute Value": 9
+      },
+      "trigonometric-ratios-equations": {
+        "Trigonometric Ratios & Equations": 2
+      },
+      "integral-calculus": {
+        "Differential Equations": 11
+      },
+      "circles-parabola": {
+        "Circles & Parabola": 1
+      },
+      "mathematical-induction": {
+        "Mathematical Induction": 1
+      },
+      "inequalities": {
+        "Inequalities": 1
+      },
+      "logical-reasoning": {
+        "Logical Reasoning": 1
+      }
+    },
+    "cbse-12": {
+      "phy-electrostatics": {
+        "Coulomb's Law & Principle of Superposition": 9,
+        "Electric Field Lines & Flux": 9,
+        "Gauss's Law & Infinite Wire Derivations": 9,
+        "Equipotential Surfaces & Field Relation": 9,
+        "Capacitors in Series & Parallel Combinations": 9,
+        "Energy stored in Capacitor": 9
+      },
+      "phy-current-electricity": {
+        "Ohm's Law": 18,
+        "Kirchhoff's Laws": 9,
+        "Balanced Wheatstone Bridge & Meter Bridge": 9
+      },
+      "phy-magnetism": {
+        "Biot-Savart Law & Circular Coil Magnetic Field": 9,
+        "Ampere's Circuital Law & Long Solenoid Field": 9,
+        "Force between parallel currents": 9,
+        "Earth's Magnetism": 9,
+        "Magnetic Properties of Materials": 9
+      },
+      "phy-emi-ac": {
+        "Faraday's Laws": 9,
+        "Lenz's Law": 9,
+        "LCR Circuit": 9,
+        "Resonance": 9,
+        "AC Generator and Transformer": 9
+      },
+      "electromagnetic-waves": {
+        "Electromagnetic Spectrum": 9,
+        "Displacement Current": 9
+      },
+      "phy-optics": {
+        "Total Internal Reflection": 9,
+        "Lens Maker's Formula": 9,
+        "Prism": 9,
+        "Microscope and Telescope": 9,
+        "Huygens Principle": 9,
+        "Young's Double Slit Experiment": 9,
+        "Diffraction": 9
+      },
+      "dual-nature-of-radiation-and-matter": {
+        "Photoelectric Effect & Einstein's Equation": 9,
+        "Einstein's Photoelectric Equation": 9,
+        "De Broglie Wavelength & Dual Nature": 9
+      },
+      "atoms": {
+        "Rutherford's Model": 9,
+        "Bohr Model": 9
+      },
+      "modern-physics": {
+        "Mass Defect and Binding Energy": 9,
+        "Nuclear Fission and Fusion": 9
+      },
+      "cbse-modern-physics": {
+        "P-N Junction Diode IV Characteristics & Rectifiers": 18,
+        "Rectifier": 9
+      },
+      "chem-solutions": {
+        "Henry's Law": 9,
+        "Raoult's Law": 9,
+        "Colligative Properties": 9
+      },
+      "chem-electrochemistry": {
+        "Nernst Equation": 9,
+        "Kohlrausch's Law": 9,
+        "Faraday's Laws of Electrolysis": 9
+      },
+      "chem-kinetics": {
+        "Rate of Reaction": 9,
+        "Order and Molecularity": 9,
+        "Integrated Rate Equations": 9
+      },
+      "the-d-and-f-block-elements": {
+        "Properties of Transition Elements": 9,
+        "Lanthanoid Contraction": 9,
+        "KMnO4 and K2Cr2O7": 9
+      },
+      "chem-coordination": {
+        "Nomenclature": 9,
+        "Isomerism": 9
+      },
+      "haloalkanes-and-haloarenes": {
+        "SN1 and SN2 Reactions": 9,
+        "Optical Isomerism": 9
+      },
+      "alcohols-phenols-and-ethers": {
+        "Preparation Methods": 9,
+        "Acidic Nature of Phenols": 9,
+        "Reimer-Tiemann Reaction": 9
+      },
+      "chem-carbonyl-compounds": {
+        "Nucleophilic Addition": 9,
+        "Aldol Condensation": 9,
+        "Cannizzaro Reaction": 9
+      },
+      "chem-general-organic": {
+        "Preparation of Amines": 9,
+        "Basic Character of Amines": 9,
+        "Structure of Glucose": 9,
+        "Proteins and Amino Acids": 9
+      },
+      "relations-and-functions": {
+        "Types of Relations": 9,
+        "One-one and Onto Functions": 9
+      },
+      "inverse-trigonometric-functions": {
+        "Principal Value Branches": 9,
+        "Properties of Inverse Trig Functions": 9
+      },
+      "matrices-determinants": {
+        "Matrix Operations": 9,
+        "Symmetric and Skew-Symmetric Matrices": 9,
+        "Inverse using Adjoint": 9,
+        "Properties of Determinants": 9,
+        "Area of Triangle": 9,
+        "System of Linear Equations": 9
+      },
+      "continuity-and-differentiability": {
+        "Continuity": 9,
+        "Chain Rule": 9,
+        "Logarithmic Differentiation": 9
+      },
+      "application-of-derivatives": {
+        "Rate of Change": 9,
+        "Increasing and Decreasing Functions": 9,
+        "Maxima and Minima": 9
+      },
+      "integral-calculus": {
+        "Integration by Substitution": 9,
+        "Partial Fractions": 9,
+        "Integration by Parts": 9,
+        "Properties of Definite Integrals": 9,
+        "Area under Simple Curves": 9,
+        "Area between Two Curves": 9,
+        "Order and Degree": 9,
+        "Variable Separable": 9,
+        "Linear Differential Equations": 9
+      },
+      "vectors-3d": {
+        "Addition of Vectors": 9,
+        "Dot Product": 9,
+        "Cross Product": 9,
+        "Direction Cosines": 9,
+        "Equation of Line": 9,
+        "Shortest Distance between lines": 9
+      },
+      "linear-programming": {
+        "Graphical Method of Solution": 9,
+        "Bounded and Unbounded Regions": 9
+      },
+      "probability-statistics": {
+        "Conditional Probability": 9,
+        "Multiplication Theorem": 9,
+        "Bayes' Theorem": 9
+      },
+      "n-a": {
+        "N/A": 3
+      }
+    }
   }
 }
