@@ -26,6 +26,7 @@ export interface AuthContextType {
     targetExam?: string
   ) => Promise<{ error: Error | null; data?: any }>;
   signOut: () => Promise<{ error: Error | null }>;
+  signInWithGoogle: (redirectTo?: string) => Promise<{ error: Error | null; data?: any }>;
   // Compatibility aliases
   login: (email: string, password: string) => Promise<{ error: Error | null; data?: any }>;
   signup: (
@@ -35,6 +36,7 @@ export interface AuthContextType {
     targetExam?: string
   ) => Promise<{ error: Error | null; data?: any }>;
   logout: () => Promise<{ error: Error | null }>;
+  loginWithGoogle: (redirectTo?: string) => Promise<{ error: Error | null; data?: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -311,6 +313,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [supabase]);
 
+  // Sign In with Google OAuth implementation
+  const signInWithGoogle = useCallback(
+    async (redirectTo: string = "/dashboard/exams"): Promise<{ error: Error | null; data?: any }> => {
+      try {
+        const origin = typeof window !== "undefined" ? window.location.origin : "";
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
+            queryParams: {
+              access_type: "offline",
+              prompt: "consent",
+            },
+          },
+        });
+
+        if (error) {
+          return { error };
+        }
+
+        return { error: null, data };
+      } catch (err: any) {
+        return { error: err instanceof Error ? err : new Error(err?.message || "Google sign in failed") };
+      }
+    },
+    [supabase]
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -321,10 +351,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signIn,
         signUp,
         signOut,
+        signInWithGoogle,
         // Aliases
         login: signIn,
         signup: signUp,
         logout: signOut,
+        loginWithGoogle: signInWithGoogle,
       }}
     >
       {children}
