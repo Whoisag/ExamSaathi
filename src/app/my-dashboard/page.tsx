@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { ConfidenceSelector } from "@/components/my-dashboard/ConfidenceSelector";
 import { WeakSpots } from "@/components/my-dashboard/WeakSpots";
@@ -27,13 +27,34 @@ export default function MyDashboardPage() {
   const [simulateLoading, setSimulateLoading] = useState(false);
   const [simulateEmpty, setSimulateEmpty] = useState(false);
 
+  // Load saved confidence ratings from client storage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("examsaathi_topic_confidence");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setTopics(parsed);
+        }
+      }
+    } catch (e) {
+      console.warn("Could not load saved topics:", e);
+    }
+  }, []);
+
   const handleConfidenceChange = (
     id: string,
     newConfidence: "mastered" | "revising" | "weak"
   ) => {
-    setTopics((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, confidence: newConfidence } : t))
-    );
+    setTopics((prev) => {
+      const updated = prev.map((t) => (t.id === id ? { ...t, confidence: newConfidence } : t));
+      try {
+        localStorage.setItem("examsaathi_topic_confidence", JSON.stringify(updated));
+      } catch (e) {
+        console.warn("Could not save topic confidence:", e);
+      }
+      return updated;
+    });
   };
 
   const handleToggleLoading = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
@@ -11,20 +11,103 @@ import { GeneratedQuestionCard } from "@/components/analyzer/GeneratedQuestionCa
 import { GapAlertCard } from "@/components/analyzer/GapAlertCard";
 import { CbseDataFreshnessBanner } from "@/components/analyzer/CbseDataFreshnessBanner";
 import { LoginPromptModal } from "@/components/ui/LoginPromptModal";
-import { getMockAnalyzerData } from "@/data/mock";
-import { ArrowLeft, ArrowRight, RefreshCw, Flame, BookOpen, Layers, Target } from "lucide-react";
+import { getMockAnalyzerData, ChapterAnalyzerData } from "@/data/mock";
+import {
+  ArrowLeft,
+  ArrowRight,
+  RefreshCw,
+  Sparkles,
+  Target,
+  Bot,
+  Zap,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function ChapterAnalyzerPage() {
   const params = useParams();
   const examSlug = (params?.exam as string) || "jee-main";
   const chapterSlug = (params?.chapter as string) || "modern-physics";
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const analyzerData = useMemo(() => {
+  const fallbackData = useMemo(() => {
     return getMockAnalyzerData(examSlug, chapterSlug);
   }, [examSlug, chapterSlug]);
 
+  const [analyzerData, setAnalyzerData] = useState<ChapterAnalyzerData>(fallbackData);
+  const [aiInsights, setAiInsights] = useState<string | null>(null);
+  const [aiSource, setAiSource] = useState<string>("loading");
+  const [isAiLoading, setIsAiLoading] = useState(true);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Live fetch from /api/analyze and /api/generate-questions
+  useEffect(() => {
+    let isMounted = true;
+    setIsAiLoading(true);
+
+    async function loadLiveData() {
+      try {
+        // 1. Fetch analysis & AI insights
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ exam: examSlug, chapter: chapterSlug }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) {
+            if (data.analysis) {
+              setAnalyzerData((prev) => ({
+                ...prev,
+                weightagePie: data.analysis.pieData || prev.weightagePie,
+                trendChart:
+                  data.analysis.trends?.map((t: any, i: number) => ({
+                    year: Number(t.year) || 2020 + i,
+                    questions: Object.values(t).reduce<number>(
+                      (sum: number, v: any) => (typeof v === "number" ? sum + v : sum),
+                      0
+                    ),
+                    difficultyRating: 7.2 + i * 0.1,
+                  })) || prev.trendChart,
+                gapAlerts: data.analysis.gapAlerts || prev.gapAlerts,
+              }));
+            }
+            setAiInsights(data.aiInsights || null);
+            setAiSource(data.source || "deterministic");
+          }
+        }
+
+        // 2. Fetch targeted questions
+        const qRes = await fetch("/api/generate-questions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ exam: examSlug, chapter: chapterSlug, count: 2 }),
+        });
+
+        if (qRes.ok) {
+          const qData = await qRes.json();
+          if (isMounted && Array.isArray(qData.questions) && qData.questions.length > 0) {
+            setAnalyzerData((prev) => ({
+              ...prev,
+              generatedQuestions: qData.questions,
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn("Live fetch error, retained deterministic fallback:", err);
+      } finally {
+        if (isMounted) {
+          setIsAiLoading(false);
+        }
+      }
+    }
+
+    loadLiveData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [examSlug, chapterSlug]);
 
   const toggleSkeleton = () => {
     setIsLoading(true);
@@ -47,10 +130,20 @@ export default function ChapterAnalyzerPage() {
               <span>CHAPTERS</span>
             </Link>
             <span className="text-black font-bold">/</span>
-            <span className="bg-black text-white px-3.5 py-2 font-bold uppercase border-brutal">{analyzerData.chapter.name}</span>
+            <span className="bg-black text-white px-3.5 py-2 font-bold uppercase border-brutal truncate max-w-[200px] sm:max-w-none">
+              {analyzerData.chapter.name}
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
+            <Link
+              href={`/assistant?exam=${examSlug}&chapter=${chapterSlug}`}
+              className="border-brutal bg-black text-white hover:bg-white hover:text-black px-3.5 py-2 font-meta text-xs transition-colors flex items-center gap-1.5 font-bold"
+            >
+              <Bot className="w-3.5 h-3.5 text-[#FF4D00]" />
+              <span>CONSULT AI</span>
+            </Link>
+
             <Link
               href={`/dashboard/practice?exam=${examSlug}`}
               className="border-brutal bg-white text-black hover:bg-[#FF4D00] hover:text-black px-3.5 py-2 font-meta text-xs transition-colors flex items-center gap-1.5 font-bold"
@@ -106,6 +199,44 @@ export default function ChapterAnalyzerPage() {
             </div>
           </div>
         </div>
+
+        {/* Live AI Strategic Synthesis Section */}
+        {aiInsights && (
+          <div className="border-brutal bg-white p-6 sm:p-8 mb-8 relative">
+            <div className="flex items-center justify-between border-b-2 border-black pb-3 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 bg-[#FF4D00] border border-black flex items-center justify-center font-bold text-black text-xs">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-headline text-lg sm:text-xl text-black">
+                    AI STRATEGIC REVISION SYNTHESIS
+                  </h3>
+                  <span className="font-meta text-[10px] text-neutral-500 block">
+                    GROUNDED IN 10-YEAR EMPIRICAL FREQUENCY MATRICES
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 bg-black text-white px-3 py-1 font-meta text-[11px] font-bold">
+                {aiSource === "live_ai" ? (
+                  <>
+                    <Zap className="w-3.5 h-3.5 text-[#FF4D00]" />
+                    <span>LIVE AI REASONING</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#FF4D00]" />
+                    <span>DETERMINISTIC ANALYSIS</span>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="prose prose-sm max-w-none font-sans text-neutral-800 leading-relaxed whitespace-pre-line text-xs sm:text-sm">
+              {aiInsights}
+            </div>
+          </div>
+        )}
 
         {/* Synthetic-Data Freshness Banner for CBSE Class 12 */}
         <CbseDataFreshnessBanner examSlug={examSlug} />

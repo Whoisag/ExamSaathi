@@ -1,22 +1,97 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React, { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "@/data/mock";
 import { KaTeXMath } from "@/components/ui/KaTeXMath";
-import { Send, Bot, User, ArrowRight, Lock, Eye } from "lucide-react";
+import { Send, Bot, User, Sparkles, Loader2, RotateCcw } from "lucide-react";
 
 interface ChatInterfaceProps {
   initialMessages: ChatMessage[];
   suggestedPrompts: string[];
   isLoading?: boolean;
+  exam?: string;
+  chapter?: string;
 }
 
 export function ChatInterface({
   initialMessages,
   suggestedPrompts,
   isLoading = false,
+  exam = "jee-main",
+  chapter = "General Strategy",
 }: ChatInterfaceProps) {
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  const [inputText, setInputText] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isSending]);
+
+  const handleSendMessage = async (textToSend?: string) => {
+    const query = (textToSend || inputText).trim();
+    if (!query || isSending) return;
+
+    const userMessageId = `user-${Date.now()}`;
+    const userMsg: ChatMessage = {
+      id: userMessageId,
+      role: "user",
+      content: query,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    };
+
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
+    setInputText("");
+    setIsSending(true);
+
+    try {
+      const res = await fetch("/api/assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
+          exam,
+          chapter,
+        }),
+      });
+
+      const data = await res.json();
+      const botReply = data.message?.content || "Strategy response received.";
+
+      const botMsg: ChatMessage = {
+        id: `assistant-${Date.now()}`,
+        role: "assistant",
+        content: botReply,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      };
+
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (err) {
+      const errorMsg: ChatMessage = {
+        id: `error-${Date.now()}`,
+        role: "assistant",
+        content: "Error communicating with AI engine. Switched to offline deterministic reasoning.",
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="border-brutal bg-white p-6 animate-pulse space-y-4">
@@ -28,33 +103,33 @@ export function ChatInterface({
   }
 
   return (
-    <div className="border-brutal bg-white flex flex-col h-[700px] max-h-[80vh]">
+    <div className="border-brutal bg-white flex flex-col h-[750px] max-h-[82vh]">
       {/* Chat Header */}
       <div className="p-4 sm:p-5 border-brutal-b bg-black text-white flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#FF4D00] border border-black flex items-center justify-center font-headline text-black text-sm">
+          <div className="w-8 h-8 bg-[#FF4D00] border border-black flex items-center justify-center font-headline text-black text-sm font-bold">
             AI
           </div>
           <div>
-            <h3 className="font-headline text-base sm:text-lg text-white">
-              EXAMSAATHI NEURAL CHAT
+            <h3 className="font-headline text-base sm:text-lg text-white flex items-center gap-2">
+              <span>EXAMSAATHI AI STRATEGIST</span>
             </h3>
             <span className="font-meta text-[10px] text-neutral-400 block">
-              // MOCK AI PYQ AUDIT ENGINE • PREVIEW SESSION
+              // LIVE INTELLIGENCE ENGINE • {exam.toUpperCase()} • {chapter.toUpperCase()}
             </span>
           </div>
         </div>
 
-        {/* Read-Only Preview Pill */}
+        {/* Live Active Status Pill */}
         <div className="flex items-center gap-1.5 bg-neutral-900 border border-neutral-700 px-3 py-1 font-meta text-[11px] text-[#FF4D00]">
-          <Eye className="w-3.5 h-3.5" />
-          <span className="font-bold">PREVIEW MODE ONLY</span>
+          <span className="w-2 h-2 rounded-full bg-[#FF4D00] animate-pulse"></span>
+          <span className="font-bold">LIVE SOCRATIC TUTOR</span>
         </div>
       </div>
 
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-neutral-50">
-        {initialMessages.map((msg) => {
+        {messages.map((msg) => {
           const isBot = msg.role === "assistant";
           return (
             <div
@@ -84,7 +159,7 @@ export function ChatInterface({
                       isBot ? "text-[#FF4D00]" : "text-neutral-400"
                     }`}
                   >
-                    {isBot ? "EXAMSAATHI AI" : "STUDENT PROMPT"}
+                    {isBot ? "SAATHI SOCRATIC TUTOR" : "YOU"}
                   </span>
                   <span className="font-meta text-[10px] text-neutral-400">
                     {msg.timestamp}
@@ -101,74 +176,65 @@ export function ChatInterface({
                     <KaTeXMath math={msg.mathLatex} block={true} />
                   </div>
                 )}
-
-                {/* Action Chips (Preview Links) */}
-                {msg.actionChips && msg.actionChips.length > 0 && (
-                  <div className="mt-4 pt-3 border-t border-neutral-200 flex flex-wrap gap-2">
-                    {msg.actionChips.map((chip, idx) => (
-                      <React.Fragment key={idx}>
-                        {chip.href ? (
-                          <Link
-                            href={chip.href}
-                            className="bg-neutral-100 hover:bg-[#FF4D00] hover:text-black text-neutral-800 font-meta text-[10px] sm:text-xs px-2.5 py-1 border border-black flex items-center gap-1 transition-colors"
-                          >
-                            <span>{chip.label}</span>
-                            <ArrowRight className="w-3 h-3" />
-                          </Link>
-                        ) : (
-                          <span
-                            key={idx}
-                            className="bg-neutral-100 text-neutral-600 font-meta text-[10px] sm:text-xs px-2.5 py-1 border border-neutral-300 flex items-center gap-1 select-none cursor-default"
-                          >
-                            <span>{chip.label}</span>
-                          </span>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
           );
         })}
+
+        {isSending && (
+          <div className="flex gap-3 sm:gap-4 max-w-3xl mr-auto">
+            <div className="w-8 h-8 flex-shrink-0 border-brutal bg-[#FF4D00] text-black flex items-center justify-center">
+              <Bot className="w-4 h-4 animate-spin" />
+            </div>
+            <div className="border-brutal p-4 bg-white text-black flex items-center gap-2 font-meta text-xs">
+              <Loader2 className="w-4 h-4 animate-spin text-[#FF4D00]" />
+              <span>Saathi AI synthesizing verified PYQ shift reasoning...</span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* Suggested Prompt Chips (Read-Only Preview) */}
-      <div className="border-brutal-t p-3 bg-white overflow-x-auto flex gap-2 font-meta text-xs">
-        <span className="text-neutral-400 font-bold self-center text-[10px] pl-1 whitespace-nowrap">
-          SAMPLE PROMPTS:
+      {/* Interactive Suggested Prompt Chips */}
+      <div className="border-brutal-t p-2.5 bg-white overflow-x-auto flex gap-2 font-meta text-xs">
+        <span className="text-neutral-500 font-bold self-center text-[10px] pl-1 whitespace-nowrap">
+          QUICK PROMPTS:
         </span>
         {suggestedPrompts.map((p, idx) => (
-          <span
+          <button
             key={idx}
-            className="bg-neutral-100 text-neutral-600 border border-neutral-300 px-3 py-1.5 whitespace-nowrap text-[11px] select-none cursor-default"
+            type="button"
+            onClick={() => handleSendMessage(p)}
+            disabled={isSending}
+            className="bg-neutral-100 text-black border border-black px-3 py-1.5 whitespace-nowrap text-[11px] font-bold hover:bg-[#FF4D00] hover:text-black transition-colors cursor-pointer disabled:opacity-50"
           >
             {p}
-          </span>
+          </button>
         ))}
       </div>
 
-      {/* Disabled Chat Input Bar (Preview Purpose Only) */}
+      {/* Live Interactive Chat Input Bar */}
       <div className="border-brutal-t p-3 sm:p-4 bg-neutral-100 flex items-center gap-2">
         <div className="flex-1 relative flex items-center">
           <input
             type="text"
-            disabled
-            readOnly
-            value=""
-            placeholder="Chat input disabled — preview mode only (no live API calls in this shell)"
-            className="w-full pl-9 pr-4 py-3 border-brutal text-xs sm:text-sm bg-neutral-200 text-neutral-500 placeholder:text-neutral-500 cursor-not-allowed font-sans select-none"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={isSending}
+            placeholder="Ask anything on chapter trends, tricky formulas, or step-by-step solving..."
+            className="w-full pl-4 pr-4 py-3 border-brutal text-xs sm:text-sm bg-white text-black placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#FF4D00] font-sans"
           />
-          <Lock className="w-4 h-4 text-neutral-500 absolute left-3" />
         </div>
         <button
           type="button"
-          disabled
-          className="bg-neutral-300 text-neutral-500 px-5 py-3 border-brutal font-headline text-sm cursor-not-allowed flex items-center gap-2 select-none opacity-80"
-          title="Chat disabled for preview"
+          onClick={() => handleSendMessage()}
+          disabled={isSending || !inputText.trim()}
+          className="bg-black text-white px-5 py-3 border-brutal font-headline text-sm hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Send message"
         >
           <span>SEND</span>
-          <Send className="w-4 h-4 text-neutral-500" />
+          <Send className="w-4 h-4" />
         </button>
       </div>
     </div>

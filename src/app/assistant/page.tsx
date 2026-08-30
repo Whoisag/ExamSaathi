@@ -1,12 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
 import { ChatInterface } from "@/components/assistant/ChatInterface";
 import { MOCK_ASSISTANT_MESSAGES, MOCK_SUGGESTED_PROMPTS } from "@/data/mock";
-import { RefreshCw, Sparkles, Terminal } from "lucide-react";
+import { RefreshCw, Sparkles, Zap } from "lucide-react";
 
 export default function AssistantPage() {
+  const searchParams = useSearchParams();
+  const exam = searchParams?.get("exam") || "jee-main";
+  const chapter = searchParams?.get("chapter") || "General Strategy";
   const [isLoading, setIsLoading] = useState(false);
 
   const toggleSkeleton = () => {
@@ -23,13 +27,13 @@ export default function AssistantPage() {
         <div className="border-brutal bg-black text-white p-6 sm:p-8 mb-8 relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
             <div className="font-meta text-xs text-[#FF4D00] font-bold mb-1">
-              // NEURAL AGENT // AUDIT CHAT INTERFACE
+              // NEURAL AGENT // LIVE SOCRATIC TUTOR
             </div>
             <h1 className="font-headline text-3xl sm:text-5xl text-white tracking-tight">
-              EXAM STRATEGY ASSISTANT
+              AI STRATEGY ASSISTANT
             </h1>
             <p className="text-sm text-neutral-300 mt-2 max-w-2xl font-medium">
-              Consult with your analytical AI mentor on PYQ shift anomalies, high-yield formula requirements, and customized revision planning.
+              Interact with your analytical AI mentor on PYQ shift anomalies, high-yield formula breakdowns, and customized revision planning.
             </p>
           </div>
 
@@ -41,17 +45,20 @@ export default function AssistantPage() {
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
               <span>TEST SKELETON</span>
             </button>
-            <div className="border-brutal bg-[#FF4D00] text-black px-3.5 py-2 font-meta text-xs font-bold">
-              UI PREVIEW ONLY
+            <div className="border-brutal bg-[#FF4D00] text-black px-3.5 py-2 font-meta text-xs font-bold flex items-center gap-1">
+              <Zap className="w-3.5 h-3.5" />
+              <span>ACTIVE</span>
             </div>
           </div>
         </div>
 
-        {/* Chat UI Component accepting messages & prompts via props */}
+        {/* Live Chat UI Component connected to /api/assistant */}
         <ChatInterface
           initialMessages={MOCK_ASSISTANT_MESSAGES}
           suggestedPrompts={MOCK_SUGGESTED_PROMPTS}
           isLoading={isLoading}
+          exam={exam}
+          chapter={chapter}
         />
       </main>
 
@@ -60,7 +67,7 @@ export default function AssistantPage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>// EXAMSAATHI AI ASSISTANT • 2026 SHELL</div>
           <div className="text-neutral-400">
-            PROPS-DRIVEN SHELL • NO EXTERNAL API CALLS
+            POWERED BY OPENROUTER & HAIMAKER MULTI-PROVIDER AI
           </div>
         </div>
       </footer>
