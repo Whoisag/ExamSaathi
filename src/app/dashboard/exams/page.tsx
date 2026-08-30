@@ -21,14 +21,8 @@ export default function ExamsDashboardPage() {
     if (selectedFilter === "ENGINEERING") {
       return matchesSearch && (exam.id === "jee-main" || exam.id === "jee-advanced");
     }
-    if (selectedFilter === "MEDICAL") {
-      return matchesSearch && exam.id === "neet";
-    }
     if (selectedFilter === "BOARDS") {
-      return matchesSearch && (exam.id === "cbse-12" || exam.id === "cbse-10");
-    }
-    if (selectedFilter === "UNIVERSITY") {
-      return matchesSearch && exam.id === "cuet";
+      return matchesSearch && exam.id === "cbse-12";
     }
     return matchesSearch;
   });
@@ -98,7 +92,7 @@ export default function ExamsDashboardPage() {
             <SlidersHorizontal className="w-3.5 h-3.5 text-[#FF4D00]" />
             DISCIPLINE:
           </span>
-          {["ALL", "ENGINEERING", "MEDICAL", "BOARDS", "UNIVERSITY"].map((filter) => (
+          {["ALL", "ENGINEERING", "BOARDS"].map((filter) => (
             <button
               key={filter}
               onClick={() => setSelectedFilter(filter)}

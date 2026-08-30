@@ -183,10 +183,7 @@ export default function SignupPage() {
               >
                 <option value="jee-main">JEE Main 2026</option>
                 <option value="jee-advanced">JEE Advanced 2026</option>
-                <option value="neet">NEET (UG) 2026</option>
                 <option value="cbse-12">CBSE Class 12 Boards</option>
-                <option value="cbse-10">CBSE Class 10 Boards</option>
-                <option value="cuet">CUET (UG) 2026</option>
                 <option value="custom-exam">Custom Exam Track</option>
               </select>
             </div>
