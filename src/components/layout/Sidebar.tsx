@@ -5,14 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Sparkles,
-  LayoutDashboard,
   Sigma,
   BookmarkCheck,
-  Award,
-  Info,
   ChevronRight,
-  GraduationCap,
-  Target,
 } from "lucide-react";
 import { EXAMS, ExamId } from "@/data/mock";
 
@@ -25,21 +20,6 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
   const pathname = usePathname();
 
   const navLinks = [
-    {
-      label: "Target Exams",
-      href: "/dashboard/exams",
-      icon: LayoutDashboard,
-    },
-    {
-      label: "Syllabus Chapters",
-      href: `/dashboard/exams/${currentExam}/chapters`,
-      icon: GraduationCap,
-    },
-    {
-      label: "Practice Questions",
-      href: `/dashboard/practice?exam=${currentExam}`,
-      icon: Target,
-    },
     {
       label: "Formula Sheets",
       href: `/formulas/${currentExam}/${encodeURIComponent(currentSubject.toLowerCase())}`,

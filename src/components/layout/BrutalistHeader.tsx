@@ -14,7 +14,6 @@ export function BrutalistHeader() {
   const navItems = user
     ? [
         { label: "EXAMS", href: "/dashboard/exams" },
-        { label: "PRACTICE", href: "/dashboard/practice" },
         { label: "MY DASHBOARD", href: "/my-dashboard" },
         { label: "AI TUTOR", href: "/assistant" },
       ]

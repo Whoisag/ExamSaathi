@@ -9,7 +9,6 @@ import {
   Sigma,
   BookmarkCheck,
   Award,
-  Target,
 } from "lucide-react";
 import { ExamId } from "@/data/mock";
 
@@ -33,12 +32,6 @@ export function BottomNav({ currentExam = "jee-main", currentSubject = "physics"
       href: `/dashboard/${currentExam}/${currentSubject.toLowerCase()}`,
       icon: LayoutDashboard,
       activePattern: /^\/dashboard\/[a-z0-9-]+\/[a-z0-9-]+/,
-    },
-    {
-      label: "Practice",
-      href: `/dashboard/practice?exam=${currentExam}`,
-      icon: Target,
-      activePattern: /^\/dashboard\/practice/,
     },
     {
       label: "Formulas",

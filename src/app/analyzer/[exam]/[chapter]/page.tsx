@@ -18,7 +18,6 @@ import {
   ArrowRight,
   RefreshCw,
   Sparkles,
-  Target,
   Bot,
   Zap,
   CheckCircle2,
@@ -143,14 +142,6 @@ export default function ChapterAnalyzerPage() {
             >
               <Bot className="w-3.5 h-3.5 text-[#FF4D00]" />
               <span>CONSULT AI</span>
-            </Link>
-
-            <Link
-              href={`/dashboard/practice?exam=${examSlug}`}
-              className="border-brutal bg-white text-black hover:bg-[#FF4D00] hover:text-black px-3.5 py-2 font-meta text-xs transition-colors flex items-center gap-1.5 font-bold"
-            >
-              <Target className="w-3.5 h-3.5 text-[#FF4D00]" />
-              <span>PRACTICE</span>
             </Link>
 
             <button
