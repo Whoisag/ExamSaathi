@@ -65,9 +65,9 @@ Provide:
         { role: "user", content: userPrompt },
       ],
       {
-        model: process.env.OPENROUTER_MODEL_ANALYSIS || "anthropic/claude-3.5-sonnet",
+        model: process.env.OPENROUTER_MODEL_ANALYSIS || "meta-llama/llama-3.3-70b-instruct",
         temperature: 0.3,
-        maxTokens: 850,
+        maxTokens: 500,
         timeoutMs: 8000,
       }
     );

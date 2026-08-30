@@ -50,17 +50,24 @@ Ensure exactly 1 option has "isCorrect": true, and all equations are strictly en
         { role: "user", content: userPrompt },
       ],
       {
-        model: process.env.OPENROUTER_MODEL_ANALYSIS || "anthropic/claude-3.5-sonnet",
-        temperature: 0.4,
-        maxTokens: 1400,
-        timeoutMs: 9000,
+        model: process.env.OPENROUTER_MODEL_ANALYSIS || "meta-llama/llama-3.3-70b-instruct",
+        temperature: 0.3,
+        maxTokens: 650,
+        timeoutMs: 8000,
         responseFormat: { type: "json_object" },
       }
     );
 
     if (aiResult.text && !aiResult.error) {
       try {
-        const parsed = JSON.parse(aiResult.text);
+        let cleanText = aiResult.text.trim();
+        if (cleanText.includes("```")) {
+          const match = cleanText.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+          if (match && match[1]) {
+            cleanText = match[1].trim();
+          }
+        }
+        const parsed = JSON.parse(cleanText);
         const questions = parsed.questions || parsed;
         if (Array.isArray(questions) && questions.length > 0) {
           return NextResponse.json({
@@ -69,6 +76,7 @@ Ensure exactly 1 option has "isCorrect": true, and all equations are strictly en
             chapter,
             count: questions.length,
             source: "live_ai",
+            provider: aiResult.provider || "openrouter",
             questions,
           });
         }

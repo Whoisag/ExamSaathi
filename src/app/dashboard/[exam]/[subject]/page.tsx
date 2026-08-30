@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { AppShell } from "@/components/layout/AppShell";
 import { TopicHeatmap } from "@/components/dashboard/TopicHeatmap";
@@ -32,13 +32,44 @@ export default function DashboardSubjectPage() {
     exam.subjects[0] ||
     "Physics";
 
+  const [predictions, setPredictions] = useState(MOCK_PREDICTIONS);
+  const [gapAlerts, setGapAlerts] = useState(MOCK_GAP_ALERTS);
+
   // State toggles for testing isLoading (skeleton) and empty states as required
   const [simulateLoading, setSimulateLoading] = useState(false);
   const [simulateEmpty, setSimulateEmpty] = useState(false);
 
-  // Retrieve mock data
+  // Retrieve heatmap data with fallback
   const heatmapKey = `${examId}-${matchedSubject.toLowerCase()}`;
   const heatmapData = MOCK_HEATMAP_DATA[heatmapKey] || MOCK_HEATMAP_DATA["jee-main-physics"];
+
+  // Live fetch from /api/analyze
+  useEffect(() => {
+    let isMounted = true;
+    async function loadAnalysis() {
+      try {
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ exam: examId, chapter: matchedSubject.toLowerCase() }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && data.analysis) {
+            if (Array.isArray(data.analysis.gapAlerts) && data.analysis.gapAlerts.length > 0) {
+              setGapAlerts(data.analysis.gapAlerts);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Could not fetch /api/analyze for subject dashboard:", err);
+      }
+    }
+    loadAnalysis();
+    return () => {
+      isMounted = false;
+    };
+  }, [examId, matchedSubject]);
 
   const handleToggleLoading = () => {
     setSimulateLoading(true);
@@ -86,14 +117,14 @@ export default function DashboardSubjectPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Component 1: TopicPredictor */}
           <TopicPredictor
-            predictions={MOCK_PREDICTIONS}
+            predictions={predictions}
             isLoading={simulateLoading}
             isEmpty={simulateEmpty}
           />
 
           {/* Component 2: GapAlert */}
           <GapAlert
-            alerts={MOCK_GAP_ALERTS}
+            alerts={gapAlerts}
             isLoading={simulateLoading}
             isEmpty={simulateEmpty}
           />

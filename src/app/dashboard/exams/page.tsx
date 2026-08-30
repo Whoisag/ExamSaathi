@@ -1,18 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
 import { ExamCard } from "@/components/exams/ExamCard";
 import { MOCK_EXAMS_LIST, ExamCardItem } from "@/data/mock";
-import { Search, SlidersHorizontal, RefreshCw } from "lucide-react";
+import { Search, SlidersHorizontal, RefreshCw, Layers } from "lucide-react";
 
 export default function ExamsDashboardPage() {
+  const [exams, setExams] = useState<ExamCardItem[]>(MOCK_EXAMS_LIST);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState<string>("ALL");
   const [isLoading, setIsLoading] = useState(false);
 
-  const filteredExams = MOCK_EXAMS_LIST.filter((exam) => {
+  useEffect(() => {
+    let isMounted = true;
+    async function loadExams() {
+      try {
+        const res = await fetch("/api/exams");
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && Array.isArray(data.exams) && data.exams.length > 0) {
+            setExams(data.exams);
+          }
+        }
+      } catch (err) {
+        console.warn("Could not fetch /api/exams, using fallback list:", err);
+      }
+    }
+    loadExams();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const filteredExams = exams.filter((exam) => {
     const matchesSearch =
       exam.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       exam.authority.toLowerCase().includes(searchQuery.toLowerCase()) ||

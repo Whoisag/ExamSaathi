@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
@@ -28,11 +28,34 @@ export default function ExamChaptersPage() {
     pyqYearsRange: "2019 - 2025",
   };
 
-  const allChapters = useMemo(() => getMockChapters(examSlug), [examSlug]);
-
+  const [chapters, setChapters] = useState<ChapterItem[]>(() => getMockChapters(examSlug));
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubject, setSelectedSubject] = useState<string>("ALL");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Live fetch chapters from /api/chapters
+  useEffect(() => {
+    let isMounted = true;
+    async function loadChapters() {
+      try {
+        const res = await fetch(`/api/chapters?exam=${examSlug}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && Array.isArray(data.chapters) && data.chapters.length > 0) {
+            setChapters(data.chapters);
+          }
+        }
+      } catch (err) {
+        console.warn("Could not fetch /api/chapters, using fallback:", err);
+      }
+    }
+    loadChapters();
+    return () => {
+      isMounted = false;
+    };
+  }, [examSlug]);
+
+  const allChapters = chapters;
 
   // Available subjects for current exam
   const subjects = useMemo(() => {
