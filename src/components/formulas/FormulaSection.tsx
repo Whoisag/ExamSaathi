@@ -8,9 +8,18 @@ import { Flame, Star, Bookmark } from "lucide-react";
 interface FormulaSectionProps {
   priority: "High" | "Medium" | "Low";
   formulas: FormulaItem[];
+  isActiveRecall?: boolean;
+  subjectName?: string;
+  examSlug?: string;
 }
 
-export function FormulaSection({ priority, formulas }: FormulaSectionProps) {
+export function FormulaSection({
+  priority,
+  formulas,
+  isActiveRecall = false,
+  subjectName = "Physics",
+  examSlug = "jee-main",
+}: FormulaSectionProps) {
   if (formulas.length === 0) return null;
 
   const getSectionHeader = () => {
@@ -72,7 +81,13 @@ export function FormulaSection({ priority, formulas }: FormulaSectionProps) {
       {/* Responsive Grid: 1 col mobile -> 2 col tablet -> 3 col desktop */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {formulas.map((f) => (
-          <FormulaCard key={f.id} formula={f} />
+          <FormulaCard
+            key={f.id}
+            formula={f}
+            isActiveRecall={isActiveRecall}
+            subjectName={subjectName}
+            examSlug={examSlug}
+          />
         ))}
       </div>
     </section>

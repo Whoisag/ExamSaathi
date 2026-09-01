@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useMotion, containerVariants, cardVariants } from "@/hooks/useMotion";
 import { AppShell } from "@/components/layout/AppShell";
 import { TopicHeatmap } from "@/components/dashboard/TopicHeatmap";
 import { TrendChart } from "@/components/dashboard/TrendChart";
@@ -20,6 +22,7 @@ import { Sparkles, SlidersHorizontal, Eye, RefreshCw } from "lucide-react";
 
 export default function DashboardSubjectPage() {
   const params = useParams();
+  const { shouldAnimate } = useMotion();
   const rawExam = (params?.exam as string) || "jee-main";
   const rawSubject = (params?.subject as string) || "physics";
 
@@ -112,9 +115,9 @@ export default function DashboardSubjectPage() {
         </div>
       }
     >
-      <div className="space-y-6">
+      <motion.div className="space-y-6" variants={containerVariants} initial={shouldAnimate ? "hidden" : false} animate="show">
         {/* Top 2-Column Section: Topic Predictor + Gap Alerts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <motion.div variants={cardVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Component 1: TopicPredictor */}
           <TopicPredictor
             predictions={predictions}
@@ -128,23 +131,27 @@ export default function DashboardSubjectPage() {
             isLoading={simulateLoading}
             isEmpty={simulateEmpty}
           />
-        </div>
+        </motion.div>
 
         {/* Component 3: TopicHeatmap */}
-        <TopicHeatmap
-          data={heatmapData}
-          isLoading={simulateLoading}
-          isEmpty={simulateEmpty}
-        />
+        <motion.div variants={cardVariants}>
+          <TopicHeatmap
+            data={heatmapData}
+            isLoading={simulateLoading}
+            isEmpty={simulateEmpty}
+          />
+        </motion.div>
 
         {/* Component 4: TrendChart */}
-        <TrendChart
-          data={MOCK_TREND_DATA}
-          topics={MOCK_TREND_TOPICS}
-          isLoading={simulateLoading}
-          isEmpty={simulateEmpty}
-        />
-      </div>
+        <motion.div variants={cardVariants}>
+          <TrendChart
+            data={MOCK_TREND_DATA}
+            topics={MOCK_TREND_TOPICS}
+            isLoading={simulateLoading}
+            isEmpty={simulateEmpty}
+          />
+        </motion.div>
+      </motion.div>
     </AppShell>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+import { useMotion, containerVariants, cardVariants } from "@/hooks/useMotion";
 import { TopicPrediction } from "@/data/mock";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -21,6 +23,7 @@ export function TopicPredictor({
   title = "Predicted High-Yield Topics",
   subtitle = "Ranked likelihood for upcoming 2026 examination shifts",
 }: TopicPredictorProps) {
+  const { shouldAnimate } = useMotion();
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -82,10 +85,13 @@ export function TopicPredictor({
         </span>
       </div>
 
-      <div className="space-y-3">
-        {predictions.map((item) => (
-          <div
+      <motion.div className="space-y-3" variants={containerVariants} initial="hidden" animate="show">
+        {predictions.map((item, index) => (
+          <motion.div
             key={item.id}
+            variants={cardVariants}
+            whileHover={shouldAnimate ? { y: -3, transition: { duration: 0.2 } } : {}}
+            style={{ willChange: 'transform' }}
             className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000] group"
           >
             {/* Header: Rank + Title + Trend Badge */}
@@ -132,11 +138,11 @@ export function TopicPredictor({
                 </span>
               </div>
               <div className="w-full bg-neutral-100 border border-black h-2.5 overflow-hidden">
-                <div
-                  className="h-full transition-all duration-500 bg-[#FF4D00]"
-                  style={{
-                    width: `${item.predictedProbability}%`,
-                  }}
+                <motion.div
+                  className="h-full bg-[#FF4D00]"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${item.predictedProbability}%` }}
+                  transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
                 />
               </div>
             </div>
@@ -145,9 +151,9 @@ export function TopicPredictor({
             <p className="font-meta text-[11px] text-neutral-800 bg-neutral-50 p-2.5 border border-black leading-relaxed">
               💡 {item.trendReason}
             </p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

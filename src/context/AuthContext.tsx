@@ -315,7 +315,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Sign In with Google OAuth implementation
   const signInWithGoogle = useCallback(
-    async (redirectTo: string = "/dashboard/exams"): Promise<{ error: Error | null; data?: any }> => {
+    async (redirectTo: string = "/my-dashboard"): Promise<{ error: Error | null; data?: any }> => {
       try {
         const origin = typeof window !== "undefined" ? window.location.origin : "";
         const { data, error } = await supabase.auth.signInWithOAuth({

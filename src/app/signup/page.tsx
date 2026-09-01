@@ -59,13 +59,13 @@ export default function SignupPage() {
 
     toast.success("Account created successfully! Preparing dashboard...");
     setTimeout(() => {
-      router.push("/dashboard/exams");
+      router.push("/my-dashboard");
     }, 400);
   };
 
   const handleGoogleSignup = async () => {
     setIsGoogleLoading(true);
-    const { error } = await signInWithGoogle("/dashboard/exams");
+    const { error } = await signInWithGoogle("/my-dashboard");
     if (error) {
       toast.error(
         error.message.includes("provider is not enabled")
@@ -182,9 +182,9 @@ export default function SignupPage() {
                 className="w-full px-4 py-2.5 border-brutal text-sm bg-neutral-50 text-black font-meta focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF4D00] cursor-pointer"
               >
                 <option value="jee-main">JEE Main 2026</option>
-                <option value="jee-advanced">JEE Advanced 2026</option>
                 <option value="cbse-12">CBSE Class 12 Boards</option>
-                <option value="custom-exam">Custom Exam Track</option>
+                <option value="jee-advanced">JEE Advanced 2026 (Coming Soon)</option>
+                <option value="neet">NEET (UG) 2026 (Coming Soon)</option>
               </select>
             </div>
 

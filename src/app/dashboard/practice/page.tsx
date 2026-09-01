@@ -1,15 +1,24 @@
 "use client";
 
 import React, { Suspense, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { AppShell } from "@/components/layout/AppShell";
 import { PracticeQuestionList } from "@/components/dashboard/PracticeQuestionList";
 import { EXAMS, ExamId } from "@/data/mock";
-import { Dumbbell, Sparkles, BookOpen, Layers, RefreshCw } from "lucide-react";
+import { Zap, Sparkles, BookOpen } from "lucide-react";
+
+const PREP_EXAM_TABS: { id: ExamId; shortName: string }[] = [
+  { id: "jee-main", shortName: "JEE MAIN 2026" },
+  { id: "cbse-12", shortName: "CBSE CLASS 12 BOARDS" },
+];
 
 function PracticeContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const rawExam = searchParams?.get("exam") || "cbse-12";
+  const rawExam = searchParams?.get("exam");
+  const urlSubject = searchParams?.get("subject") || undefined;
+  const urlChapter = searchParams?.get("chapter") || undefined;
+
   const [currentExam, setCurrentExam] = useState<ExamId>(() => {
     if (rawExam && rawExam in EXAMS) return rawExam as ExamId;
     return "cbse-12";
@@ -21,12 +30,15 @@ function PracticeContent() {
       return;
     }
     try {
+      const saved = localStorage.getItem("examsaathi_target_exam");
+      if (saved && saved in EXAMS) {
+        setCurrentExam(saved as ExamId);
+        return;
+      }
       const stored = localStorage.getItem("exam_saathi_user");
       if (stored) {
         const u = JSON.parse(stored);
-        if (u.targetExam && u.targetExam in EXAMS) {
-          setCurrentExam(u.targetExam as ExamId);
-        }
+        if (u.targetExam && u.targetExam in EXAMS) setCurrentExam(u.targetExam as ExamId);
       }
     } catch {
       // fallback
@@ -35,48 +47,58 @@ function PracticeContent() {
 
   const examInfo = EXAMS[currentExam] || EXAMS["cbse-12"];
 
+  const handleSwitchExam = (examId: ExamId) => {
+    setCurrentExam(examId);
+    try {
+      localStorage.setItem("examsaathi_target_exam", examId);
+    } catch {
+      // fallback
+    }
+  };
+
   return (
     <AppShell
       currentExam={currentExam}
-      currentSubject="Physics"
-      title={`${examInfo.shortName} • AI Practice Drills`}
-      subtitle="Synthetic exam questions calibrated against real shift weightages, syllabus rationalization, and recurrence gaps."
+      title="Practice Questions"
+      subtitle={`${examInfo.shortName} — Chapter-wise drills with answers, hints, MCQ choices, and attempt tracking.`}
       breadcrumbs={[
         { label: "Exams", href: "/dashboard/exams" },
-        { label: examInfo.shortName, href: `/dashboard/exams/${currentExam}/chapters` },
-        { label: "AI Practice" },
+        { label: "Practice" },
       ]}
+      actionSlot={
+        <div className="flex items-center gap-2">
+          <span className="font-meta text-[10px] font-bold px-3 py-1.5 bg-[#FF4D00] text-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5" />
+            AI DRILL ENGINE
+          </span>
+        </div>
+      }
     >
-      <div className="space-y-8">
-        {/* Practice Banner */}
-        <div className="border-2 border-black bg-black text-white p-6 sm:p-8 relative">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="bg-[#FF4D00] text-black font-meta text-[11px] px-2.5 py-0.5 font-bold uppercase">
-                  {examInfo.shortName} REPOSITORY
-                </span>
-                <span className="font-meta text-xs text-neutral-400">
-                  // AI PRACTICE DRILL ENGINE
-                </span>
-              </div>
-              <h2 className="font-headline text-2xl sm:text-4xl text-white tracking-tight">
-                TARGETED SYLLABUS PRACTICE
-              </h2>
-              <p className="text-xs sm:text-sm text-neutral-300 font-sans mt-2 max-w-2xl leading-relaxed">
-                Filter drills by subject, chapter, or difficulty. Each question is tagged with empirical weightage metrics and AI synthesis badges.
-              </p>
-            </div>
-
-            <div className="border-2 border-[#FF4D00] bg-neutral-900 px-4 py-3 font-meta text-xs flex items-center gap-2 self-start md:self-auto shrink-0 shadow-[3px_3px_0px_0px_#FF4D00]">
-              <Sparkles className="w-4 h-4 text-[#FF4D00]" />
-              <span className="text-white font-bold">2026 DRILL PROTOCOL</span>
-            </div>
-          </div>
+      <div className="space-y-4">
+        {/* Exam Switcher Bar */}
+        <div className="grid grid-cols-2 bg-black text-white p-1 border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
+          {PREP_EXAM_TABS.map((exam) => (
+            <button
+              key={exam.id}
+              type="button"
+              onClick={() => handleSwitchExam(exam.id)}
+              className={`px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wider uppercase whitespace-nowrap transition-colors text-center cursor-pointer ${
+                currentExam === exam.id
+                  ? "bg-[#FF4D00] text-black"
+                  : "text-neutral-400 hover:text-white hover:bg-neutral-900"
+              }`}
+            >
+              {exam.shortName}
+            </button>
+          ))}
         </div>
 
-        {/* Practice Question List with client-side filters */}
-        <PracticeQuestionList />
+        {/* Practice Question List Component */}
+        <PracticeQuestionList
+          currentExam={currentExam}
+          initialSubject={urlSubject}
+          initialChapter={urlChapter}
+        />
       </div>
     </AppShell>
   );
@@ -86,9 +108,9 @@ export default function PracticePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FF4D00] flex items-center justify-center p-8">
-          <div className="border-2 border-black bg-white p-8 font-headline text-lg">
-            LOADING PRACTICE DRILLS...
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="border-2 border-black bg-white p-8 shadow-[4px_4px_0px_0px_#000000] font-headline text-lg uppercase">
+            Loading Practice Questions...
           </div>
         </div>
       }
@@ -97,3 +119,4 @@ export default function PracticePage() {
     </Suspense>
   );
 }
+

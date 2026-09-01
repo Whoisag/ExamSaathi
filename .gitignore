@@ -43,3 +43,5 @@ next-env.d.ts
 .venv
 screenshots_audit
 audit_routes.mjs
+public/*_verify.png
+public/*coming_soon*.png

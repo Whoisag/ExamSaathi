@@ -5,11 +5,22 @@ import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, ArrowRight, Terminal, Activity, Layers, Menu, X } from "lucide-react";
 import { PortalHero } from "@/components/landing/PortalHero";
-import { SleeveDeckCatalogue } from "@/components/landing/SleeveDeckCatalogue";
+import { ChapterRadarBoard } from "@/components/landing/ChapterRadarBoard";
+import { AntigravityH3 } from "@/components/ui/AntigravityH3";
+import { LoginPromptModal } from "@/components/ui/LoginPromptModal";
+import { AiAssistantPreviewModal } from "@/components/ui/AiAssistantPreviewModal";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { ScrollJourneyLine } from "@/components/landing/ScrollJourneyLine";
 
 export default function LandingPage() {
+  const router = useRouter();
+  const { user } = useAuth();
   const containerRef = useRef<HTMLDivElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [loginModalOpen, setLoginModalOpen] = React.useState(false);
+  const [aiPreviewOpen, setAiPreviewOpen] = React.useState(false);
+  const [selectedServiceTitle, setSelectedServiceTitle] = React.useState("");
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -83,24 +94,30 @@ export default function LandingPage() {
 
           {/* Center Pill Navigation */}
           <nav className="hidden md:flex items-center bg-black p-1.5 rounded-full border-brutal shadow-none">
-            <Link
-              href="/assistant"
-              className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors"
+            <button
+              onClick={() => {
+                if (user) {
+                  router.push("/assistant");
+                } else {
+                  setAiPreviewOpen(true);
+                }
+              }}
+              className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer"
             >
               [AI ASSISTANT]
-            </Link>
-            <Link
-              href="/evaluation"
-              className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors"
+            </button>
+            <a
+              href="#cracks-the-code"
+              className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer"
             >
               [EVALUATION]
-            </Link>
-            <Link
-              href="/about"
-              className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors"
+            </a>
+            <a
+              href="#intelligence-stack"
+              className="px-4 py-1.5 font-meta text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer"
             >
               [METHODOLOGY]
-            </Link>
+            </a>
           </nav>
 
           {/* Auth & Mobile Toggle */}
@@ -134,30 +151,36 @@ export default function LandingPage() {
             >
               <div className="text-[10px] text-[#FF4D00] font-mono font-bold tracking-wider">// NAVIGATION MENU</div>
               <div className="grid grid-cols-1 gap-1.5 font-meta text-xs">
-                <Link
-                  href="/assistant"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (user) {
+                      router.push("/assistant");
+                    } else {
+                      setAiPreviewOpen(true);
+                    }
+                  }}
+                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold text-left cursor-pointer"
                 >
                   <span>[AI STRATEGY ASSISTANT]</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-                <Link
-                  href="/evaluation"
+                </button>
+                <a
+                  href="#cracks-the-code"
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
                 >
                   <span>[ACCURACY EVALUATION]</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-                <Link
-                  href="/about"
+                </a>
+                <a
+                  href="#intelligence-stack"
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
                 >
                   <span>[METHODOLOGY & WHITE PAPER]</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                </a>
               </div>
               <div className="pt-2 border-t border-neutral-800 flex items-center gap-2">
                 <Link
@@ -183,8 +206,11 @@ export default function LandingPage() {
       {/* 2. FULLSCREEN INTERACTIVE PORTAL HERO */}
       <PortalHero />
 
-      {/* 3. CATALOGUE – SLEEVE DECK (PHYSICAL RECORD SLEEVES) */}
-      <SleeveDeckCatalogue />
+      {/* 3. CHAPTER THREAT BOARD — Live Exam Intelligence Radar */}
+      <ChapterRadarBoard />
+
+      {/* 3.5. SCROLL JOURNEY LINE — Winding SVG path showing how ExamSaathi works */}
+      <ScrollJourneyLine />
 
       {/* 4. SKEWED MARQUEE SECTION (-2deg Skew, #000000 Background) */}
       <motion.section
@@ -261,9 +287,29 @@ export default function LandingPage() {
                 viewport={{ once: false, amount: 0.2 }}
                 transition={{ duration: 0.55, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <Link
-                  href="/dashboard/exams"
-                  className="group block p-6 sm:p-10 hover:bg-[#FF4D00] transition-colors duration-200"
+                <div
+                  onClick={() => {
+                    if (user) {
+                      router.push("/my-dashboard");
+                    } else {
+                      setSelectedServiceTitle(svc.title);
+                      setLoginModalOpen(true);
+                    }
+                  }}
+                  className="group block p-6 sm:p-10 hover:bg-[#FF4D00] transition-colors duration-200 cursor-pointer"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      if (user) {
+                        router.push("/my-dashboard");
+                      } else {
+                        setSelectedServiceTitle(svc.title);
+                        setLoginModalOpen(true);
+                      }
+                    }
+                  }}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-start md:items-center gap-6">
@@ -274,9 +320,14 @@ export default function LandingPage() {
                         <span className="font-meta text-xs text-neutral-400 group-hover:text-black transition-colors block mb-1">
                           // {svc.category} • {svc.tag}
                         </span>
-                        <h3 className="font-headline text-2xl sm:text-4xl text-white group-hover:text-black group-hover:translate-x-3 transition-all duration-200">
-                          {svc.title}
-                        </h3>
+                        <AntigravityH3
+                          text={svc.title}
+                          variant="hero"
+                          className="text-2xl sm:text-4xl text-white group-hover:text-black group-hover:translate-x-2 transition-all duration-300"
+                          stagger={0.02}
+                          blurAmount={8}
+                          yOffset={20}
+                        />
                       </div>
                     </div>
 
@@ -284,12 +335,16 @@ export default function LandingPage() {
                       <p className="text-sm text-neutral-400 group-hover:text-black transition-colors">
                         {svc.desc}
                       </p>
-                      <div className="w-12 h-12 flex-shrink-0 border-brutal border-white group-hover:border-black bg-black group-hover:bg-white flex items-center justify-center group-hover:translate-x-2 transition-all">
-                        <ArrowRight className="w-6 h-6 text-[#FF4D00] group-hover:text-black" />
-                      </div>
+                      <button
+                        type="button"
+                        aria-label={`Access ${svc.title}`}
+                        className="w-12 h-12 flex-shrink-0 border-brutal border-white group-hover:border-black bg-black group-hover:bg-white flex items-center justify-center group-hover:translate-x-2 transition-all cursor-pointer"
+                      >
+                        <ArrowRight className="w-6 h-6 text-[#FF4D00] group-hover:text-black transition-colors" />
+                      </button>
                     </div>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -335,7 +390,14 @@ export default function LandingPage() {
                       <span className="font-meta text-xs font-bold text-[#FF4D00]">{s.step}</span>
                       <IconComp className="w-6 h-6 text-black group-hover:scale-110 group-hover:rotate-6 transition-transform" />
                     </div>
-                    <h3 className="font-headline text-2xl text-black mb-4">{s.title}</h3>
+                    <AntigravityH3
+                      text={s.title}
+                      variant="card"
+                      className="text-2xl text-black mb-4 group-hover:text-[#FF4D00]"
+                      stagger={0.024}
+                      blurAmount={10}
+                      yOffset={22}
+                    />
                     <p className="text-sm text-neutral-700 leading-relaxed">{s.body}</p>
                   </div>
 
@@ -432,15 +494,24 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-wrap gap-6 font-meta text-xs">
-            <Link href="/assistant" className="hover:text-[#FF4D00] transition-colors">
+            <button
+              onClick={() => {
+                if (user) {
+                  router.push("/assistant");
+                } else {
+                  setAiPreviewOpen(true);
+                }
+              }}
+              className="hover:text-[#FF4D00] transition-colors cursor-pointer"
+            >
               [ASSISTANT]
-            </Link>
-            <Link href="/evaluation" className="hover:text-[#FF4D00] transition-colors">
+            </button>
+            <a href="#cracks-the-code" className="hover:text-[#FF4D00] transition-colors">
               [EVALUATION]
-            </Link>
-            <Link href="/about" className="hover:text-[#FF4D00] transition-colors">
+            </a>
+            <a href="#intelligence-stack" className="hover:text-[#FF4D00] transition-colors">
               [METHODOLOGY]
-            </Link>
+            </a>
           </div>
 
           <div className="font-meta text-xs text-neutral-500">
@@ -448,6 +519,24 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </footer>
+
+      {/* 9. LOGIN PROMPT MODAL */}
+      <LoginPromptModal
+        isOpen={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        title="LOGIN OR CREATE ACCOUNT"
+        message={
+          selectedServiceTitle
+            ? `Please sign in or register a new free account to access ${selectedServiceTitle}, examine high-yield probability models, and explore chapter analytics.`
+            : "Please sign in or register a new free account to access complete exam intelligence tools and analytics."
+        }
+      />
+
+      {/* 10. AI ASSISTANT PREVIEW MODAL */}
+      <AiAssistantPreviewModal
+        isOpen={aiPreviewOpen}
+        onClose={() => setAiPreviewOpen(false)}
+      />
     </div>
   );
 }

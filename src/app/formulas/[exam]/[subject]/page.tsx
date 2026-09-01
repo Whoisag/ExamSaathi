@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { useParams } from "next/navigation";
+import React, { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { AppShell } from "@/components/layout/AppShell";
 import { SearchBar } from "@/components/formulas/SearchBar";
 import { ChapterFilter } from "@/components/formulas/ChapterFilter";
@@ -9,11 +10,24 @@ import { FormulaSection } from "@/components/formulas/FormulaSection";
 import { PrintButtons } from "@/components/formulas/PrintButtons";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { EXAMS, ExamId, MOCK_FORMULAS, FormulaItem } from "@/data/mock";
-import { Sigma, BookOpen, RefreshCw, Eye } from "lucide-react";
+import { EXAMS, ExamId, FormulaItem } from "@/data/mock";
+import { MASTER_FORMULA_DATABASE, MasterFormulaItem, getFormulasBySubjectAndExam } from "@/data/formulas";
+import {
+  Sigma,
+  BookOpen,
+  RefreshCw,
+  Eye,
+  Sparkles,
+  BrainCircuit,
+  Plus,
+  Layers,
+  Flame,
+  Check,
+} from "lucide-react";
 
 export default function FormulasSubjectPage() {
   const params = useParams();
+  const router = useRouter();
   const rawExam = (params?.exam as string) || "jee-main";
   const rawSubject = (params?.subject as string) || "physics";
 
@@ -27,77 +41,128 @@ export default function FormulasSubjectPage() {
 
   // State
   const [searchQuery, setSearchQuery] = useState("");
-  const allChapters = useMemo(
-    () => Array.from(new Set(MOCK_FORMULAS.map((f) => f.chapter))),
-    []
-  );
+  const [isActiveRecall, setIsActiveRecall] = useState(false);
+  const [customFormulas, setCustomFormulas] = useState<FormulaItem[]>([]);
+  const [aiTopicInput, setAiTopicInput] = useState("");
+  const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+  const [aiSuccessMessage, setAiSuccessMessage] = useState<string | null>(null);
+
+  // Load subject-specific base formulas
+  const baseFormulas = useMemo(() => {
+    return getFormulasBySubjectAndExam(matchedSubject, examId);
+  }, [matchedSubject, examId]);
+
+  const allAvailableFormulas = useMemo(() => {
+    return [...baseFormulas, ...customFormulas];
+  }, [baseFormulas, customFormulas]);
+
+  const allChapters = useMemo(() => {
+    return Array.from(new Set(allAvailableFormulas.map((f) => f.chapter)));
+  }, [allAvailableFormulas]);
+
   const [selectedChapters, setSelectedChapters] = useState<string[]>(allChapters);
   const [simulateLoading, setSimulateLoading] = useState(false);
   const [simulateEmpty, setSimulateEmpty] = useState(false);
+
+  // Sync selected chapters on subject change
+  useEffect(() => {
+    setSelectedChapters(Array.from(new Set(baseFormulas.map((f) => f.chapter))));
+    setCustomFormulas([]);
+  }, [matchedSubject, baseFormulas]);
 
   // Filter formulas based on search and selected chapters
   const filteredFormulas = useMemo(() => {
     if (simulateEmpty) return [];
 
-    return MOCK_FORMULAS.filter((formula) => {
-      const matchesChapter = selectedChapters.includes(formula.chapter);
+    return allAvailableFormulas.filter((formula) => {
+      const matchesChapter = selectedChapters.length === 0 || selectedChapters.includes(formula.chapter);
+      const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
-        searchQuery.trim() === "" ||
-        formula.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        formula.chapter.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        formula.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+        query === "" ||
+        formula.name.toLowerCase().includes(query) ||
+        formula.chapter.toLowerCase().includes(query) ||
+        formula.latex.toLowerCase().includes(query) ||
+        formula.tags.some((t) => t.toLowerCase().includes(query)) ||
+        (formula.variables && formula.variables.some((v) => v.meaning.toLowerCase().includes(query) || v.symbol.toLowerCase().includes(query)));
 
       return matchesChapter && matchesSearch;
     });
-  }, [selectedChapters, searchQuery, simulateEmpty]);
+  }, [allAvailableFormulas, selectedChapters, searchQuery, simulateEmpty]);
 
   // Group by priority
   const highPriority = filteredFormulas.filter((f) => f.priority === "High");
   const mediumPriority = filteredFormulas.filter((f) => f.priority === "Medium");
-  const lowPriority = filteredFormulas.filter((f) => f.priority === "Low");
+  const lowPriority = filteredFormulas.filter((f) => f.priority === "Low" || !f.priority);
 
   const handleToggleLoading = () => {
     setSimulateLoading(true);
-    setTimeout(() => setSimulateLoading(false), 1000);
+    setTimeout(() => setSimulateLoading(false), 800);
+  };
+
+  const handleGenerateCustomWithGemini = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!aiTopicInput.trim()) return;
+
+    try {
+      setIsGeneratingAi(true);
+      setAiSuccessMessage(null);
+
+      const res = await fetch("/api/formulas-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "generate",
+          topic: aiTopicInput.trim(),
+          subject: matchedSubject,
+          examSlug: examId,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && Array.isArray(data.formulas) && data.formulas.length > 0) {
+        setCustomFormulas((prev) => [...data.formulas, ...prev]);
+        // Also select new chapter
+        const newChapters = Array.from(new Set([...selectedChapters, ...data.formulas.map((f: any) => f.chapter)]));
+        setSelectedChapters(newChapters);
+        setAiSuccessMessage(`Successfully curated ${data.formulas.length} high-yield formula cards for "${aiTopicInput.trim()}"!`);
+        setAiTopicInput("");
+      } else {
+        setAiSuccessMessage(`Curated latest high-yield formulas with Gemini.`);
+      }
+    } catch (err) {
+      console.error("AI Formula curation error:", err);
+    } finally {
+      setIsGeneratingAi(false);
+      setTimeout(() => setAiSuccessMessage(null), 5000);
+    }
   };
 
   return (
     <AppShell
       currentExam={examId}
       currentSubject={matchedSubject}
-      title={`${exam.shortName} • ${matchedSubject} Formula Sheet`}
-      subtitle="High-yield formulas with variable breakdowns, application constraints, and common student traps."
+      title={`${exam.shortName} • ${matchedSubject} Master Formula Sheet`}
+      subtitle="High-yield formulas with variable breakdowns, application constraints, and negative-marking traps."
       breadcrumbs={[
         { label: exam.shortName, href: "/" },
         { label: "Formulas", href: `/formulas/${examId}/${matchedSubject.toLowerCase()}` },
         { label: matchedSubject },
       ]}
       actionSlot={
-        <div className="flex items-center gap-3">
-          {/* State Test Switches */}
-          <div className="hidden sm:flex items-center gap-1 bg-white p-1 border-2 border-black text-xs no-print font-meta">
-            <button
-              onClick={handleToggleLoading}
-              disabled={simulateLoading}
-              className="px-2.5 py-1 text-black hover:bg-[#FF4D00] transition-all font-bold flex items-center gap-1"
-              title="Test Loading State"
-            >
-              <RefreshCw className={`w-3 h-3 text-black ${simulateLoading ? "animate-spin" : ""}`} />
-              <span>SKELETON</span>
-            </button>
-            <button
-              onClick={() => setSimulateEmpty(!simulateEmpty)}
-              className={`px-2.5 py-1 transition-all font-bold flex items-center gap-1 ${
-                simulateEmpty
-                  ? "bg-black text-[#FF4D00]"
-                  : "text-black hover:bg-[#FF4D00]"
-              }`}
-              title="Test Empty State"
-            >
-              <Eye className="w-3 h-3" />
-              <span>EMPTY</span>
-            </button>
-          </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Active Recall Toggle */}
+          <button
+            onClick={() => setIsActiveRecall(!isActiveRecall)}
+            className={`border-2 border-black px-3 py-1.5 font-meta text-xs transition-colors flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_#000000] cursor-pointer ${
+              isActiveRecall
+                ? "bg-[#FF4D00] text-black"
+                : "bg-white text-black hover:bg-neutral-100"
+            }`}
+            title="Toggle Formula Masking for Active Recall"
+          >
+            <BrainCircuit className="w-3.5 h-3.5" />
+            <span>{isActiveRecall ? "ACTIVE RECALL ON" : "ACTIVE RECALL"}</span>
+          </button>
 
           {/* Download PDF & Print Buttons */}
           <PrintButtons examName={exam.shortName} subjectName={matchedSubject} />
@@ -112,14 +177,83 @@ export default function FormulasSubjectPage() {
               <h1 className="text-2xl font-bold text-black">
                 ExamSaathi — {exam.name} {matchedSubject} Revision Sheet
               </h1>
-              <p className="text-xs text-slate-700">
-                Proprietary NTA & CBSE High-Yield PYQ Formula Compilation
+              <p className="text-xs text-neutral-700">
+                Proprietary High-Yield PYQ Formula &amp; Variable Compilation
               </p>
             </div>
-            <div className="text-right text-xs text-slate-600">
-              <span>Date Generated: {new Date().toLocaleDateString("en-IN")}</span>
+            <div className="text-right text-xs text-neutral-600">
+              <span>Date: {new Date().toLocaleDateString("en-IN")}</span>
             </div>
           </div>
+        </div>
+
+        {/* Subject Quick Switcher Bar (Hidden in Print) */}
+        <div className="bg-black text-white p-3 border-2 border-black flex items-center justify-between gap-3 shadow-[4px_4px_0px_0px_#000000] no-print">
+          <div className="flex items-center gap-2 overflow-x-auto">
+            <span className="font-meta text-xs font-bold text-neutral-400 pl-2">SUBJECT TRACK:</span>
+            {exam.subjects.filter((s) => s.toLowerCase() !== "biology").map((subj) => {
+              const isCurrent = subj.toLowerCase() === matchedSubject.toLowerCase();
+              return (
+                <Link
+                  key={subj}
+                  href={`/formulas/${examId}/${subj.toLowerCase()}`}
+                  className={`px-3 py-1 font-headline text-xs transition-colors border ${
+                    isCurrent
+                      ? "bg-[#FF4D00] text-black border-[#FF4D00] font-bold"
+                      : "bg-neutral-900 text-neutral-300 border-neutral-700 hover:bg-neutral-800 hover:text-white"
+                  }`}
+                >
+                  {subj.toUpperCase()}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="font-meta text-xs text-[#FF4D00] font-bold pr-2 hidden sm:block">
+            TOTAL: {filteredFormulas.length} FORMULAS
+          </div>
+        </div>
+
+        {/* Gemini AI Formula Generator Bar (Hidden in Print) */}
+        <div className="border-2 border-black bg-[#fff7ed] p-4 shadow-[4px_4px_0px_0px_#000000] no-print">
+          <form onSubmit={handleGenerateCustomWithGemini} className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#FF4D00] shrink-0" />
+              <div>
+                <h4 className="font-headline text-sm text-black">
+                  CURATE CUSTOM FORMULAS WITH GEMINI
+                </h4>
+                <p className="font-meta text-[11px] text-neutral-600">
+                  Type any subtopic or chapter to extract its standard formulas, boundary rules &amp; exam traps.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 flex-1 max-w-md">
+              <input
+                type="text"
+                value={aiTopicInput}
+                onChange={(e) => setAiTopicInput(e.target.value)}
+                placeholder="e.g. Lens Maker in liquids, Nernst cell, Carnot..."
+                className="flex-1 px-3 py-1.5 border-2 border-black bg-white text-xs font-mono text-black placeholder:text-neutral-400 focus:outline-hidden"
+              />
+              <button
+                type="submit"
+                disabled={isGeneratingAi || !aiTopicInput.trim()}
+                className="bg-black text-white hover:bg-[#FF4D00] hover:text-black disabled:bg-neutral-400 px-3.5 py-1.5 border-2 border-black font-meta text-xs font-bold transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
+              >
+                <Sparkles className={`w-3.5 h-3.5 ${isGeneratingAi ? "animate-spin" : ""}`} />
+                <span>{isGeneratingAi ? "CURATING..." : "GENERATE"}</span>
+              </button>
+            </div>
+          </form>
+
+          {aiSuccessMessage && (
+            <div className="mt-3 pt-2 border-t border-orange-200 text-xs font-meta text-green-800 font-bold flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-green-700" />
+              <span>{aiSuccessMessage}</span>
+            </div>
+          )}
         </div>
 
         {/* UI Controls: Search + Chapter Filter (Hidden in Print) */}
@@ -127,7 +261,7 @@ export default function FormulasSubjectPage() {
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder={`Search ${matchedSubject} formulas, chapters, or variables...`}
+            placeholder={`Search ${matchedSubject} formulas by name, LaTeX, variables, or tags...`}
           />
 
           <ChapterFilter
@@ -136,8 +270,7 @@ export default function FormulasSubjectPage() {
             onChange={setSelectedChapters}
             isLoading={simulateLoading}
             onGenerateSheet={() => {
-              // Smooth scroll to top of formulas
-              window.scrollTo({ top: 200, behavior: "smooth" });
+              window.scrollTo({ top: 300, behavior: "smooth" });
             }}
           />
         </div>
@@ -154,9 +287,9 @@ export default function FormulasSubjectPage() {
         {/* Empty State */}
         {!simulateLoading && filteredFormulas.length === 0 && (
           <EmptyState
-            icon={<Sigma className="w-6 h-6 text-slate-400" />}
-            title="No Formulas Match Your Criteria"
-            description="Try expanding your chapter selection or clearing your search term to see formula cards."
+            icon={<Sigma className="w-6 h-6 text-neutral-400" />}
+            title="No Formulas Match Your Search"
+            description="Try clearing your search query or selecting all chapters."
             actionText="Reset Filters"
             onAction={() => {
               setSearchQuery("");
@@ -169,9 +302,27 @@ export default function FormulasSubjectPage() {
         {/* Priority Sections */}
         {!simulateLoading && filteredFormulas.length > 0 && (
           <div className="space-y-8">
-            <FormulaSection priority="High" formulas={highPriority} />
-            <FormulaSection priority="Medium" formulas={mediumPriority} />
-            <FormulaSection priority="Low" formulas={lowPriority} />
+            <FormulaSection
+              priority="High"
+              formulas={highPriority}
+              isActiveRecall={isActiveRecall}
+              subjectName={matchedSubject}
+              examSlug={examId}
+            />
+            <FormulaSection
+              priority="Medium"
+              formulas={mediumPriority}
+              isActiveRecall={isActiveRecall}
+              subjectName={matchedSubject}
+              examSlug={examId}
+            />
+            <FormulaSection
+              priority="Low"
+              formulas={lowPriority}
+              isActiveRecall={isActiveRecall}
+              subjectName={matchedSubject}
+              examSlug={examId}
+            />
           </div>
         )}
       </div>

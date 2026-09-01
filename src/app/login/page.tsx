@@ -51,12 +51,12 @@ export default function LoginPage() {
     }
 
     toast.success("Authentication successful! Redirecting...");
-    router.push("/dashboard/exams");
+    router.push("/my-dashboard");
   };
 
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
-    const { error } = await signInWithGoogle("/dashboard/exams");
+    const { error } = await signInWithGoogle("/my-dashboard");
     if (error) {
       toast.error(
         error.message.includes("provider is not enabled")

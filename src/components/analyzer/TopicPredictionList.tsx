@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+import { useMotion, containerVariants, cardVariants } from "@/hooks/useMotion";
 import { TopicPrediction } from "@/data/mock";
-import { KaTeXMath } from "@/components/ui/KaTeXMath";
-import { TrendingUp, TrendingDown, Minus, ArrowUpRight } from "lucide-react";
+import { MarkdownMath } from "@/components/ui/MarkdownMath";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 interface TopicPredictionListProps {
   predictions: TopicPrediction[];
@@ -14,6 +16,7 @@ export function TopicPredictionList({
   predictions,
   isLoading = false,
 }: TopicPredictionListProps) {
+  const { shouldAnimate } = useMotion();
   if (isLoading) {
     return (
       <div className="border-brutal bg-white p-6 animate-pulse space-y-4">
@@ -43,11 +46,13 @@ export function TopicPredictionList({
         </span>
       </div>
 
-      <div className="space-y-4">
-        {predictions.map((p) => {
+      <motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="show">
+        {predictions.map((p, index) => {
           return (
-            <div
+            <motion.div
               key={p.id}
+              variants={cardVariants}
+              whileHover={shouldAnimate ? { y: -2 } : {}}
               className="border-brutal bg-neutral-50 p-4 sm:p-5 relative group hover:bg-white transition-colors"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
@@ -57,7 +62,7 @@ export function TopicPredictionList({
                   </span>
                   <div>
                     <h4 className="font-headline text-base sm:text-lg text-black group-hover:text-[#FF4D00] transition-colors">
-                      {p.topicName}
+                      <MarkdownMath content={p.topicName} />
                     </h4>
                     <span className="font-meta text-[11px] text-neutral-500">
                       {p.category} • {p.shiftCoverage}
@@ -92,22 +97,24 @@ export function TopicPredictionList({
                   <span className="font-bold text-black">{p.predictedProbability}%</span>
                 </div>
                 <div className="w-full h-3 bg-neutral-200 border border-black">
-                  <div
+                  <motion.div
                     className="h-full bg-[#FF4D00]"
-                    style={{ width: `${p.predictedProbability}%` }}
-                  ></div>
+                    initial={{ width: 0 }}
+                    animate={{ width: `${p.predictedProbability}%` }}
+                    transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                  />
                 </div>
               </div>
 
               {/* Rationale explanation */}
-              <div className="text-xs text-neutral-700 font-sans bg-white p-2.5 border border-neutral-300">
-                <span className="font-bold text-black font-meta mr-1.5">RATIONALE:</span>
-                <KaTeXMath math={p.trendReason} block={false} />
+              <div className="text-xs text-neutral-750 font-sans bg-white p-3 border border-neutral-300">
+                <span className="font-bold text-black font-meta mr-2">RATIONALE:</span>
+                <span className="text-neutral-700 font-sans"><MarkdownMath content={p.trendReason} /></span>
               </div>
-            </div>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </div>
   );
 }

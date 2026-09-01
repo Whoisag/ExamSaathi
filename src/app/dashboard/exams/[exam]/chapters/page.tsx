@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
-import { getMockChapters, EXAMS, ExamId, ChapterItem } from "@/data/mock";
-import { Search, ArrowRight, ArrowLeft, BookOpen, Layers, Flame, TrendingUp, TrendingDown, Minus, RefreshCw } from "lucide-react";
+import { AppShell } from "@/components/layout/AppShell";
+import { getMockChapters, EXAMS, MOCK_EXAMS_LIST, ExamId, ChapterItem } from "@/data/mock";
+import { Search, ArrowRight, ArrowLeft, Flame, RefreshCw, Clock } from "lucide-react";
 
 export default function ExamChaptersPage() {
   const params = useParams();
@@ -78,57 +78,97 @@ export default function ExamChaptersPage() {
     });
   }, [allChapters, searchQuery, selectedSubject]);
 
-  return (
-    <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
-      <BrutalistHeader />
+  const matchedExamCard = MOCK_EXAMS_LIST.find((e) => e.slug === examSlug);
+  const isUpcoming = matchedExamCard?.status === "Upcoming";
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8 md:py-12">
-        {/* Navigation Breadcrumb */}
-        <div className="mb-6">
-          <Link
-            href="/dashboard/exams"
-            className="inline-flex items-center gap-2 font-meta text-xs bg-white text-black border-brutal px-3.5 py-2 font-bold hover:bg-black hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>BACK TO ALL EXAMS</span>
-          </Link>
-        </div>
-
-        {/* Exam Banner Header */}
-        <div className="border-brutal bg-black text-white p-6 sm:p-10 mb-8 relative">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <span className="font-meta text-xs text-[#FF4D00] font-bold">
-                // SYLLABUS DIRECTORY • {examInfo.shortName}
+  if (isUpcoming) {
+    return (
+      <AppShell
+        currentExam={examSlug in EXAMS ? (examSlug as ExamId) : "jee-main"}
+        title={matchedExamCard?.name || examInfo.name}
+        subtitle="This examination track is currently in dataset ingestion and prediction model curation."
+        breadcrumbs={[
+          { label: "Exam Analysis", href: "/dashboard/exams" },
+          { label: examInfo.shortName },
+        ]}
+        hideSubjectsTab={true}
+      >
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="border-4 border-black bg-white p-8 sm:p-12 shadow-[8px_8px_0px_0px_#000000]">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="bg-[#FF4D00] text-black font-meta text-xs px-3 py-1 font-bold border-2 border-black flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000000]">
+                <Clock className="w-4 h-4 text-black animate-spin" />
+                <span>IN ACTIVE DEVELOPMENT</span>
               </span>
-              <h1 className="font-headline text-3xl sm:text-5xl text-white mt-1 mb-3">
-                {examInfo.name} CHAPTER SELECTOR
-              </h1>
-              <p className="text-sm text-neutral-300 max-w-2xl font-medium">
-                Choose a chapter to inspect granular subtopic weightages, Poisson recurrence gap anomalies, synthetic questions, and formula sheets.
-              </p>
+              <span className="bg-black text-white font-meta text-xs px-3 py-1 font-bold border-2 border-black">
+                // DATASET PENDING
+              </span>
             </div>
 
-            <div className="flex items-center gap-3 self-start md:self-auto">
-              <button
-                onClick={() => {
-                  setIsLoading(true);
-                  setTimeout(() => setIsLoading(false), 500);
-                }}
-                className="bg-white text-black border-2 border-white px-3.5 py-2 font-meta text-xs hover:bg-[#FF4D00] hover:text-black hover:border-[#FF4D00] transition-colors flex items-center gap-1.5 font-bold cursor-pointer"
+            <h1 className="font-headline text-3xl sm:text-5xl text-black tracking-tight leading-[0.95] mb-4">
+              {matchedExamCard?.name || examInfo.name}
+            </h1>
+
+            <div className="bg-neutral-100 border-2 border-black p-4 mb-6 text-sm font-sans font-medium text-neutral-800 leading-relaxed max-w-xl shadow-[2px_2px_0px_0px_#000000]">
+              <p className="font-bold text-black mb-1">
+                STATUS: COMING SOON
+              </p>
+              We are currently curating and verifying the past-year question dataset, LaTeX formula cheatsheets, and Poisson recurrence distribution matrix for this examination track.
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/dashboard/exams"
+                className="bg-black text-white hover:bg-[#FF4D00] hover:text-black border-2 border-black font-headline text-sm py-3.5 px-6 flex items-center justify-center gap-2 transition-colors shadow-[3px_3px_0px_0px_#FF4D00]"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-                <span>SKELETON</span>
-              </button>
-              <div className="bg-[#FF4D00] text-black px-4 py-2 border-2 border-[#FF4D00] font-meta text-xs font-bold">
-                {allChapters.length} CHAPTERS
-              </div>
+                <ArrowLeft className="w-4 h-4" />
+                <span>EXPLORE ACTIVE EXAMS</span>
+              </Link>
+              <Link
+                href="/dashboard/exams/jee-main/chapters"
+                className="bg-white text-black hover:bg-neutral-100 border-2 border-black font-headline text-sm py-3.5 px-6 flex items-center justify-center gap-2 transition-colors shadow-[3px_3px_0px_0px_#000000]"
+              >
+                <span>OPEN JEE MAIN TRACK</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </div>
+      </AppShell>
+    );
+  }
 
+  return (
+    <AppShell
+      currentExam={examSlug in EXAMS ? (examSlug as ExamId) : "jee-main"}
+      title={`${examInfo.name} Chapter Analysis`}
+      subtitle="Choose a chapter to inspect granular subtopic weightages, Poisson recurrence gap anomalies, synthetic questions, and formula sheets."
+      breadcrumbs={[
+        { label: "Exam Analysis", href: "/dashboard/exams" },
+        { label: examInfo.shortName },
+      ]}
+      hideSubjectsTab={true}
+      actionSlot={
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              setIsLoading(true);
+              setTimeout(() => setIsLoading(false), 500);
+            }}
+            className="bg-white text-black border-2 border-black px-3.5 py-1.5 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 font-bold cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+            <span>SKELETON</span>
+          </button>
+          <div className="bg-[#FF4D00] text-black px-3 py-1.5 border-2 border-black font-meta text-xs font-bold shadow-[2px_2px_0px_0px_#000000]">
+            {allChapters.length} CHAPTERS
+          </div>
+        </div>
+      }
+    >
+      <div className="space-y-6">
         {/* Search Bar and Subject Pills */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="relative flex-1">
             <input
@@ -136,7 +176,7 @@ export default function ExamChaptersPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="SEARCH CHAPTERS, EQUATIONS, PHENOMENA..."
-              className="w-full pl-11 pr-4 py-3 border-brutal bg-white text-black font-meta text-xs placeholder:text-neutral-500 focus:outline-none"
+              className="w-full pl-11 pr-4 py-3 border-2 border-black bg-white text-black font-meta text-xs placeholder:text-neutral-500 focus:outline-none shadow-[2px_2px_0px_0px_#000000]"
             />
             <Search className="w-4 h-4 text-neutral-500 absolute left-4 top-1/2 -translate-y-1/2" />
           </div>
@@ -147,7 +187,7 @@ export default function ExamChaptersPage() {
               <button
                 key={subj}
                 onClick={() => setSelectedSubject(subj)}
-                className={`px-4 py-3 border-brutal font-meta text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+                className={`px-4 py-3 border-2 border-black font-meta text-xs font-bold whitespace-nowrap transition-colors cursor-pointer shadow-[2px_2px_0px_0px_#000000] ${
                   selectedSubject === subj
                     ? "bg-black text-white"
                     : "bg-white text-black hover:bg-black hover:text-white"
@@ -162,11 +202,14 @@ export default function ExamChaptersPage() {
         {/* Chapters Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {isLoading ? (
-            Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="border-brutal p-6 bg-neutral-100 animate-pulse space-y-4">
-                <div className="h-4 bg-neutral-300 w-1/4"></div>
+            Array.from({ length: 6 }).map((_, idx) => (
+              <div
+                key={idx}
+                className="border-2 border-black bg-neutral-100 p-6 animate-pulse space-y-4"
+              >
+                <div className="h-4 bg-neutral-300 w-1/3"></div>
                 <div className="h-6 bg-neutral-300 w-3/4"></div>
-                <div className="h-12 bg-neutral-200 w-full"></div>
+                <div className="h-16 bg-neutral-200 w-full"></div>
                 <div className="h-10 bg-neutral-300 w-full"></div>
               </div>
             ))
@@ -174,54 +217,50 @@ export default function ExamChaptersPage() {
             filteredChapters.map((ch) => (
               <div
                 key={ch.id}
-                className="border-brutal bg-white p-6 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-200"
+                className="border-2 border-black bg-white p-6 flex flex-col justify-between relative group hover:-translate-y-1 transition-all duration-200 shadow-[4px_4px_0px_0px_#000000]"
               >
                 <div>
-                  {/* Top Badges */}
-                  <div className="flex items-center justify-between border-brutal-b pb-3 mb-4">
-                    <span className="bg-black text-white font-meta text-[10px] px-2 py-0.5 font-bold">
-                      {ch.subject}
+                  {/* Top Badge Row */}
+                  <div className="flex items-center justify-between border-b-2 border-neutral-100 pb-3 mb-4">
+                    <span className="font-meta text-[11px] font-bold text-[#FF4D00] uppercase">
+                      // {ch.subject}
                     </span>
-                    <div className="flex items-center gap-1.5 font-meta text-[11px]">
-                      {ch.trend === "rising" && (
-                        <span className="text-[#FF4D00] font-bold flex items-center gap-0.5">
-                          <TrendingUp className="w-3 h-3" /> RISING
+                    <div className="flex items-center gap-1.5">
+                      {ch.pyqFrequency === "Critical" && (
+                        <span className="bg-[#FF4D00] text-black font-meta text-[10px] px-2 py-0.5 font-bold flex items-center gap-1 border border-black">
+                          <Flame className="w-3 h-3" />
+                          <span>CRITICAL</span>
                         </span>
                       )}
-                      {ch.trend === "falling" && (
-                        <span className="text-neutral-500 font-bold flex items-center gap-0.5">
-                          <TrendingDown className="w-3 h-3" /> FALLING
-                        </span>
-                      )}
-                      {ch.trend === "stable" && (
-                        <span className="text-black font-bold flex items-center gap-0.5">
-                          <Minus className="w-3 h-3" /> STABLE
-                        </span>
-                      )}
+                      <span className="bg-black text-white font-meta text-[10px] px-2 py-0.5 font-bold">
+                        {ch.difficulty.toUpperCase()}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Title & Description */}
-                  <h3 className="font-headline text-xl sm:text-2xl text-black mb-2 group-hover:text-[#FF4D00] transition-colors">
+                  {/* Chapter Name */}
+                  <h3 className="font-headline text-xl text-black mb-2 group-hover:text-[#FF4D00] transition-colors line-clamp-2">
                     {ch.name}
                   </h3>
-                  <p className="text-xs text-neutral-600 mb-6 line-clamp-2">
+
+                  {/* Description */}
+                  <p className="text-xs text-neutral-600 mb-6 line-clamp-2 leading-relaxed font-sans">
                     {ch.description}
                   </p>
 
-                  {/* Metrics Bar */}
-                  <div className="grid grid-cols-3 gap-1 bg-neutral-50 p-3 border-brutal mb-6 font-meta text-center text-xs">
+                  {/* Chapter Stats Grid */}
+                  <div className="grid grid-cols-3 gap-2 bg-neutral-50 p-3 border-2 border-black mb-6 font-meta text-xs">
                     <div>
-                      <span className="text-[10px] text-neutral-500 block">WEIGHTAGE</span>
-                      <span className="font-bold text-[#FF4D00]">{ch.weightagePercent}%</span>
-                    </div>
-                    <div className="border-x border-neutral-200">
-                      <span className="text-[10px] text-neutral-500 block">PYQS</span>
+                      <span className="text-neutral-500 text-[10px] block">QUESTIONS</span>
                       <span className="font-bold text-black">{ch.questionCount} Qs</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-neutral-500 block">FORMULAS</span>
-                      <span className="font-bold text-black">{ch.formulaCount}</span>
+                      <span className="text-neutral-500 text-[10px] block">WEIGHTAGE</span>
+                      <span className="font-bold text-black">{ch.weightagePercent}%</span>
+                    </div>
+                    <div>
+                      <span className="text-neutral-500 text-[10px] block">FORMULAS</span>
+                      <span className="font-bold text-black">{ch.formulaCount} Stored</span>
                     </div>
                   </div>
                 </div>
@@ -229,7 +268,7 @@ export default function ExamChaptersPage() {
                 {/* Direct Action Link */}
                 <Link
                   href={`/analyzer/${examSlug}/${ch.slug}`}
-                  className="w-full bg-black text-white py-3 border-brutal font-headline text-xs hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-black text-white py-3 border-2 border-black font-headline text-xs hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-center gap-2 shadow-[2px_2px_0px_0px_#000000]"
                 >
                   <span>OPEN CHAPTER ANALYZER</span>
                   <ArrowRight className="w-4 h-4" />
@@ -237,7 +276,7 @@ export default function ExamChaptersPage() {
               </div>
             ))
           ) : (
-            <div className="col-span-full border-brutal bg-neutral-50 p-12 text-center">
+            <div className="col-span-full border-2 border-black bg-white p-12 text-center shadow-[4px_4px_0px_0px_#000000]">
               <span className="font-headline text-2xl text-black block mb-2">
                 NO CHAPTERS FOUND
               </span>
@@ -249,24 +288,14 @@ export default function ExamChaptersPage() {
                   setSearchQuery("");
                   setSelectedSubject("ALL");
                 }}
-                className="bg-black text-white px-4 py-2 border-brutal font-meta text-xs hover:bg-[#FF4D00] hover:text-black"
+                className="bg-black text-white px-4 py-2 border-2 border-black font-meta text-xs hover:bg-[#FF4D00] hover:text-black transition-colors"
               >
                 CLEAR FILTERS
               </button>
             </div>
           )}
         </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>// EXAMSAATHI CHAPTER REPOSITORY • {examInfo.name} SYLLABUS DIRECTORY</div>
-          <div className="text-neutral-400">
-            RADICAL UNCERTAINTY HONESTY • NTA / CBSE HISTORICAL BACKTEST
-          </div>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </AppShell>
   );
 }

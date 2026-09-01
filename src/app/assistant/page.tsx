@@ -1,76 +1,88 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { BrutalistHeader } from "@/components/layout/BrutalistHeader";
+import { AppShell } from "@/components/layout/AppShell";
 import { ChatInterface } from "@/components/assistant/ChatInterface";
-import { MOCK_ASSISTANT_MESSAGES, MOCK_SUGGESTED_PROMPTS } from "@/data/mock";
-import { RefreshCw, Sparkles, Zap } from "lucide-react";
+import { MOCK_ASSISTANT_MESSAGES, MOCK_SUGGESTED_PROMPTS, ExamId, EXAMS, serializePrepHubForAI } from "@/data/mock";
+import { Zap } from "lucide-react";
 
-export default function AssistantPage() {
+function AssistantContent() {
   const searchParams = useSearchParams();
-  const exam = searchParams?.get("exam") || "jee-main";
+  const rawExam = searchParams?.get("exam") || "jee-main";
+  const [currentExam, setCurrentExam] = useState<ExamId>(() => {
+    if (rawExam && rawExam in EXAMS) return rawExam as ExamId;
+    return "jee-main";
+  });
   const chapter = searchParams?.get("chapter") || "General Strategy";
-  const [isLoading, setIsLoading] = useState(false);
+  const prepHub = searchParams?.get("prepHub");
+  const mode = searchParams?.get("mode");
+  const urlPrompt = searchParams?.get("prompt");
+  const prepHubContext = (prepHub === "1" || mode) ? serializePrepHubForAI(currentExam) : "";
 
-  const toggleSkeleton = () => {
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 500);
-  };
+  const initialQuery = urlPrompt || (
+    mode === "remediate" 
+      ? "Please analyze my high-stakes weak spots from my Prep Hub and generate a step-by-step remediation plan with high-yield practice questions." 
+      : mode === "sprint" 
+      ? "Generate a 30-minute high-ROI quick win sprint with guaranteed-mark questions based on my Prep Hub status."
+      : undefined
+  );
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("examsaathi_target_exam");
+      if (saved && saved in EXAMS) setCurrentExam(saved as ExamId);
+    } catch {}
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
-      <BrutalistHeader />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8 md:py-12">
-        {/* Header Title Banner */}
-        <div className="border-brutal bg-black text-white p-6 sm:p-8 mb-8 relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div>
-            <div className="font-meta text-xs text-[#FF4D00] font-bold mb-1">
-              // NEURAL AGENT // LIVE SOCRATIC TUTOR
-            </div>
-            <h1 className="font-headline text-3xl sm:text-5xl text-white tracking-tight">
-              AI STRATEGY ASSISTANT
-            </h1>
-            <p className="text-sm text-neutral-300 mt-2 max-w-2xl font-medium">
-              Interact with your analytical AI mentor on PYQ shift anomalies, high-yield formula breakdowns, and customized revision planning.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={toggleSkeleton}
-              className="border-brutal bg-white text-black px-3.5 py-2 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 cursor-pointer font-bold"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-              <span>TEST SKELETON</span>
-            </button>
-            <div className="border-brutal bg-[#FF4D00] text-black px-3.5 py-2 font-meta text-xs font-bold flex items-center gap-1">
-              <Zap className="w-3.5 h-3.5" />
-              <span>ACTIVE</span>
-            </div>
+    <AppShell
+      currentExam={currentExam}
+      title="AI Strategy Tutor"
+      subtitle="Your Socratic AI mentor for PYQ shift analytics, formula breakdowns, and revision planning. Chats auto-save to your browser."
+      breadcrumbs={[{ label: "AI Strategy Tutor" }]}
+      hideSubjectsTab={true}
+      actionSlot={
+        <div className="flex items-center gap-2">
+          <div className="border-2 border-black bg-[#FF4D00] text-black px-3 py-1.5 font-meta text-xs font-bold flex items-center gap-1 shadow-[2px_2px_0px_0px_#000000]">
+            <Zap className="w-3.5 h-3.5" />
+            <span>ACTIVE</span>
           </div>
         </div>
-
-        {/* Live Chat UI Component connected to /api/assistant */}
+      }
+    >
+      <div className="space-y-6">
+        {(prepHub === "1" || mode) && (
+          <div className="bg-[#FF4D00] text-black border-2 border-black p-2 text-center font-meta text-xs font-bold shadow-[2px_2px_0px_0px_#000000]">
+            📊 Prep Hub Connected — AI has access to your readiness status
+          </div>
+        )}
         <ChatInterface
           initialMessages={MOCK_ASSISTANT_MESSAGES}
           suggestedPrompts={MOCK_SUGGESTED_PROMPTS}
-          isLoading={isLoading}
-          exam={exam}
+          exam={currentExam}
           chapter={chapter}
+          prepHubContext={prepHubContext}
+          initialQuery={initialQuery}
         />
-      </main>
-
-      {/* Footer */}
-      <footer className="border-brutal-t bg-black text-white py-6 px-4 md:px-8 mt-12 font-meta text-xs">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>// EXAMSAATHI AI ASSISTANT • 2026 SHELL</div>
-          <div className="text-neutral-400">
-            POWERED BY OPENROUTER & HAIMAKER MULTI-PROVIDER AI
-          </div>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </AppShell>
   );
 }
+
+export default function AssistantPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="border-2 border-black bg-white p-8 shadow-[4px_4px_0px_0px_#000000] font-headline text-lg uppercase">
+            Loading AI Tutor...
+          </div>
+        </div>
+      }
+    >
+      <AssistantContent />
+    </Suspense>
+  );
+}
+

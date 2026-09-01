@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+import { useMotion, containerVariants, cardVariants } from "@/hooks/useMotion";
 import { GapAlertItem } from "@/data/mock";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -21,6 +23,7 @@ export function GapAlert({
   title = "Recurrence Gap Alerts",
   subtitle = "High-probability topics overdue based on historical cyclic patterns",
 }: GapAlertProps) {
+  const { shouldAnimate } = useMotion();
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -55,10 +58,13 @@ export function GapAlert({
         </span>
       </div>
 
-      <div className="space-y-3">
+      <motion.div className="space-y-3" variants={containerVariants} initial="hidden" animate="show">
         {alerts.map((alert) => (
-          <div
+          <motion.div
             key={alert.id}
+            variants={cardVariants}
+            whileHover={shouldAnimate ? { y: -2, transition: { duration: 0.18 } } : {}}
+            style={{ willChange: 'transform' }}
             className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000]"
           >
             {/* Title & Badge */}
@@ -102,9 +108,9 @@ export function GapAlert({
             <p className="font-sans text-xs text-neutral-700 leading-relaxed pt-2 border-t border-neutral-200">
               {alert.explanation}
             </p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

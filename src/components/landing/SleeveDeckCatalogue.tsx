@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, RotateCcw, Sparkles, Disc3, Layers } from "lucide-react";
+import { AntigravityH3 } from "@/components/ui/AntigravityH3";
 
 interface SleeveCard {
   id: string;
@@ -93,7 +94,7 @@ const SLEEVE_DECK_DATA: SleeveCard[] = [
   },
   {
     id: "card-6",
-    exam: "CUET UG 2026",
+    exam: "CBSE 12 BOARDS",
     subject: "MATHEMATICS",
     chapter: "INTEGRAL CALCULUS & AREAS",
     stat: "74% RECURRENCE RATE",
@@ -102,7 +103,7 @@ const SLEEVE_DECK_DATA: SleeveCard[] = [
     weightage: "14.0%",
     rotation: 2,
     colorTag: "#000000",
-    analyzerUrl: "/analyzer/cuet/integral-calculus",
+    analyzerUrl: "/analyzer/cbse-12/integral-calculus",
     iconType: "math",
   },
   {
@@ -177,9 +178,18 @@ export function SleeveDeckCatalogue() {
           <span className="font-meta text-xs text-black font-bold bg-white px-3.5 py-1.5 border-2 border-black inline-block tracking-widest uppercase mb-3 shadow-[3px_3px_0px_0px_#000000]">
             [ INTERACTIVE RECORD SLEEVES • CLICK OR DRAG TO THROW ASIDE ]
           </span>
-          <h2 className="font-headline text-[11vw] sm:text-[9vw] md:text-[8vw] lg:text-[7.5vw] text-black tracking-tight leading-[0.88] select-none">
-            TOPIC CATALOGUE
-          </h2>
+          <div className="flex justify-center w-full">
+            <AntigravityH3
+              text="TOPIC CATALOGUE"
+              as="h2"
+              variant="display"
+              className="text-[11vw] sm:text-[9vw] md:text-[8vw] lg:text-[7.5vw] text-black tracking-tight leading-[0.88] select-none text-center cursor-default"
+              stagger={0.032}
+              blurAmount={12}
+              yOffset={32}
+              duration={0.65}
+            />
+          </div>
           <p className="font-sans text-xs sm:text-sm font-semibold text-black max-w-lg mx-auto mt-4">
             FLIP THROUGH HIGH-YIELD EXAMINATION RECORDS. EACH PHYSICAL SLEEVE REPRESENTS A VERIFIED EMPIRICAL PYQ CHAPTER.
           </p>
@@ -266,9 +276,14 @@ export function SleeveDeckCatalogue() {
                         </span>
                       </div>
 
-                      <h3 className="font-headline text-lg sm:text-xl text-black leading-tight mb-2 uppercase">
-                        {card.chapter}
-                      </h3>
+                      <AntigravityH3
+                        text={card.chapter}
+                        variant="card"
+                        className="text-lg sm:text-xl text-black leading-tight mb-2 uppercase group-hover:text-[#FF4D00]"
+                        stagger={0.02}
+                        blurAmount={6}
+                        yOffset={14}
+                      />
 
                       <div className="font-meta text-xs text-[#FF4D00] font-bold">
                         {card.stat}

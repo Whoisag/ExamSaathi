@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Sidebar } from "./Sidebar";
 import { BottomNav } from "./BottomNav";
 import { ExamId, EXAMS } from "@/data/mock";
-import { Sparkles, ChevronRight, BookOpen, Layers } from "lucide-react";
+import { Sparkles, ChevronRight } from "lucide-react";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -18,6 +18,7 @@ interface AppShellProps {
   subtitle?: string;
   breadcrumbs?: { label: string; href?: string }[];
   actionSlot?: React.ReactNode;
+  hideSubjectsTab?: boolean;
 }
 
 export function AppShell({
@@ -30,9 +31,12 @@ export function AppShell({
   subtitle,
   breadcrumbs,
   actionSlot,
+  hideSubjectsTab = false,
 }: AppShellProps) {
   const exam = EXAMS[currentExam] || EXAMS["jee-main"];
-  const availableSubjects = subjects || exam.subjects;
+  const availableSubjects = (subjects || exam.subjects).filter(
+    (s) => s.toLowerCase() !== "biology"
+  );
   const currentSub = activeSubject || currentSubject;
 
   return (
@@ -101,32 +105,7 @@ export function AppShell({
               {actionSlot && <div className="flex items-center gap-2.5 shrink-0">{actionSlot}</div>}
             </div>
 
-            {/* Subject Selector Tabs if applicable */}
-            {availableSubjects && availableSubjects.length > 1 && (
-              <div className="max-w-7xl mx-auto mt-4 pt-3 border-t-2 border-neutral-100 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                <span className="text-xs font-bold font-meta text-neutral-400 uppercase tracking-wider mr-2 hidden sm:inline-flex items-center gap-1">
-                  <Layers className="w-3.5 h-3.5" /> SUBJECTS:
-                </span>
-                {availableSubjects.map((sub) => {
-                  const isSelected =
-                    currentSub.toLowerCase() === sub.toLowerCase();
-                  return (
-                    <Link
-                      key={sub}
-                      href={`/dashboard/${currentExam}/${sub.toLowerCase()}`}
-                      className={`px-4 py-1.5 font-headline text-xs tracking-wider whitespace-nowrap transition-all flex items-center gap-1.5 border-2 border-black ${
-                        isSelected
-                          ? "bg-black text-[#FF4D00] shadow-[2px_2px_0px_0px_#FF4D00]"
-                          : "bg-white text-black hover:bg-[#FF4D00] hover:text-black shadow-[2px_2px_0px_0px_#000000]"
-                      }`}
-                    >
-                      <BookOpen className="w-3 h-3" />
-                      {sub.toUpperCase()}
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+
           </div>
         )}
 

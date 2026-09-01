@@ -22,10 +22,16 @@ export function BottomNav({ currentExam = "jee-main", currentSubject = "physics"
 
   const tabs = [
     {
-      label: "Exams",
+      label: "Exam Analysis",
       href: "/dashboard/exams",
       icon: GraduationCap,
       activePattern: /^\/dashboard\/exams/,
+    },
+    {
+      label: "Practice",
+      href: "/dashboard/practice",
+      icon: BookmarkCheck,
+      activePattern: /^\/dashboard\/practice/,
     },
     {
       label: "Trends",

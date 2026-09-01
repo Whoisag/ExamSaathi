@@ -63,7 +63,7 @@ export async function updateSession(request: NextRequest) {
   // If already authenticated and trying to access login/signup, redirect to dashboard
   if ((user || mockUserCookie) && (pathname === '/login' || pathname === '/signup')) {
     const url = request.nextUrl.clone()
-    url.pathname = '/dashboard/exams'
+    url.pathname = '/my-dashboard'
     return NextResponse.redirect(url)
   }
 

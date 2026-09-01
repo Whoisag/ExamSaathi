@@ -2,8 +2,8 @@
 
 import React from "react";
 import { GapAlertItem } from "@/data/mock";
-import { KaTeXMath } from "@/components/ui/KaTeXMath";
-import { AlertTriangle, Clock, Calendar, ShieldAlert } from "lucide-react";
+import { MarkdownMath } from "@/components/ui/MarkdownMath";
+import { AlertTriangle, ShieldAlert } from "lucide-react";
 
 interface GapAlertCardProps {
   gapAlerts: GapAlertItem[];
@@ -51,15 +51,15 @@ export function GapAlertCard({
                   PRIORITY: {gap.predictedUrgency.toUpperCase()}
                 </span>
                 <span className="bg-[#FF4D00] text-black font-meta text-xs px-2 py-0.5 font-bold">
-                  +{gap.marksAtStake} MARKS AT STAKE
+                  +{gap.marksAtStake} {gap.marksAtStake === 1 ? "MARK" : "MARKS"} AT STAKE
                 </span>
               </div>
 
               <h4 className="font-headline text-lg text-black mb-1 group-hover:text-[#FF4D00] transition-colors">
-                {gap.topicName}
+                <MarkdownMath content={gap.topicName} />
               </h4>
               <div className="text-xs text-neutral-600 font-sans mb-4">
-                // <KaTeXMath math={gap.subtopic} block={false} />
+                // <MarkdownMath content={gap.subtopic} />
               </div>
 
               <div className="grid grid-cols-3 gap-2 bg-white p-2.5 border border-neutral-300 font-meta text-[11px] mb-4 text-center">

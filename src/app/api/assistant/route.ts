@@ -176,7 +176,7 @@ function extractChapterName(text: string): string | null {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { messages = [], exam = "cbse-12", chapter = "General Strategy", confidence } = body;
+    const { messages = [], exam = "cbse-12", chapter = "General Strategy", confidence, prepHubContext } = body;
 
     const lastUserMessage = (messages[messages.length - 1]?.content || "").toLowerCase();
     const detectedChapter = extractChapterName(lastUserMessage) || chapter;
@@ -184,15 +184,15 @@ export async function POST(req: NextRequest) {
     const systemPrompt = `You are Saathi AI — an expert academic mentor, tutor, and exam strategist for Indian competitive exams (JEE Main, JEE Advanced, and CBSE Class 12 Boards).
 You provide clear, authoritative, direct, and pedagogically rich explanations with step-by-step logic, key topic breakdowns, and formulas formatted in clean LaTeX ($...$ and $$...$$).
 
-INSTRUCTIONS:
-1. Always directly answer what the user asked. If the user asks for important topics in a chapter (e.g. Solutions, Current Electricity, Electrochemistry), immediately list the high-yield topics, core derivations, and recurring question types for CBSE/JEE.
-2. Structure your response with clean Markdown headings (###), bullet points, and LaTeX formulas.
-3. Be concise, punchy, and academically precise. Avoid generic non-answers.
-4. Active context: Target Exam: ${exam.toUpperCase()}, Module: ${detectedChapter}.`;
+CRITICAL INSTRUCTIONS:
+1. Always directly answer what the user asked immediately. Output ONLY the final pedagogical answer.
+2. NEVER output internal monologues, reasoning transcripts, scratchpads, or headers like "Here's a thinking process:" or "1. Analyze User Input:".
+3. Structure your response with clean Markdown headings (###), bullet points, and LaTeX formulas.
+4. Active context: Target Exam: ${exam.toUpperCase()}, Module: ${detectedChapter}.${prepHubContext ? `\n\n## STUDENT'S CURRENT PREP STATUS (from their Prep Hub):\n${prepHubContext}\n\nIMPORTANT: When the student asks for a study plan, revision schedule, or "make a plan", use this data to:\n1. Prioritize weak topics with high marks impact first\n2. Schedule quick wins to build confidence\n3. Reference their actual accuracy rates and days since last revision\n4. Create a specific, personalized timetable with chapter names they are tracking\n` : ""}`;
 
     const formattedMessages: OpenRouterMessage[] = [
       { role: "system", content: systemPrompt },
-      ...messages.slice(-8).map((m: any) => ({
+      ...messages.slice(-5).map((m: any) => ({
         role: (m.role === "user" || m.role === "assistant" ? m.role : "user") as "user" | "assistant",
         content: String(m.content || ""),
       })),
@@ -205,12 +205,12 @@ INSTRUCTIONS:
       });
     }
 
-    // Call AI with generous 25s timeout and automatic model routing array
+    // Call high-speed AI engine with generous token capacity (4096) to fully accommodate multi-question sets and derivations
     const aiResult = await callOpenRouter(formattedMessages, {
-      model: process.env.OPENROUTER_MODEL_ASSISTANT || "minimax/minimax-m3:free",
-      temperature: 0.3,
-      maxTokens: 1200,
-      timeoutMs: 25000,
+      model: process.env.OPENROUTER_MODEL_ASSISTANT || "google/gemini-2.0-flash-lite-001",
+      temperature: 0.25,
+      maxTokens: 4096,
+      timeoutMs: 16000,
     });
 
     if (aiResult.text && !aiResult.error) {

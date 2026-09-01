@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { HeatmapData } from "@/data/mock";
 import { ChartSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -139,7 +140,7 @@ export function TopicHeatmap({
                   </div>
                   <span className="text-[10px] font-meta text-neutral-500 font-normal">{topic.category}</span>
                 </td>
-                {years.map((year) => {
+                {years.map((year, index) => {
                   const cell = topic.yearsData[year] || { count: 0, percentage: 0 };
                   const isHovered =
                     hoveredCell?.topicName === topic.name && hoveredCell?.year === year;
@@ -160,9 +161,16 @@ export function TopicHeatmap({
                         cell.count
                       )} ${isHovered ? "ring-2 ring-inset ring-black shadow-sm z-10" : ""}`}
                     >
-                      <span className="block text-[11px] font-mono font-bold">
+                      <motion.span 
+                        className="block text-[11px] font-mono font-bold"
+                        initial={{ opacity: 0, scale: 0.85 }} 
+                        animate={{ opacity: 1, scale: 1 }} 
+                        transition={{ delay: index * 0.015, duration: 0.25, ease: 'easeOut' }}
+                        whileHover={{ scale: 1.08, transition: { duration: 0.15 } }}
+                        style={{ willChange: 'transform' }}
+                      >
                         {displayMode === "count" ? `${cell.count}Q` : `${cell.percentage}%`}
-                      </span>
+                      </motion.span>
                     </td>
                   );
                 })}

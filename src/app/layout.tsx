@@ -45,8 +45,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} ${archivoBlack.variable} ${spaceMono.variable} h-full`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col antialiased bg-white text-black selection:bg-[#FF4D00] selection:text-white">
+      <body
+        className="min-h-full flex flex-col antialiased bg-white text-black selection:bg-[#FF4D00] selection:text-white"
+        suppressHydrationWarning
+      >
         <Toaster
           position="top-right"
           toastOptions={{

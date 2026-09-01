@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, animate } from "framer-motion";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
+import { AntigravityH3 } from "@/components/ui/AntigravityH3";
 
 interface PortalHeroProps {
   onExploreClick?: () => void;
@@ -435,9 +436,15 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
           </h1>
 
           {/* Tagline */}
-          <div className="font-meta text-[11px] sm:text-xs md:text-sm text-white tracking-[0.05em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-3 py-1.5 sm:px-4 sm:py-2 inline-block">
-            PATTERN-BASED EXAM PREP FOR INDIAN STUDENTS
-          </div>
+          <AntigravityH3
+            text="PATTERN-BASED EXAM PREP FOR INDIAN STUDENTS"
+            variant="muted"
+            className="text-[11px] sm:text-xs md:text-sm text-white tracking-[0.08em] uppercase font-bold border-2 border-[#FF4D00] bg-black px-3 py-1.5 sm:px-4 sm:py-2 inline-block hover:text-[#FF4D00]"
+            stagger={0.018}
+            blurAmount={8}
+            yOffset={16}
+            highlightWords={["PATTERN-BASED", "INDIAN"]}
+          />
 
           {/* Subtitle */}
           <p className="text-xs sm:text-base md:text-lg font-medium text-neutral-200 leading-snug max-w-2xl mx-auto px-2">

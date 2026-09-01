@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Users, Award, Clock, BookOpen, Sparkles, PlusCircle } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import { ExamCardItem } from "@/data/mock";
 
 interface ExamCardProps {
@@ -22,50 +22,6 @@ export function ExamCard({ exam, isLoading = false }: ExamCardProps) {
     );
   }
 
-  if (exam.isCustom) {
-    return (
-      <div className="border-brutal bg-white p-6 sm:p-8 flex flex-col justify-between relative group hover:bg-neutral-50 transition-colors border-dashed">
-        <div className="absolute top-0 right-0 bg-neutral-800 text-white font-meta text-[10px] px-3 py-1 font-bold">
-          CUSTOM TRACK
-        </div>
-
-        <div>
-          <div className="w-12 h-12 bg-neutral-100 border-brutal flex items-center justify-center mb-4 group-hover:bg-[#FF4D00] transition-colors">
-            <PlusCircle className="w-6 h-6 text-black" />
-          </div>
-          <span className="font-meta text-xs text-neutral-500 font-bold block mb-1">
-            // USER DEFINED
-          </span>
-          <h3 className="font-headline text-2xl sm:text-3xl text-black mb-2">
-            {exam.name}
-          </h3>
-          <p className="text-sm text-neutral-600 mb-6 leading-relaxed">
-            {exam.tagline}
-          </p>
-
-          <div className="bg-neutral-100 p-4 border-brutal mb-6 font-meta text-xs space-y-1.5">
-            <div className="flex justify-between">
-              <span className="text-neutral-500">PACE:</span>
-              <span className="font-bold text-black">{exam.stats.candidates}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-neutral-500">FORMAT:</span>
-              <span className="font-bold text-black">{exam.stats.shiftsPerYear}</span>
-            </div>
-          </div>
-        </div>
-
-        <Link
-          href={`/dashboard/exams/${exam.slug}/chapters`}
-          className="w-full bg-black text-white py-3.5 border-brutal font-headline text-sm hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-center gap-2"
-        >
-          <span>CONFIGURE TRACK</span>
-          <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <div className="border-brutal bg-white p-6 sm:p-8 flex flex-col justify-between relative group hover:-translate-y-1 transition-all duration-200">
       {/* Top Status Tag */}
@@ -73,9 +29,16 @@ export function ExamCard({ exam, isLoading = false }: ExamCardProps) {
         <span className="font-meta text-xs font-bold text-[#FF4D00]">
           // {exam.authority}
         </span>
-        <span className="bg-black text-white font-meta text-[10px] px-2 py-0.5 font-bold">
-          {exam.difficulty}
-        </span>
+        <div className="flex items-center gap-1.5">
+          {exam.status === "Upcoming" && (
+            <span className="bg-[#FF4D00] text-black border border-black font-meta text-[10px] px-2 py-0.5 font-bold animate-pulse">
+              COMING SOON
+            </span>
+          )}
+          <span className="bg-black text-white font-meta text-[10px] px-2 py-0.5 font-bold">
+            {exam.difficulty}
+          </span>
+        </div>
       </div>
 
       <div>
@@ -127,13 +90,25 @@ export function ExamCard({ exam, isLoading = false }: ExamCardProps) {
 
       {/* Action Footer */}
       <div className="pt-4 border-brutal-t">
-        <Link
-          href={`/dashboard/exams/${exam.slug}/chapters`}
-          className="w-full bg-[#FF4D00] text-black py-3 border-brutal font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center justify-center gap-2"
-        >
-          <span>SELECT CHAPTERS & ANALYZE</span>
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+        {exam.status === "Upcoming" ? (
+          <div className="space-y-2">
+            <div className="w-full bg-neutral-200 text-neutral-600 py-3 border-brutal font-headline text-sm flex items-center justify-center gap-2 cursor-not-allowed select-none">
+              <Clock className="w-4 h-4 text-neutral-500" />
+              <span>COMING SOON</span>
+            </div>
+            <p className="font-meta text-[11px] text-center text-neutral-500 font-bold uppercase tracking-wider">
+              [ DATASET & PREDICTION MODEL IN TRAINING ]
+            </p>
+          </div>
+        ) : (
+          <Link
+            href={`/dashboard/exams/${exam.slug}/chapters`}
+            className="w-full bg-[#FF4D00] text-black py-3 border-brutal font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-colors flex items-center justify-center gap-2"
+          >
+            <span>SELECT CHAPTERS & ANALYZE</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        )}
       </div>
     </div>
   );

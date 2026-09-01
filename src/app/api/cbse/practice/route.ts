@@ -1,51 +1,45 @@
-import { NextResponse } from "next/server";
-import { getMockPracticeQuestions, PracticeQuestion } from "@/data/mock";
+import { NextRequest, NextResponse } from "next/server";
+import { getPracticeQuestions, PracticeQuestion } from "@/data/mock";
 import fs from "fs";
 import path from "path";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const qPath = path.join(process.cwd(), "public", "data", "questions.json");
-    if (fs.existsSync(qPath)) {
-      const allQuestions = JSON.parse(fs.readFileSync(qPath, "utf-8"));
-      if (Array.isArray(allQuestions) && allQuestions.length > 0) {
-        // Map canonical questions to PracticeQuestion format
-        const formatted: PracticeQuestion[] = allQuestions.slice(0, 40).map((q: any, idx: number) => {
-          const rawSubj = (q.subject || "Physics").toLowerCase();
-          const subject =
-            rawSubj.includes("chem")
-              ? "Chemistry"
-              : rawSubj.includes("math")
-              ? "Mathematics"
-              : "Physics";
+    const { searchParams } = new URL(req.url);
+    const exam = searchParams.get("exam") || "cbse-12";
+    const subject = searchParams.get("subject") || "All";
 
-          const rawDiff = (q.difficulty || "medium").toLowerCase();
-          const difficultyBadge =
-            rawDiff === "easy" ? "Easy" : rawDiff === "hard" ? "Hard" : "Medium";
+    let questions = getPracticeQuestions(exam, subject);
 
-          return {
-            id: q.id || `pr-${idx + 1}`,
-            subject,
-            chapter: q.chapter || "Core Physics",
-            year: Number(q.year) || 2024,
-            marks: Number(q.marks) || 4,
-            questionType: q.type || "Multiple Choice",
-            difficulty: difficultyBadge,
-            questionText: q.question_latex || q.question || "Calculate the standard quantity given the parameters.",
-            sourceType: "ai_generated" as const,
-            analyzerTags: [q.topic || "Core Syllabus", `${q.exam || "CBSE"} PYQ`],
-          };
-        });
-
-        if (formatted.length > 0) {
-          return NextResponse.json(formatted);
+    // Load CSV parsed questions
+    try {
+      const qPath = path.join(process.cwd(), "public", "data", "csv_questions.json");
+      if (fs.existsSync(qPath)) {
+        const fileContent = fs.readFileSync(qPath, "utf-8");
+        const csvQuestions = JSON.parse(fileContent);
+        
+        let filteredCsv = csvQuestions;
+        if (subject && subject !== "All") {
+          filteredCsv = csvQuestions.filter((q: any) => q.subject.toLowerCase() === subject.toLowerCase());
+        }
+        
+        const limitParam = searchParams.get("limit");
+        const limit = limitParam ? parseInt(limitParam, 10) : undefined;
+        
+        if (limit && limit > 0) {
+          const shuffled = filteredCsv.sort(() => 0.5 - Math.random());
+          questions = [...questions, ...shuffled.slice(0, limit)];
+        } else {
+          questions = [...questions, ...filteredCsv];
         }
       }
+    } catch (csvErr) {
+      console.warn("Could not load CSV questions:", csvErr);
     }
-  } catch (err) {
-    console.warn("Could not read questions.json for /api/cbse/practice, using mock:", err);
-  }
 
-  const questions = getMockPracticeQuestions();
-  return NextResponse.json(questions);
+    return NextResponse.json(questions);
+  } catch (err) {
+    console.warn("Error in practice API route:", err);
+    return NextResponse.json(getPracticeQuestions("cbse-12"));
+  }
 }
