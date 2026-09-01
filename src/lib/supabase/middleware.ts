@@ -51,28 +51,8 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(callbackUrl)
   }
 
-  // Protected routes: dashboard, analyzer, assistant, settings, exam
-  const isProtectedRoute =
-    pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/analyzer') ||
-    pathname.startsWith('/analyze') ||
-    pathname.startsWith('/assistant') ||
-    pathname.startsWith('/my-dashboard') ||
-    pathname.startsWith('/settings') ||
-    pathname.startsWith('/exam')
-
-  // Check if mock user session exists in cookies as graceful fallback for local development
-  const mockUserCookie = request.cookies.get('exam_saathi_user')
-
-  if (!user && !mockUserCookie && isProtectedRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    url.searchParams.set('redirect', pathname)
-    return NextResponse.redirect(url)
-  }
-
-  // If already authenticated and trying to access login/signup, redirect to dashboard
-  if ((user || mockUserCookie) && (pathname === '/login' || pathname === '/signup')) {
+  // If already authenticated with active session and explicitly visiting login/signup, redirect to dashboard
+  if (user && (pathname === '/login' || pathname === '/signup')) {
     const url = request.nextUrl.clone()
     url.pathname = '/my-dashboard'
     return NextResponse.redirect(url)
@@ -80,3 +60,4 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse
 }
+
