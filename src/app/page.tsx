@@ -21,6 +21,14 @@ export default function LandingPage() {
   const [loginModalOpen, setLoginModalOpen] = React.useState(false);
   const [aiPreviewOpen, setAiPreviewOpen] = React.useState(false);
   const [selectedServiceTitle, setSelectedServiceTitle] = React.useState("");
+
+  // Redirect to dashboard if already logged in
+  React.useEffect(() => {
+    if (user) {
+      router.push("/my-dashboard");
+    }
+  }, [user, router]);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],

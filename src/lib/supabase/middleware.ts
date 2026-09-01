@@ -40,6 +40,17 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
+  // If landing on root or login with an auth code, route directly through auth callback
+  if (request.nextUrl.searchParams.has('code') && (pathname === '/' || pathname === '/login')) {
+    const code = request.nextUrl.searchParams.get('code')!
+    const next = request.nextUrl.searchParams.get('next') || '/my-dashboard'
+    const callbackUrl = request.nextUrl.clone()
+    callbackUrl.pathname = '/auth/callback'
+    callbackUrl.searchParams.set('code', code)
+    callbackUrl.searchParams.set('next', next)
+    return NextResponse.redirect(callbackUrl)
+  }
+
   // Protected routes: dashboard, analyzer, assistant, settings, exam
   const isProtectedRoute =
     pathname.startsWith('/dashboard') ||

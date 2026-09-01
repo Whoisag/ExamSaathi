@@ -98,6 +98,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const initAuth = async () => {
       try {
+        // If arriving with a PKCE code in query params, exchange it first
+        if (typeof window !== "undefined") {
+          const urlParams = new URLSearchParams(window.location.search);
+          const code = urlParams.get("code");
+          if (code) {
+            try {
+              const { data: exchangeData } = await supabase.auth.exchangeCodeForSession(code);
+              if (exchangeData?.session?.user && mounted) {
+                setSession(exchangeData.session);
+                const mapped = mapUser(exchangeData.session.user);
+                setUser(mapped);
+                syncSessionCookie(mapped);
+                const next = urlParams.get("next") || "/my-dashboard";
+                window.history.replaceState({}, document.title, window.location.pathname);
+                if (window.location.pathname === "/" || window.location.pathname === "/login") {
+                  window.location.href = next;
+                  return;
+                }
+              }
+            } catch (pkceErr) {
+              console.warn("Client PKCE exchange attempt:", pkceErr);
+            }
+          }
+        }
+
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
         
         if (currentSession?.user && mounted) {
