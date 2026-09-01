@@ -22,8 +22,16 @@ export default function LandingPage() {
   const [aiPreviewOpen, setAiPreviewOpen] = React.useState(false);
   const [selectedServiceTitle, setSelectedServiceTitle] = React.useState("");
 
-  // Redirect to dashboard if already logged in
+  // Handle auth redirect if code is present in URL or user is already logged in
   React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      if (code) {
+        window.location.href = `/auth/callback?code=${encodeURIComponent(code)}&next=/my-dashboard`;
+        return;
+      }
+    }
     if (user) {
       router.push("/my-dashboard");
     }
