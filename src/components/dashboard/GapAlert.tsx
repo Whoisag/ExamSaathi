@@ -65,7 +65,7 @@ export function GapAlert({
             variants={cardVariants}
             whileHover={shouldAnimate ? { y: -2, transition: { duration: 0.18 } } : {}}
             style={{ willChange: 'transform' }}
-            className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000]"
+            className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000] hover:shadow-[5px_5px_0px_0px_#000000] border-l-4 border-l-[#FF4D00]"
           >
             {/* Title & Badge */}
             <div className="flex items-start justify-between gap-3">
@@ -76,7 +76,7 @@ export function GapAlert({
                 <p className="font-meta text-xs text-[#FF4D00] font-bold mt-0.5">{alert.subtopic}</p>
               </div>
               <span
-                className={`font-meta text-[10px] font-bold px-2 py-0.5 border border-black uppercase tracking-wider shrink-0 ${
+                className={`font-meta text-[10px] font-bold px-2.5 py-1 border border-black uppercase tracking-wider shrink-0 ${
                   alert.predictedUrgency === "High"
                     ? "bg-[#FF4D00] text-black shadow-[1px_1px_0px_0px_#000000]"
                     : "bg-black text-white"
@@ -104,10 +104,18 @@ export function GapAlert({
               </span>
             </div>
 
-            {/* Explanation */}
-            <p className="font-sans text-xs text-neutral-700 leading-relaxed pt-2 border-t border-neutral-200">
-              {alert.explanation}
-            </p>
+            {/* Explanation & Practice Button */}
+            <div className="pt-2 border-t border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <p className="font-sans text-xs text-neutral-700 leading-relaxed flex-1">
+                {alert.explanation}
+              </p>
+              <a
+                href={`/dashboard/practice?topic=${encodeURIComponent(alert.topicName)}`}
+                className="font-meta text-[10px] font-bold text-black hover:text-white bg-[#FF4D00] hover:bg-black px-2.5 py-1 border border-black transition-colors shrink-0 self-start sm:self-auto flex items-center gap-1 shadow-[1px_1px_0px_0px_#000000]"
+              >
+                <span>RESOLVE GAP →</span>
+              </a>
+            </div>
           </motion.div>
         ))}
       </motion.div>

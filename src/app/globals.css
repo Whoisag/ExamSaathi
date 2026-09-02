@@ -90,6 +90,57 @@ body {
   border-right: 2px solid #000000;
 }
 
+/* Kinetic Orange Aesthetic Utilities */
+.shadow-kinetic {
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.shadow-kinetic-orange {
+  box-shadow: 4px 4px 0px 0px #FF4D00;
+}
+
+.shadow-kinetic-lg {
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.glow-orange {
+  box-shadow: 0 0 20px rgba(255, 77, 0, 0.45);
+}
+
+.glow-orange-sm {
+  box-shadow: 0 0 10px rgba(255, 77, 0, 0.35);
+}
+
+.bg-kinetic-dots {
+  background-image: radial-gradient(#000000 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.bg-kinetic-dots-white {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.bg-kinetic-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    #000000,
+    #000000 8px,
+    #171717 8px,
+    #171717 16px
+  );
+}
+
+.bg-kinetic-stripes-orange {
+  background: repeating-linear-gradient(
+    -45deg,
+    #FF4D00,
+    #FF4D00 10px,
+    #E64500 10px,
+    #E64500 20px
+  );
+}
+
 /* Keyframe Animations */
 @keyframes spin-12s {
   from {

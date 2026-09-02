@@ -24,8 +24,12 @@ import {
   Sparkles,
   Globe,
   Loader2,
+  FileText,
+  ArrowUpRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { downloadStudyGuidePdf } from "@/lib/pdfGenerator";
+import toast from "react-hot-toast";
 
 const SUBJECTS = ["All", "Physics", "Chemistry", "Mathematics"];
 
@@ -231,35 +235,60 @@ function MyDashboardContent() {
       subtitle="Track your syllabus mastery, resolve high-stakes vulnerabilities, and bank quick-win marks."
       breadcrumbs={[{ label: "My Dashboard" }]}
       actionSlot={
-        <button
-          onClick={() => router.push(`/assistant?exam=${currentExam}&prepHub=1`)}
-          className="flex items-center gap-1.5 bg-[#FF4D00] p-2 border-2 border-black text-xs font-meta font-bold shadow-[2px_2px_0px_0px_#000000] text-black hover:translate-y-[2px] hover:shadow-none transition-all"
-        >
-          <Zap className="w-4 h-4" />
-          <span>⚡ ASK AI TO PLAN</span>
-        </button>
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            type="button"
+            onClick={() => {
+              toast.success(`Compiling official ${currentExam.toUpperCase()} syllabus cheatsheet...`);
+              downloadStudyGuidePdf({
+                title: `${currentExam === "cbse-12" ? "CBSE Class 12 Boards" : "JEE Main 2026"} — Complete Syllabus Study Guide`,
+                subject: selectedSubject === "All" ? "PCM Sciences" : selectedSubject,
+                exam: currentExam.toUpperCase(),
+                chapter: "Personalized Prep Hub",
+              });
+            }}
+            className="flex items-center gap-1.5 bg-black text-[#FF4D00] p-2 sm:px-3 border-2 border-black text-xs font-meta font-bold shadow-[2px_2px_0px_0px_#000000] hover:bg-[#FF4D00] hover:text-black hover:translate-y-[1px] hover:shadow-none transition-all cursor-pointer"
+            title="Download full revision cheatsheet (PDF)"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">1-CLICK</span> PDF
+          </button>
+          <button
+            onClick={() => router.push(`/assistant?exam=${currentExam}&prepHub=1`)}
+            className="flex items-center gap-1.5 bg-[#FF4D00] p-2 sm:px-3 border-2 border-black text-xs font-meta font-bold shadow-[2px_2px_0px_0px_#000000] text-black hover:bg-black hover:text-white hover:translate-y-[1px] hover:shadow-none transition-all cursor-pointer"
+          >
+            <Zap className="w-4 h-4" />
+            <span>⚡ ASK AI TO PLAN</span>
+          </button>
+        </div>
       }
     >
       <div className="space-y-6">
-        {/* Exam Switcher Bar */}
-        <div className="grid grid-cols-2 bg-black text-white p-1 border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
-          {PREP_EXAM_TABS.map((exam) => (
-            <button
-              key={exam.id}
-              onClick={() => {
-                setCurrentExam(exam.id);
-                localStorage.setItem("examsaathi_target_exam", exam.id);
-                // Reset dynamic analysis for new exam
-                setDynamicWeakSpots(null);
-                setDynamicQuickWins(null);
-              }}
-              className={`px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wider uppercase whitespace-nowrap transition-colors text-center ${
-                currentExam === exam.id ? "bg-[#FF4D00] text-black" : "text-neutral-400 hover:text-white hover:bg-neutral-900"
-              }`}
-            >
-              {exam.shortName}
-            </button>
-          ))}
+        {/* ── Kinetic Exam Switcher Bar ─────────────────────────────────── */}
+        <div className="grid grid-cols-2 bg-black text-white p-1.5 border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
+          {PREP_EXAM_TABS.map((exam) => {
+            const isSelected = currentExam === exam.id;
+            return (
+              <button
+                key={exam.id}
+                onClick={() => {
+                  setCurrentExam(exam.id);
+                  localStorage.setItem("examsaathi_target_exam", exam.id);
+                  // Reset dynamic analysis for new exam
+                  setDynamicWeakSpots(null);
+                  setDynamicQuickWins(null);
+                }}
+                className={`px-4 sm:px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wider uppercase whitespace-nowrap transition-all text-center flex items-center justify-center gap-2 ${
+                  isSelected
+                    ? "bg-[#FF4D00] text-black shadow-[2px_2px_0px_0px_#FFFFFF]"
+                    : "text-neutral-400 hover:text-white hover:bg-neutral-900"
+                }`}
+              >
+                <span>{exam.shortName}</span>
+                {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse hidden sm:inline-block" />}
+              </button>
+            );
+          })}
         </div>
 
         <motion.div 
@@ -268,71 +297,82 @@ function MyDashboardContent() {
           initial="hidden"
           animate="show"
         >
-          {/* Readiness Metric Strip */}
+          {/* ── Kinetic Readiness Metric Strip ───────────────────────────── */}
           <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans">
             {/* Metric 1: Readiness Score */}
-            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
+            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-0.5 transition-all space-y-2 border-l-4 border-l-[#FF4D00] relative overflow-hidden group">
               <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
                 <span className="font-bold uppercase tracking-wider text-black">Exam Readiness</span>
                 <Target className="w-4 h-4 text-[#FF4D00]" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-headline text-black">
+                <span className="text-3xl sm:text-4xl font-headline text-black tracking-tight">
                   {readinessScore}%
                 </span>
-                <span className="text-xs font-meta text-emerald-600 font-bold">+6% this week</span>
+                <span className="text-xs font-meta text-emerald-700 bg-emerald-100 px-1.5 py-0.2 border border-emerald-500 font-bold">
+                  +6% THIS WEEK
+                </span>
               </div>
-              <div className="w-full bg-neutral-100 border border-black h-2 overflow-hidden">
+              <div className="w-full bg-neutral-100 border border-black h-2.5 overflow-hidden">
                 <div
-                  className="bg-[#FF4D00] h-full transition-all duration-500"
+                  className="bg-[#FF4D00] h-full transition-all duration-500 shadow-[0_0_8px_rgba(255,77,0,0.5)]"
                   style={{ width: `${readinessScore}%` }}
                 />
               </div>
+              <p className="font-meta text-[10px] text-neutral-500">Real-time confidence weighted index</p>
             </div>
 
             {/* Metric 2: Mastered Chapters */}
-            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
+            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-0.5 transition-all space-y-2 relative overflow-hidden group">
               <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
                 <span className="font-bold uppercase tracking-wider text-black">Mastered High-Yield</span>
                 <Trophy className="w-4 h-4 text-black" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-headline text-black">
+                <span className="text-3xl sm:text-4xl font-headline text-black tracking-tight">
                   {masteredCount}
                 </span>
-                <span className="text-xs font-meta text-neutral-600">/ {totalTopics} chapters</span>
+                <span className="text-xs font-meta text-neutral-600 font-bold">/ {totalTopics} chapters</span>
               </div>
-              <p className="font-meta text-[11px] text-neutral-500">Average mock test accuracy 88%</p>
+              <div className="flex items-center gap-1.5 font-meta text-[11px] text-neutral-700">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full" />
+                <span>Average mock test accuracy ~88%</span>
+              </div>
+              <p className="font-meta text-[10px] text-neutral-500">Firmly in score retention zone</p>
             </div>
 
             {/* Metric 3: Critical Gaps */}
-            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
+            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-0.5 transition-all space-y-2 relative overflow-hidden group border-l-4 border-l-red-600">
               <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
                 <span className="font-bold uppercase tracking-wider text-black">Attention Required</span>
                 <Flame className="w-4 h-4 text-[#FF4D00]" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-headline text-[#FF4D00]">
+                <span className="text-3xl sm:text-4xl font-headline text-[#FF4D00] tracking-tight">
                   {weakCount}
                 </span>
-                <span className="text-xs font-meta text-neutral-600">Weak Topics</span>
+                <span className="text-xs font-meta text-red-600 bg-red-50 px-1.5 py-0.2 border border-red-300 font-bold">
+                  HIGH VULNERABILITY
+                </span>
               </div>
-              <p className="font-meta text-[11px] text-neutral-500">High-priority revision items</p>
+              <p className="font-meta text-[11px] text-neutral-700 font-bold">High-priority revision items</p>
+              <p className="font-meta text-[10px] text-neutral-500">Resolve to prevent negative marking traps</p>
             </div>
 
             {/* Metric 4: In Active Revision */}
-            <div className="bg-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2">
-              <div className="flex items-center justify-between text-xs text-neutral-500 font-meta">
-                <span className="font-bold uppercase tracking-wider text-black">In Revision Loop</span>
-                <RotateCcw className="w-4 h-4 text-black" />
+            <div className="bg-black text-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-0.5 transition-all space-y-2 relative overflow-hidden">
+              <div className="flex items-center justify-between text-xs text-neutral-400 font-meta">
+                <span className="font-bold uppercase tracking-wider text-[#FF4D00]">In Revision Loop</span>
+                <RotateCcw className="w-4 h-4 text-[#FF4D00]" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-headline text-black">
+                <span className="text-3xl sm:text-4xl font-headline text-white tracking-tight">
                   {revisingCount}
                 </span>
-                <span className="text-xs font-meta text-neutral-600">Topics</span>
+                <span className="text-xs font-meta text-[#FF4D00] font-bold">TOPICS</span>
               </div>
-              <p className="font-meta text-[11px] text-neutral-500">Next scheduled revision: Today</p>
+              <p className="font-meta text-[11px] text-neutral-300">Next scheduled revision: Today</p>
+              <p className="font-meta text-[10px] text-neutral-400">Spaced repetition queue active</p>
             </div>
           </motion.div>
 

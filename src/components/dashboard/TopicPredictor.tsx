@@ -92,7 +92,9 @@ export function TopicPredictor({
             variants={cardVariants}
             whileHover={shouldAnimate ? { y: -3, transition: { duration: 0.2 } } : {}}
             style={{ willChange: 'transform' }}
-            className="p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000] group"
+            className={`p-4 border-2 border-black bg-white hover:bg-neutral-50 transition-all space-y-3 shadow-[3px_3px_0px_0px_#000000] hover:shadow-[5px_5px_0px_0px_#000000] group ${
+              item.rank === 1 ? "border-l-4 border-l-[#FF4D00]" : ""
+            }`}
           >
             {/* Header: Rank + Title + Trend Badge */}
             <div className="flex items-start justify-between gap-3">
@@ -102,7 +104,7 @@ export function TopicPredictor({
                     item.rank === 1
                       ? "bg-[#FF4D00] text-black shadow-[2px_2px_0px_0px_#000000]"
                       : item.rank === 2
-                      ? "bg-black text-white"
+                      ? "bg-black text-[#FF4D00]"
                       : item.rank === 3
                       ? "bg-neutral-200 text-black"
                       : "bg-white text-neutral-700"
@@ -130,8 +132,9 @@ export function TopicPredictor({
             {/* Probability Progress Bar */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-meta text-[10px] text-neutral-600 uppercase font-bold">
-                  Appearance Probability in Shift
+                <span className="font-meta text-[10px] text-neutral-600 uppercase font-bold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF4D00]" />
+                  Shift Probability
                 </span>
                 <span className="font-mono font-bold text-black text-xs">
                   {item.predictedProbability}%
@@ -139,7 +142,7 @@ export function TopicPredictor({
               </div>
               <div className="w-full bg-neutral-100 border border-black h-2.5 overflow-hidden">
                 <motion.div
-                  className="h-full bg-[#FF4D00]"
+                  className="h-full bg-[#FF4D00] shadow-[0_0_8px_rgba(255,77,0,0.5)]"
                   initial={{ width: 0 }}
                   animate={{ width: `${item.predictedProbability}%` }}
                   transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
@@ -147,10 +150,19 @@ export function TopicPredictor({
               </div>
             </div>
 
-            {/* Reasoning Note */}
-            <p className="font-meta text-[11px] text-neutral-800 bg-neutral-50 p-2.5 border border-black leading-relaxed">
-              💡 {item.trendReason}
-            </p>
+            {/* Reasoning Note + Direct Drill Button */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-neutral-50 p-2.5 border border-black">
+              <p className="font-meta text-[11px] text-neutral-800 leading-relaxed flex-1">
+                💡 {item.trendReason}
+              </p>
+              <a
+                href={`/dashboard/practice?topic=${encodeURIComponent(item.topicName)}`}
+                className="font-meta text-[10px] font-bold text-black hover:text-white bg-[#FF4D00] hover:bg-black px-2.5 py-1 border border-black transition-colors shrink-0 self-start sm:self-auto flex items-center gap-1 shadow-[1px_1px_0px_0px_#000000]"
+              >
+                <span>DRILL PYQs</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
+            </div>
           </motion.div>
         ))}
       </motion.div>
