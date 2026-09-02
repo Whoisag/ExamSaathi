@@ -31,6 +31,27 @@ function generateSessionId() {
   return `session-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+const LOADING_PHRASES = [
+  "Fathoming your query...",
+  "Locking in on concepts...",
+  "Calibrating neural pathways...",
+  "Cross-referencing PYQ shifts...",
+  "Synthesizing verified reasoning...",
+  "Mapping exam patterns...",
+  "Channelling NCERT knowledge...",
+  "Zeroing in on key formulas...",
+  "Parsing mark-scheme traps...",
+  "Distilling exam intelligence...",
+  "Scoping high-weightage topics...",
+  "Crystallising the answer...",
+  "Deep-diving into concepts...",
+  "Pulling from memory banks...",
+  "Reconstructing derivation steps...",
+  "Checking negative-mark hazards...",
+  "Tuning to your study context...",
+  "Rendering step-by-step logic...",
+];
+
 export function ChatInterface({
   initialMessages,
   suggestedPrompts,
@@ -47,6 +68,7 @@ export function ChatInterface({
   const [historyOpen, setHistoryOpen] = useState(false);
   const [sessionId] = useState(generateSessionId);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [loadingPhraseIdx, setLoadingPhraseIdx] = useState(0);
   const hasAutoSentRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -79,6 +101,18 @@ export function ChatInterface({
   }, []);
 
   useEffect(() => { scrollToBottom(); }, [messages, isSending, scrollToBottom]);
+
+  // ── Cycle loading phrases while AI is generating ──────────────────────────
+  useEffect(() => {
+    if (!isSending) {
+      setLoadingPhraseIdx(Math.floor(Math.random() * LOADING_PHRASES.length));
+      return;
+    }
+    const iv = setInterval(() => {
+      setLoadingPhraseIdx((i) => (i + 1) % LOADING_PHRASES.length);
+    }, 1800);
+    return () => clearInterval(iv);
+  }, [isSending]);
 
   // ── Persist chat to localStorage whenever messages change ─────────────────
   useEffect(() => {
@@ -702,13 +736,26 @@ export function ChatInterface({
           })}
 
           {isSending && (
-            <motion.div animate={{ opacity: [1, 0.4, 1] }} transition={{ repeat: Infinity, duration: 1.2 }} className="flex gap-3 sm:gap-4 max-w-3xl mr-auto">
+            <motion.div
+              animate={{ opacity: [1, 0.6, 1] }}
+              transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+              className="flex gap-3 sm:gap-4 max-w-3xl mr-auto"
+            >
               <div className="w-8 h-8 flex-shrink-0 border-brutal bg-[#FF4D00] text-black flex items-center justify-center">
                 <Bot className="w-4 h-4 animate-spin" />
               </div>
-              <div className="border-brutal p-4 bg-white text-black flex items-center gap-2 font-meta text-xs">
-                <Loader2 className="w-4 h-4 animate-spin text-[#FF4D00]" />
-                <span>Saathi AI synthesizing verified PYQ shift reasoning...</span>
+              <div className="border-brutal p-4 bg-white text-black flex items-center gap-2.5 font-meta text-xs min-w-[240px]">
+                <Loader2 className="w-4 h-4 animate-spin text-[#FF4D00] shrink-0" />
+                <motion.span
+                  key={loadingPhraseIdx}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="font-bold uppercase tracking-wide text-[11px]"
+                >
+                  {LOADING_PHRASES[loadingPhraseIdx]}
+                </motion.span>
               </div>
             </motion.div>
           )}
