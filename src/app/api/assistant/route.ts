@@ -208,10 +208,10 @@ CRITICAL INSTRUCTIONS:
 3. Structure your response with clean Markdown headings (###), bullet points, and LaTeX formulas.
 4. Active context: Target Exam: ${exam.toUpperCase()}, Module: ${detectedChapter}.${prepHubContext ? `\n\n## STUDENT'S CURRENT PREP STATUS (from their Prep Hub):\n${prepHubContext}\n\nIMPORTANT: When the student asks for a study plan, revision schedule, or "make a plan", use this data to:\n1. Prioritize weak topics with high marks impact first\n2. Schedule quick wins to build confidence\n3. Reference their actual accuracy rates and days since last revision\n4. Create a specific, personalized timetable with chapter names they are tracking\n` : ""}
 5. DOWNLOADABLE PDF STUDY SHEETS:
-Whenever the student asks to "make a pdf", "generate a pdf", "download pdf", "create a pdf", or "pdf for <topic>" (e.g. "make a pdf for inverse trignometric function class 12"):
-- Provide a comprehensive, organized study breakdown in your response (Principal Value Branches, Formulas, Key Theorems, Step-by-Step Solved PYQs).
-- At the top of your response, ALWAYS include this exact downloadable PDF tag:
-  :::pdf-download{"title":"${detectedChapter} - Class 12 Master Guide","subject":"Mathematics","exam":"${exam.toUpperCase()}","chapter":"${detectedChapter}"}:::
+ONLY IF the student EXPLICITLY asks to "make a pdf", "generate a pdf", "download pdf", "create a pdf", "pdf for <topic>", "give me pdf", or "pdf notes" — then and ONLY then:
+- Provide a comprehensive chapter breakdown and include this exact tag on its own line at the TOP of the response:
+  :::pdf-download{"title":"${detectedChapter} - Class 12 Master Guide","subject":"${detectedChapter.toLowerCase().includes('physic') || ['electric','magnetic','wave','optic','ray','semi','current','electro'].some(w => detectedChapter.toLowerCase().includes(w)) ? 'Physics' : detectedChapter.toLowerCase().includes('chem') || ['solution','electrochem','kinetic','surface','polymer','amine'].some(w => detectedChapter.toLowerCase().includes(w)) ? 'Chemistry' : 'Mathematics'}","exam":"${exam.toUpperCase()}","chapter":"${detectedChapter}"}:::
+- DO NOT add this tag for any other kind of question. ONLY add it for explicit PDF requests.
 6. SCIENTIFIC DIAGRAMS:
 When asked for a diagram (e.g. compound microscope, full-wave rectifier, galvanic cell, wheatstone bridge, bohr atom, carnot cycle), use the verified schematic tag:
   :::diagram{"id":"compound-microscope"}::: (or "full-wave-rectifier", "galvanic-cell")`;
@@ -262,9 +262,16 @@ When asked for a diagram (e.g. compound microscope, full-wave rectifier, galvani
 
     let fallbackText = "";
 
-    if (lastUserMessage.includes("pdf")) {
-      fallbackText += `:::pdf-download{"title":"${detectedChapter} - Class 12 Complete Master Guide","subject":"Mathematics","exam":"${exam.toUpperCase()}","chapter":"${detectedChapter}"}:::\n\n`;
-    }
+    // Detect explicit PDF request only on very clear intent keywords
+    const isPdfRequest = /\b(make\s+a?\s*pdf|generate\s+a?\s*pdf|create\s+a?\s*pdf|download\s+pdf|pdf\s+for|give\s+me\s+pdf|pdf\s+notes|revision\s+pdf)\b/i.test(lastUserMessage);
+
+    // Determine subject from chapter name
+    const physicsKeywords = ["electric", "magnetic", "wave", "optic", "ray", "semi", "current", "electro", "atom", "nucleus", "communic", "device", "dual"];
+    const chemKeywords = ["solution", "electrochem", "kinetic", "surface", "polymer", "amine", "aldehyde", "ketone", "alcohol", "coordinat", "d-block", "p-block", "haloalk", "biomolecule"];
+    const chapterLower = detectedChapter.toLowerCase();
+    const subjectForPdf = physicsKeywords.some(k => chapterLower.includes(k)) ? "Physics"
+      : chemKeywords.some(k => chapterLower.includes(k)) ? "Chemistry"
+      : "Mathematics";
 
     if (matchedChapterKey && CHAPTER_TOPIC_REGISTRY[matchedChapterKey]) {
       const info = CHAPTER_TOPIC_REGISTRY[matchedChapterKey];
@@ -292,6 +299,11 @@ When asked for a diagram (e.g. compound microscope, full-wave rectifier, galvani
         `1. **Core NCERT Mastery**: Complete all in-text numericals and Exemplar problems.\n` +
         `2. **Historical PYQ Frequency**: Prioritize the top-weighted subtopics identified in the Chapter Analyzer.\n` +
         `3. **Error Logging**: Note sign conventions and negative-marking traps from past 3 years' shifts.`;
+    }
+
+    // Append PDF card ONLY on explicit PDF requests, AFTER the content
+    if (isPdfRequest) {
+      fallbackText = `:::pdf-download{"title":"${detectedChapter} - Class 12 Complete Master Guide","subject":"${subjectForPdf}","exam":"${exam.toUpperCase()}","chapter":"${detectedChapter}"}:::\n\n${fallbackText}`;
     }
 
     return NextResponse.json({
