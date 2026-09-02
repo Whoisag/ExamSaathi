@@ -3,7 +3,7 @@
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Lock, Mail, AlertCircle, Info, Zap, Sparkles } from "lucide-react";
+import { ArrowRight, Lock, Mail, AlertCircle, Info, Zap, Sparkles, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
 
@@ -13,7 +13,7 @@ function LoginContent() {
   const redirectTarget = searchParams.get("redirect") || "/my-dashboard";
   const urlError = searchParams.get("error");
 
-  const { signIn, signInWithGoogle, user } = useAuth();
+  const { signIn, signInWithGoogle, signInAsGuest, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
@@ -84,13 +84,25 @@ function LoginContent() {
 
   const handleGuestLogin = async () => {
     setIsGuestLoading(true);
-    // Instant demo session sign in
-    const { error } = await signIn("aspirant@examsaathi.ai", "aspirant2026");
-    if (!error) {
-      toast.success("Welcome, Aspirant! Launching Dashboard...");
+    try {
+      let preferred = "cbse-12";
+      if (typeof window !== "undefined") {
+        try {
+          const saved = localStorage.getItem("examsaathi_target_exam");
+          if (saved) preferred = saved;
+        } catch {}
+      }
+      const { error } = await signInAsGuest(preferred);
+      if (!error) {
+        toast.success("Welcome, Aspirant! Instant Guest Pass activated.");
+        window.location.href = redirectTarget;
+      } else {
+        toast.error("Could not activate guest session. Please try again.");
+        setIsGuestLoading(false);
+      }
+    } catch (err) {
+      console.error("Guest pass error:", err);
       window.location.href = redirectTarget;
-    } else {
-      setIsGuestLoading(false);
     }
   };
 
@@ -143,13 +155,19 @@ function LoginContent() {
             type="button"
             onClick={handleGuestLogin}
             disabled={isGuestLoading || isSubmitting}
-            className="w-full mb-5 bg-[#FF4D00] text-black py-3 px-4 border-2 border-black font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-all flex items-center justify-between cursor-pointer shadow-[3px_3px_0px_0px_#000000] hover:translate-y-[1px] hover:shadow-none disabled:opacity-50"
+            className="w-full mb-5 bg-[#FF4D00] text-black py-3.5 px-4 border-2 border-black font-headline text-sm hover:bg-black hover:text-[#FF4D00] transition-all flex items-center justify-between cursor-pointer shadow-[4px_4px_0px_0px_#000000] hover:translate-y-[1px] hover:shadow-none active:translate-y-0.5 disabled:opacity-60"
           >
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4" />
-              <span>⚡ 1-CLICK INSTANT GUEST PASS</span>
+            <div className="flex items-center gap-2 font-bold">
+              {isGuestLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Zap className="w-4 h-4 fill-current" />
+              )}
+              <span>
+                {isGuestLoading ? "ENTERING AS GUEST..." : "1-CLICK INSTANT GUEST PASS"}
+              </span>
             </div>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 shrink-0" />
           </button>
 
           <div className="relative my-4 flex items-center justify-center">

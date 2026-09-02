@@ -27,6 +27,7 @@ export interface AuthContextType {
   ) => Promise<{ error: Error | null; data?: any }>;
   signOut: () => Promise<{ error: Error | null }>;
   signInWithGoogle: (redirectTo?: string) => Promise<{ error: Error | null; data?: any }>;
+  signInAsGuest: (targetExam?: string) => Promise<{ error: Error | null; data?: any }>;
   // Compatibility aliases
   login: (email: string, password: string) => Promise<{ error: Error | null; data?: any }>;
   signup: (
@@ -366,6 +367,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [supabase]
   );
 
+  // Fast & reliable Instant Guest Pass sign in
+  const signInAsGuest = useCallback(
+    async (targetExam: string = "cbse-12"): Promise<{ error: Error | null; data?: any }> => {
+      try {
+        let preferredExam = targetExam;
+        if (typeof window !== "undefined") {
+          try {
+            const saved = localStorage.getItem("examsaathi_target_exam");
+            if (saved) preferredExam = saved;
+          } catch {
+            // ignore
+          }
+        }
+
+        const guestUser: AuthUser = {
+          id: "guest-" + Math.random().toString(36).substring(2, 9),
+          email: "aspirant@examsaathi.ai",
+          name: "Aspirant",
+          targetExam: preferredExam,
+          createdAt: new Date().toISOString(),
+          role: "student",
+        };
+
+        setUser(guestUser);
+        syncSessionCookie(guestUser);
+        return { error: null, data: { user: guestUser } };
+      } catch (err: any) {
+        return { error: err instanceof Error ? err : new Error("Guest sign in failed") };
+      }
+    },
+    []
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -377,6 +411,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signUp,
         signOut,
         signInWithGoogle,
+        signInAsGuest,
         // Aliases
         login: signIn,
         signup: signUp,
