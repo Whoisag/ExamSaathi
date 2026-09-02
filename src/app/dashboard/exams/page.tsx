@@ -71,16 +71,12 @@ export default function ExamsDashboardPage() {
       hideSubjectsTab={true}
       actionSlot={
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              setIsLoading(true);
-              setTimeout(() => setIsLoading(false), 600);
-            }}
+          <Link
+            href={`/dashboard/practice?exam=${currentExam}`}
             className="border-2 border-black bg-white text-black px-3.5 py-1.5 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 font-bold cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-            <span>SKELETON</span>
-          </button>
+            <span>PRACTICE DRILLS</span>
+          </Link>
           <div className="border-2 border-black bg-[#FF4D00] text-black px-3 py-1.5 font-meta text-xs font-bold shadow-[2px_2px_0px_0px_#000000]">
             {MOCK_EXAMS_LIST.length} TRACKS
           </div>

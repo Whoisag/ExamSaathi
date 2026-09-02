@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMotion } from "@/hooks/useMotion";
 import { FormulaItem } from "@/data/mock";
 import { KaTeXMath } from "@/components/ui/KaTeXMath";
 import { MarkdownMath } from "@/components/ui/MarkdownMath";
-import { Copy, Check, AlertCircle, Sparkles, Flame, Star, Eye, EyeOff, X, BookOpen } from "lucide-react";
+import { Copy, Check, AlertCircle, Sparkles, Flame, Star, Eye, EyeOff, X, BookOpen, ArrowRight } from "lucide-react";
 
 interface FormulaCardProps {
   formula: FormulaItem;
@@ -291,10 +292,29 @@ export function FormulaCard({
               </div>
 
               {/* Modal Footer */}
-              <div className="border-t-2 border-black bg-neutral-100 p-3 flex justify-end">
+              <div className="border-t-2 border-black bg-neutral-100 p-3 flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Link
+                    href={`/dashboard/practice?exam=${examSlug}&subject=${encodeURIComponent(subjectName)}&chapter=${encodeURIComponent(formula.chapter)}`}
+                    className="border-2 border-black bg-[#FF4D00] text-black px-3.5 py-1.5 font-headline text-xs font-bold hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000000]"
+                  >
+                    <span>PRACTICE CHAPTER QUESTIONS</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    href={`/assistant?exam=${examSlug}&prompt=${encodeURIComponent(
+                      `Please guide me step-by-step through the derivation, problem-solving techniques, and common negative marking traps for "${formula.name}" (${formula.latex}) from ${formula.chapter}.`
+                    )}`}
+                    className="border-2 border-black bg-white text-black px-3.5 py-1.5 font-headline text-xs font-bold hover:bg-neutral-100 transition-colors flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000000]"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-[#FF4D00]" />
+                    <span>DEEP DIVE IN AI TUTOR</span>
+                  </Link>
+                </div>
                 <button
+                  type="button"
                   onClick={() => setIsExplaining(false)}
-                  className="border-2 border-black bg-black text-white px-4 py-1.5 font-headline text-xs font-bold hover:bg-[#FF4D00] hover:text-black transition-colors"
+                  className="border-2 border-black bg-black text-white px-4 py-1.5 font-headline text-xs font-bold hover:bg-[#FF4D00] hover:text-black transition-colors ml-auto cursor-pointer"
                 >
                   CLOSE
                 </button>

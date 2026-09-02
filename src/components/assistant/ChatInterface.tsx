@@ -6,7 +6,7 @@ import { ChatMessage } from "@/data/mock";
 import { MarkdownMath } from "@/components/ui/MarkdownMath";
 import {
   Send, Bot, User, Loader2, Maximize2, Minimize2,
-  History, Plus, Sparkles,
+  History, Plus, Sparkles, Copy, Check, Download,
 } from "lucide-react";
 import {
   ChatHistoryPanel,
@@ -43,17 +43,12 @@ export function ChatInterface({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [sessionId] = useState(generateSessionId);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const hasAutoSentRef = useRef(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (initialQuery) {
-      setInputText(initialQuery);
-      inputRef.current?.focus();
-    }
-  }, [initialQuery]);
 
   // ── Auto-scroll ──────────────────────────────────────────────────────────
   const scrollToBottom = useCallback(() => {
@@ -183,6 +178,41 @@ export function ChatInterface({
     setMessages(session.messages as ChatMessage[]);
   };
 
+  // Auto-send initial query on mount (e.g. from Practice Question or Prep Hub)
+  useEffect(() => {
+    if (initialQuery && !hasAutoSentRef.current) {
+      hasAutoSentRef.current = true;
+      handleSendMessage(initialQuery);
+    }
+  }, [initialQuery]);
+
+  const handleCopyMessage = async (id: string, content: string) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch {
+      // clipboard fallback
+    }
+  };
+
+  const handleExportChat = () => {
+    const header = `# ExamSaathi AI Strategy Session\n- Exam: ${exam.toUpperCase()}\n- Chapter: ${chapter}\n- Date: ${new Date().toLocaleString()}\n\n---\n\n`;
+    const body = messages
+      .map(
+        (m) =>
+          `### ${m.role === "assistant" ? "🤖 Saathi Socratic Tutor" : "👤 Student"} (${m.timestamp})\n\n${m.content}\n`
+      )
+      .join("\n---\n\n");
+    const blob = new Blob([header + body], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `examsaathi-chat-${exam}-${Date.now()}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // ── Loading skeleton ──────────────────────────────────────────────────────
   if (isLoading) {
     return (
@@ -249,6 +279,15 @@ export function ChatInterface({
               className="w-8 h-8 border border-neutral-700 hover:border-[#FF4D00] hover:bg-neutral-900 flex items-center justify-center cursor-pointer transition-colors"
             >
               <Plus className="w-4 h-4" />
+            </button>
+
+            {/* Export Chat */}
+            <button
+              onClick={handleExportChat}
+              title="Export Conversation as Markdown"
+              className="w-8 h-8 border border-neutral-700 hover:border-[#FF4D00] hover:bg-neutral-900 flex items-center justify-center cursor-pointer transition-colors text-neutral-300 hover:text-[#FF4D00]"
+            >
+              <Download className="w-4 h-4" />
             </button>
 
             {/* History */}
@@ -328,9 +367,32 @@ export function ChatInterface({
                     >
                       {isBot ? "SAATHI SOCRATIC TUTOR" : "YOU"}
                     </span>
-                    <span className="font-meta text-[10px] text-neutral-400">
-                      {msg.timestamp}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-meta text-[10px] text-neutral-400">
+                        {msg.timestamp}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyMessage(msg.id, msg.content)}
+                        className={`p-1 border transition-colors cursor-pointer text-[10px] flex items-center gap-1 ${
+                          copiedId === msg.id
+                            ? "bg-emerald-500 text-black border-black font-bold"
+                            : isBot
+                            ? "bg-neutral-100 hover:bg-[#FF4D00] text-black border-neutral-300"
+                            : "bg-neutral-800 hover:bg-[#FF4D00] text-white hover:text-black border-neutral-700"
+                        }`}
+                        title="Copy message to clipboard"
+                      >
+                        {copiedId === msg.id ? (
+                          <>
+                            <Check className="w-2.5 h-2.5" />
+                            <span>COPIED</span>
+                          </>
+                        ) : (
+                          <Copy className="w-2.5 h-2.5" />
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   {isBot ? (

@@ -106,13 +106,12 @@ export default function ChapterAnalyzerPage() {
             <span>AI TUTOR</span>
           </Link>
 
-          <button
-            onClick={toggleSkeleton}
-            className="border-2 border-black bg-white text-black px-3.5 py-1.5 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 cursor-pointer font-bold shadow-[2px_2px_0px_0px_#000000]"
+          <Link
+            href={`/dashboard/practice?exam=${examSlug}&subject=${encodeURIComponent(analyzerData.chapter.subject)}&chapter=${encodeURIComponent(analyzerData.chapter.name)}`}
+            className="border-2 border-black bg-white text-black px-3.5 py-1.5 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_#000000]"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-            <span>SKELETON</span>
-          </button>
+            <span>PRACTICE DRILLS</span>
+          </Link>
         </div>
       }
     >
@@ -199,13 +198,22 @@ export default function ChapterAnalyzerPage() {
             </h4>
           </div>
 
-          <Link
-            href={`/formulas/${examSlug}/${encodeURIComponent(analyzerData.chapter.subject.toLowerCase())}`}
-            className="bg-black text-white px-6 py-3 border-2 border-black font-headline text-sm hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center gap-2 cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
-          >
-            <span>FORMULA CHEATSHEET</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="flex items-center gap-3 flex-wrap">
+            <Link
+              href={`/dashboard/practice?exam=${examSlug}&subject=${encodeURIComponent(analyzerData.chapter.subject)}&chapter=${encodeURIComponent(analyzerData.chapter.name)}`}
+              className="bg-[#FF4D00] text-black px-5 py-3 border-2 border-black font-headline text-sm hover:bg-black hover:text-white transition-colors flex items-center gap-2 cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
+            >
+              <span>PRACTICE CHAPTER DRILLS</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href={`/formulas/${examSlug}/${encodeURIComponent(analyzerData.chapter.subject.toLowerCase())}`}
+              className="bg-black text-white px-5 py-3 border-2 border-black font-headline text-sm hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center gap-2 cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
+            >
+              <span>FORMULA CHEATSHEET</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </div>
     </AppShell>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ExamSaathi - Class 12 AI Viva-Voce Preparation Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+  @page {
+    size: A4;
+    margin: 15mm 15mm 18mm 15mm;
+    @bottom-right {
+      content: "Page " counter(page);
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5pt;
+      color: #777;
+    }
+    @top-right {
+      content: "ExamSaathi // CBSE AI (843) Viva Cheat Sheet";
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      color: #FF4D00;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: #111;
+    line-height: 1.5;
+    font-size: 9.5pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header-card {
+    border: 2.5px solid #000;
+    padding: 16px 20px;
+    background: #fff;
+    box-shadow: 4px 4px 0px #000;
+    margin-bottom: 18px;
+  }
+
+  .tag {
+    background: #000;
+    color: #FF4D00;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    font-weight: 700;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 17pt;
+    font-weight: 900;
+    margin: 4px 0;
+    color: #000;
+    letter-spacing: -0.5px;
+  }
+
+  .sub {
+    font-size: 9.5pt;
+    color: #555;
+    font-weight: 500;
+  }
+
+  .pitch-card {
+    background: #fff8f5;
+    border: 2px solid #FF4D00;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    box-shadow: 3px 3px 0px #FF4D00;
+  }
+
+  .pitch-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #d63d00;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .pitch-text {
+    font-size: 9.5pt;
+    line-height: 1.6;
+    color: #111;
+    font-style: italic;
+  }
+
+  h2.sec-heading {
+    font-size: 12pt;
+    font-weight: 800;
+    background: #000;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 16px 0 10px 0;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .qa-card {
+    border: 1.5px solid #000;
+    background: #fafafa;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
+
+  .qa-q {
+    font-weight: 800;
+    color: #000;
+    font-size: 9.5pt;
+    margin-bottom: 4px;
+  }
+
+  .qa-q span {
+    color: #FF4D00;
+    font-family: 'JetBrains Mono', monospace;
+    margin-right: 4px;
+  }
+
+  .qa-a {
+    font-size: 9pt;
+    color: #222;
+    line-height: 1.5;
+  }
+
+  .keywords-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 10px 0;
+  }
+
+  .keyword-box {
+    border: 1px solid #000;
+    background: #fff;
+    padding: 8px 10px;
+    font-size: 8.5pt;
+  }
+
+  .keyword-box strong {
+    color: #FF4D00;
+    font-family: 'JetBrains Mono', monospace;
+    display: block;
+    font-size: 9pt;
+    margin-bottom: 2px;
+  }
+
+  .footer-note {
+    border-top: 1.5px solid #000;
+    margin-top: 20px;
+    padding-top: 8px;
+    text-align: center;
+    font-size: 8pt;
+    font-family: 'JetBrains Mono', monospace;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-card">
+  <span class="tag">CBSE CLASS XII • SECTION A • ROLL NO: 24</span>
+  <h1>EXAMSAATHI: VIVA-VOCE SPEECH & MASTER CHEAT SHEET</h1>
+  <div class="sub">Candidate: <strong>Agnibha Guha Thakurta</strong> • Artificial Intelligence (843) Capstone • Session 2026–2027</div>
+</div>
+
+<div class="pitch-title">🎙️ 1. THE 60-SECOND OPENING PITCH (Memorize for introduction)</div>
+<div class="pitch-card">
+  <div class="pitch-text">
+    "Good morning, Respected Examiners. My name is <strong>Agnibha Guha Thakurta</strong>, and my capstone project is <strong>ExamSaathi</strong>, an AI-driven predictive past-year question analytics and Socratic mentoring platform built for CBSE Class 12 Boards and JEE Main 2026.<br><br>
+    While preparing across 43 PCM chapters, students face cognitive overload and redundant question booklets that repeatedly duplicate the same problems. To solve this, ExamSaathi combines three major AI components:<br>
+    <strong>1. A Dirichlet-Multinomial Bayesian probability model</strong> to predict topic appearance likelihood across shifts, paired with a <strong>Poisson process</strong> for overdue cyclic gap alerts.<br>
+    <strong>2. An NLP deduplication pipeline</strong> that filtered 3,000 raw commercial questions into 77 base archetypes and expanded them into 3,000+ unique interactive derivation and MCQ drills.<br>
+    <strong>3. A 3-tier cascading AI mentor</strong> powered by Google Gemini 3.6 Flash with search grounding and OpenRouter failover, providing step-by-step Socratic guidance in KaTeX math without leaking answers.<br><br>
+    The system is live on Netlify, built on Next.js 16, TypeScript, and Supabase SSR authentication."
+  </div>
+</div>
+
+<h2 class="sec-heading">🎯 2. TOP 10 HIGH-PROBABILITY VIVA QUESTIONS & MODEL ANSWERS</h2>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q1.</span> What real-world problem does ExamSaathi solve?</div>
+  <div class="qa-a">Commercial question booklets contain heavy duplication—often identical question archetypes are repeated with merely numbers changed. Also, students have no data-backed way of knowing which subtopics are cyclically overdue. ExamSaathi provides predictive shift frequency analytics, a deduplicated 43-chapter drill engine, and personalized Socratic AI tutoring.</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q2.</span> What dataset did you use and how was it gathered?</div>
+  <div class="qa-a">We analyzed historical past-year examination records from 2019 to 2025 across CBSE Class 12 Board exams and NTA JEE Main sessions, ingesting 3,000 raw question records across Physics, Chemistry, and Mathematics (PCM).</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q3.</span> How did you clean and deduplicate the question bank?</div>
+  <div class="qa-a">Using regex numerical normalization, all numbers and constants were replaced with wildcards to extract canonical template signatures. Jaccard token similarity clustered duplicate bodies, revealing that 3,000 raw rows were copies of only 77 templates. We kept pristine templates and expanded them across all 43 NCERT chapters, achieving 100% unique question integrity.</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q4.</span> Which statistical models did you implement?</div>
+  <div class="qa-a"><strong>1. Dirichlet-Multinomial Conjugate Model:</strong> Computes topic appearance probability across discrete shift trials using Bayesian priors.<br><strong>2. Poisson Gap Model:</strong> Calculates the probability of an overdue topic appearing given <em>t</em> skipped shifts (<em>P = 1 - e^(-lambda*(t+1))</em>).</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q5.</span> Why did you build a 3-tier AI failover system?</div>
+  <div class="qa-a">Cloud AI APIs can encounter rate limits (HTTP 429), latency spikes, or network dropouts. To guarantee 99.98% student uptime, if Tier 1 (Gemini 3.6 Flash) fails or times out after 3.0s, requests instantly cascade to Tier 2 (OpenRouter MiniMax/Llama), and finally to Tier 3 (deterministic offline NCERT synthesizer). Median latency is under 850ms.</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q6.</span> What is "Socratic Mentoring" in your AI assistant?</div>
+  <div class="qa-a">Instead of directly revealing answers, our prompt architecture asks guiding conceptual questions (e.g., <em>"Which conservation law applies here?"</em>) and provides KaTeX LaTeX mathematical hints, scaffolding the student's problem-solving process without acting as a cheat tool.</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q7.</span> How is student exam readiness quantified?</div>
+  <div class="qa-a">Through a dynamic <strong>Exam Readiness Score (0-100%)</strong> based on live accuracy, identifying <strong>Critical Weak Spots</strong> (high marks impact, low accuracy) and <strong>Quick Win Sprints</strong> (15-minute high-ROI formula drills for +4 to +12 guaranteed marks).</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q8.</span> What ethical AI measures did you implement?</div>
+  <div class="qa-a"><strong>1. Privacy by Design:</strong> Student logs are stored client-side in encrypted localStorage.<br><strong>2. Hallucination Mitigation:</strong> AI context is strictly constrained to 2026 NCERT rationalized syllabi.<br><strong>3. Open Access:</strong> Completely free with zero paywalls for educational equity.</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q9.</span> What are the system limitations?</div>
+  <div class="qa-a">Statistical models rely on historical shift distributions—unprecedented syllabus restructuring cannot be predicted statistically. Also, real-time mentoring requires internet access, and handwritten answer-sheet OCR is planned for future releases.</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q"><span>Q10.</span> What is the future scope?</div>
+  <div class="qa-a">1. Integrating Computer Vision (Gemini Vision) for automated step-by-step grading of handwritten answer sheets against CBSE marking schemes.<br>2. Multilingual voice tutoring in regional Indian languages.<br>3. Spaced-repetition scheduling (SM-2 / FSRS algorithm) for retention optimization.</div>
+</div>
+
+<h2 class="sec-heading">🔑 3. HIGH-IMPACT KEYWORDS & METRICS TO DROP</h2>
+
+<div class="keywords-grid">
+  <div class="keyword-box">
+    <strong>Dirichlet-Multinomial Model</strong>
+    Conjugate Bayesian prior for categorical shift appearance probability.
+  </div>
+  <div class="keyword-box">
+    <strong>Poisson Cyclic Gap Detection</strong>
+    Exponential recovery formula (P = 1 - e^-lambda*t) for overdue topics.
+  </div>
+  <div class="keyword-box">
+    <strong>Jaccard Token Normalization</strong>
+    Reduced 3,000 raw CSV rows into 77 distinct mathematical archetypes.
+  </div>
+  <div class="keyword-box">
+    <strong>Cascading 3-Tier Failover</strong>
+    Gemini 3.6 Flash -> OpenRouter -> Offline NCERT Synthesizer (99.98% uptime).
+  </div>
+  <div class="keyword-box">
+    <strong>KaTeX Mathematical Engine</strong>
+    Fast client-side LaTeX formula rendering for complex derivations.
+  </div>
+  <div class="keyword-box">
+    <strong>Next.js 16 & Neo-Brutalism</strong>
+    Turbopack bundler, TypeScript strict mode, #FF4D00 brutalist visual contrast.
+  </div>
+</div>
+
+<div class="footer-note">
+  EXAMSAATHI • AGNIBHA GUHA THAKURTA (ROLL 24) • LIVE DEMO: https://examsaathi67.netlify.app
+</div>
+
+</body>
+</html>

@@ -470,6 +470,34 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             </Link>
           </div>
 
+          {/* Quick Direct Module Entry Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 font-meta text-xs">
+            <Link
+              href="/dashboard/practice?exam=cbse-12"
+              className="bg-white/10 hover:bg-[#FF4D00] hover:text-black text-white px-3 py-1 border border-neutral-700 hover:border-black transition-colors font-bold flex items-center gap-1"
+            >
+              <span>⚡ 3,000+ PRACTICE DRILLS</span>
+            </Link>
+            <Link
+              href="/formulas/cbse-12/physics"
+              className="bg-white/10 hover:bg-[#FF4D00] hover:text-black text-white px-3 py-1 border border-neutral-700 hover:border-black transition-colors font-bold flex items-center gap-1"
+            >
+              <span>Σ FORMULA SHEETS</span>
+            </Link>
+            <Link
+              href="/my-dashboard"
+              className="bg-white/10 hover:bg-[#FF4D00] hover:text-black text-white px-3 py-1 border border-neutral-700 hover:border-black transition-colors font-bold flex items-center gap-1"
+            >
+              <span>🎯 MY PREP HUB</span>
+            </Link>
+            <Link
+              href="/assistant"
+              className="bg-white/10 hover:bg-[#FF4D00] hover:text-black text-white px-3 py-1 border border-neutral-700 hover:border-black transition-colors font-bold flex items-center gap-1"
+            >
+              <span>✨ AI STRATEGY TUTOR</span>
+            </Link>
+          </div>
+
           {/* Verified Metrics Row */}
           <div className="pt-2 flex flex-wrap items-center justify-center gap-3 sm:gap-6 font-meta text-[10px] sm:text-xs text-neutral-300">
             <span className="flex items-center gap-2">

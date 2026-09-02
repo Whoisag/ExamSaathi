@@ -150,16 +150,12 @@ export default function ExamChaptersPage() {
       hideSubjectsTab={true}
       actionSlot={
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              setIsLoading(true);
-              setTimeout(() => setIsLoading(false), 500);
-            }}
+          <Link
+            href={`/dashboard/practice?exam=${examSlug}`}
             className="bg-white text-black border-2 border-black px-3.5 py-1.5 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 font-bold cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-            <span>SKELETON</span>
-          </button>
+            <span>PRACTICE DRILLS</span>
+          </Link>
           <div className="bg-[#FF4D00] text-black px-3 py-1.5 border-2 border-black font-meta text-xs font-bold shadow-[2px_2px_0px_0px_#000000]">
             {allChapters.length} CHAPTERS
           </div>

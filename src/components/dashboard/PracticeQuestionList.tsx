@@ -354,6 +354,19 @@ export function PracticeQuestionList({
                   <Play className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
                 )}
               </button>
+              {timerSeconds > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsTimerRunning(false);
+                    setTimerSeconds(0);
+                  }}
+                  className="p-1 hover:bg-neutral-200 text-neutral-500 hover:text-black rounded transition-colors cursor-pointer"
+                  title="Reset timer to 00:00"
+                >
+                  <RefreshCcw className="w-3 h-3" />
+                </button>
+              )}
             </div>
 
             {/* Formula Sheet Link for Active Subject */}

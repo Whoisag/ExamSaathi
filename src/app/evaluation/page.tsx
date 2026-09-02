@@ -20,16 +20,8 @@ import {
 import { Award, BarChart2, Table as TableIcon, CheckCircle, RefreshCw, Eye, ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function EvaluationPage() {
-  const [showEmptyState, setShowEmptyState] = useState(false);
-  const [simulateLoading, setSimulateLoading] = useState(false);
-
-  const handleToggleLoading = () => {
-    setSimulateLoading(true);
-    setTimeout(() => setSimulateLoading(false), 600);
-  };
-
-  const metricsData: EvaluationMetricRow[] = showEmptyState ? [] : MOCK_EVALUATION_METRICS;
-  const chartData = showEmptyState ? [] : MOCK_EVAL_CHART_DATA;
+  const metricsData: EvaluationMetricRow[] = MOCK_EVALUATION_METRICS;
+  const chartData = MOCK_EVAL_CHART_DATA;
 
   return (
     <div className="min-h-screen bg-[#FF4D00] text-black flex flex-col justify-between selection:bg-black selection:text-white font-sans">
@@ -53,25 +45,20 @@ export default function EvaluationPage() {
 
           {/* Action Controls */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleToggleLoading}
-              disabled={simulateLoading}
-              className="border-brutal bg-white text-black px-3 py-2 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50 font-bold"
+            <Link
+              href="/about"
+              className="border-brutal bg-white text-black px-4 py-2 font-meta text-xs hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center gap-1.5 font-bold"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${simulateLoading ? "animate-spin text-[#FF4D00]" : ""}`} />
-              <span>TEST SKELETON</span>
-            </button>
-            <button
-              onClick={() => setShowEmptyState(!showEmptyState)}
-              className={`border-brutal px-3.5 py-2 font-meta text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer ${
-                showEmptyState
-                  ? "bg-[#FF4D00] text-black"
-                  : "bg-white text-black hover:bg-neutral-100"
-              }`}
+              <ShieldCheck className="w-3.5 h-3.5 text-[#FF4D00]" />
+              <span>WHITE PAPER</span>
+            </Link>
+            <Link
+              href="/dashboard/exams"
+              className="border-brutal bg-[#FF4D00] text-black px-4 py-2 font-meta text-xs hover:bg-white transition-colors flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_#000000]"
             >
-              <Eye className="w-3.5 h-3.5" />
-              <span>{showEmptyState ? "SHOW POPULATED" : "SHOW EMPTY STATE"}</span>
-            </button>
+              <span>EXPLORE EXAMS</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
 
@@ -156,57 +143,34 @@ export default function EvaluationPage() {
             </div>
           </div>
 
-          {simulateLoading ? (
-            <div className="h-64 bg-neutral-100 animate-pulse flex items-end gap-4 p-6">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex-1 bg-neutral-300 h-32"></div>
-              ))}
-            </div>
-          ) : showEmptyState ? (
-            <div className="border-brutal bg-neutral-50 p-12 text-center">
-              <span className="font-headline text-xl text-black block mb-2">
-                BENCHMARK DATA CLEARED
-              </span>
-              <p className="font-meta text-xs text-neutral-500 mb-4">
-                Empty state active for validation testing.
-              </p>
-              <button
-                onClick={() => setShowEmptyState(false)}
-                className="bg-black text-white px-4 py-2 border-brutal font-meta text-xs hover:bg-[#FF4D00] hover:text-black cursor-pointer"
-              >
-                RESTORE BENCHMARK DATA
-              </button>
-            </div>
-          ) : (
-            <div className="w-full" style={{ height: 260 }}>
-              <ResponsiveContainer width="100%" height={260} minWidth={0} minHeight={260}>
-                <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="2 2" stroke="#e5e5e5" />
-                  <XAxis
-                    dataKey="exam"
-                    stroke="#000000"
-                    tick={{ fill: "#000000", fontSize: 11, fontFamily: "var(--font-space-mono)" }}
-                  />
-                  <YAxis
-                    stroke="#000000"
-                    tick={{ fill: "#000000", fontSize: 11, fontFamily: "var(--font-space-mono)" }}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#000000",
-                      border: "2px solid #000000",
-                      borderRadius: "0px",
-                      color: "#FFFFFF",
-                      fontFamily: "var(--font-space-mono)",
-                      fontSize: "12px",
-                    }}
-                  />
-                  <Bar dataKey="mae" fill="#FF4D00" stroke="#000000" strokeWidth={2} name="MAE (Questions)" isAnimationActive={false} />
-                  <Bar dataKey="spearman" fill="#000000" stroke="#000000" strokeWidth={2} name="Spearman Rho" isAnimationActive={false} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
+          <div className="w-full" style={{ height: 260 }}>
+            <ResponsiveContainer width="100%" height={260} minWidth={0} minHeight={260}>
+              <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="2 2" stroke="#e5e5e5" />
+                <XAxis
+                  dataKey="exam"
+                  stroke="#000000"
+                  tick={{ fill: "#000000", fontSize: 11, fontFamily: "var(--font-space-mono)" }}
+                />
+                <YAxis
+                  stroke="#000000"
+                  tick={{ fill: "#000000", fontSize: 11, fontFamily: "var(--font-space-mono)" }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#000000",
+                    border: "2px solid #000000",
+                    borderRadius: "0px",
+                    color: "#FFFFFF",
+                    fontFamily: "var(--font-space-mono)",
+                    fontSize: "12px",
+                  }}
+                />
+                <Bar dataKey="mae" fill="#FF4D00" stroke="#000000" strokeWidth={2} name="MAE (Questions)" isAnimationActive={false} />
+                <Bar dataKey="spearman" fill="#000000" stroke="#000000" strokeWidth={2} name="Spearman Rho" isAnimationActive={false} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Backtest Benchmark Table */}
@@ -225,23 +189,7 @@ export default function EvaluationPage() {
             </span>
           </div>
 
-          {simulateLoading ? (
-            <div className="space-y-2 animate-pulse">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="h-12 bg-neutral-100 border border-neutral-200"></div>
-              ))}
-            </div>
-          ) : showEmptyState ? (
-            <div className="border-brutal bg-neutral-50 p-12 text-center">
-              <span className="font-headline text-xl text-black block mb-2">
-                NO TEST BATCHES FOUND
-              </span>
-              <p className="font-meta text-xs text-neutral-500 mb-4">
-                Toggle the controls above to reload verified empirical benchmarks.
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto border-brutal">
+          <div className="overflow-x-auto border-brutal">
               <table className="w-full text-left border-collapse text-xs sm:text-sm font-sans">
                 <thead>
                   <tr className="bg-black text-white font-meta text-xs border-b-2 border-black">
@@ -286,7 +234,6 @@ export default function EvaluationPage() {
                 </tbody>
               </table>
             </div>
-          )}
         </div>
       </main>
 

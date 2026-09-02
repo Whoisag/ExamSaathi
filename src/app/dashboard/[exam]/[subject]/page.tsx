@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMotion, containerVariants, cardVariants } from "@/hooks/useMotion";
@@ -90,28 +91,19 @@ export default function DashboardSubjectPage() {
         { label: matchedSubject },
       ]}
       actionSlot={
-        <div className="flex items-center gap-1.5 bg-white p-1 border-2 border-black text-xs font-meta shadow-[2px_2px_0px_0px_#000000]">
-          <button
-            onClick={handleToggleLoading}
-            disabled={simulateLoading}
-            className="px-2.5 py-1 text-black hover:bg-[#FF4D00] transition-all font-bold flex items-center gap-1"
-            title="Simulate Skeleton Loading State"
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/dashboard/practice?exam=${examId}&subject=${encodeURIComponent(matchedSubject)}`}
+            className="border-2 border-black bg-white text-black px-3.5 py-1.5 font-meta text-xs hover:bg-[#FF4D00] transition-colors flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_#000000]"
           >
-            <RefreshCw className={`w-3 h-3 text-black ${simulateLoading ? "animate-spin" : ""}`} />
-            <span className="hidden sm:inline">TEST LOADING</span>
-          </button>
-          <button
-            onClick={() => setSimulateEmpty(!simulateEmpty)}
-            className={`px-2.5 py-1 transition-all font-bold flex items-center gap-1 ${
-              simulateEmpty
-                ? "bg-black text-[#FF4D00]"
-                : "text-black hover:bg-[#FF4D00]"
-            }`}
-            title="Simulate Empty State"
+            <span>PRACTICE {matchedSubject.toUpperCase()}</span>
+          </Link>
+          <Link
+            href={`/formulas/${examId}/${encodeURIComponent(matchedSubject.toLowerCase())}`}
+            className="border-2 border-black bg-[#FF4D00] text-black px-3.5 py-1.5 font-meta text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_#000000]"
           >
-            <Eye className="w-3 h-3" />
-            <span className="hidden sm:inline">TEST EMPTY</span>
-          </button>
+            <span>FORMULAS</span>
+          </Link>
         </div>
       }
     >

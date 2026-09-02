@@ -8,7 +8,8 @@ import {
   LayoutDashboard,
   Sigma,
   BookmarkCheck,
-  Award,
+  Target,
+  Sparkles,
 } from "lucide-react";
 import { ExamId } from "@/data/mock";
 
@@ -22,7 +23,7 @@ export function BottomNav({ currentExam = "jee-main", currentSubject = "physics"
 
   const tabs = [
     {
-      label: "Exam Analysis",
+      label: "Exams",
       href: "/dashboard/exams",
       icon: GraduationCap,
       activePattern: /^\/dashboard\/exams/,
@@ -48,13 +49,13 @@ export function BottomNav({ currentExam = "jee-main", currentSubject = "physics"
     {
       label: "My Prep",
       href: "/my-dashboard",
-      icon: BookmarkCheck,
+      icon: Target,
       activePattern: /^\/my-dashboard/,
     },
     {
       label: "AI Tutor",
       href: "/assistant",
-      icon: Award,
+      icon: Sparkles,
       activePattern: /^\/assistant/,
     },
   ];

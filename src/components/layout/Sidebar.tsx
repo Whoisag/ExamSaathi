@@ -13,6 +13,7 @@ import {
   ChevronUp,
   Layers,
   Check,
+  Target,
 } from "lucide-react";
 import { EXAMS, ExamId } from "@/data/mock";
 
@@ -95,7 +96,7 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
     {
       label: "My Prep Hub",
       href: "/my-dashboard",
-      icon: BookmarkCheck,
+      icon: Target,
     },
     {
       label: "AI Strategy Tutor",
@@ -256,10 +257,13 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
         </div>
         {navLinks.map((item) => {
           const Icon = item.icon;
+          const itemBasePath = item.href.split("?")[0];
           const isActive =
             pathname === item.href ||
-            (item.href !== "/" && pathname.startsWith(item.href)) ||
-            (item.label === "Formula Sheets" && pathname.startsWith("/formulas"));
+            pathname === itemBasePath ||
+            (itemBasePath !== "/" && pathname.startsWith(itemBasePath)) ||
+            (item.label === "Formula Sheets" && pathname.startsWith("/formulas")) ||
+            (item.label === "Practice Questions" && pathname.startsWith("/dashboard/practice"));
 
           return (
             <motion.div key={item.label} variants={slideUpVariants} className="relative">
