@@ -67,8 +67,8 @@ function PracticeContent() {
       ]}
       actionSlot={
         <div className="flex items-center gap-2">
-          <span className="font-meta text-[10px] font-bold px-3 py-1.5 bg-[#FF4D00] text-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5" />
+          <span className="font-meta text-[10px] font-bold px-3 py-1.5 bg-black text-white border-2 border-black shadow-[2px_2px_0px_0px_#000000] flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5 text-[#FF4D00]" />
             AI DRILL ENGINE
           </span>
         </div>

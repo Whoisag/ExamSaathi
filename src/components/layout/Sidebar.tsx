@@ -106,7 +106,7 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
   ];
 
   return (
-    <motion.aside initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.4, ease: [0.22,1,0.36,1] }} className="hidden md:flex md:flex-col w-64 border-r-2 border-black bg-white min-h-screen sticky top-0 shrink-0 select-none z-30 font-sans">
+    <motion.aside initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.4, ease: [0.22,1,0.36,1] }} className="hidden md:flex md:flex-col w-64 border-r-2 border-black bg-[#FF4D00] min-h-screen sticky top-0 shrink-0 select-none z-30 font-sans shadow-[2px_0px_0px_0px_#000000]">
       {/* Brand Header */}
       <div className="h-16 flex items-center px-5 border-b-2 border-black bg-black text-white justify-between">
         <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
@@ -123,12 +123,12 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
       </div>
 
       {/* Quick Exam Switcher with Fast Dropdown */}
-      <div className="px-4 py-3.5 border-b-2 border-black bg-neutral-50 relative" ref={dropdownRef}>
+      <div className="px-4 py-3.5 border-b-2 border-black bg-[#FF4D00] relative" ref={dropdownRef}>
         <div className="flex items-center justify-between mb-1.5 px-1">
-          <label className="text-[10px] font-bold font-meta tracking-wider uppercase text-neutral-500">
+          <label className="text-[10px] font-bold font-meta tracking-wider uppercase text-black">
             // TARGET EXAM
           </label>
-          <span className="text-[9px] font-meta text-neutral-400 font-bold uppercase">
+          <span className="text-[9px] font-meta text-black/80 font-bold uppercase">
             [FAST SWITCH]
           </span>
         </div>
@@ -136,7 +136,7 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
         <div className="relative">
           <div
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="bg-white border-2 border-black p-2.5 flex items-center justify-between shadow-[2px_2px_0px_0px_#000000] cursor-pointer hover:border-neutral-800 transition-all"
+            className="bg-white border-2 border-black p-2.5 flex items-center justify-between shadow-[2px_2px_0px_0px_#000000] cursor-pointer hover:bg-neutral-50 transition-all"
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
@@ -247,11 +247,11 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
 
       {/* Navigation Links */}
       <motion.nav 
-        className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto"
+        className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto bg-[#FF4D00]"
         initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
       >
         <div className="px-2 pb-1.5">
-          <p className="text-[10px] font-bold font-meta tracking-wider uppercase text-neutral-500">
+          <p className="text-[10px] font-bold font-meta tracking-wider uppercase text-black">
             // PLATFORM MODULES
           </p>
         </div>
@@ -268,19 +268,19 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
           return (
             <motion.div key={item.label} variants={slideUpVariants} className="relative">
               {isActive && (
-                <motion.div layoutId="activeNav" className="absolute inset-0 bg-black text-[#FF4D00] border-2 border-black shadow-[3px_3px_0px_0px_#FF4D00]" />
+                <motion.div layoutId="activeNav" className="absolute inset-0 bg-black text-[#FF4D00] border-2 border-black shadow-[3px_3px_0px_0px_#000000]" />
               )}
               <Link
                 href={item.href}
                 className={`relative flex items-center gap-2.5 px-3 py-2.5 font-meta text-xs transition-all ${
                   isActive
                     ? "text-[#FF4D00] font-bold z-10"
-                    : "text-black hover:bg-[#FF4D00]/10 hover:text-black border-2 border-transparent font-medium"
+                    : "text-black hover:bg-black hover:text-white border-2 border-transparent hover:border-black font-bold z-10"
                 }`}
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 ${
-                    isActive ? "text-[#FF4D00]" : "text-neutral-700"
+                    isActive ? "text-[#FF4D00]" : "text-black"
                   }`}
                 />
                 <span>{item.label}</span>
@@ -291,7 +291,7 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
       </motion.nav>
 
       {/* Footer Info Box */}
-      <div className="p-3.5 m-3 bg-black border-2 border-black text-white font-meta text-[11px] space-y-1.5 shadow-[3px_3px_0px_0px_#FF4D00]">
+      <div className="p-3.5 m-3 bg-black border-2 border-black text-white font-meta text-[11px] space-y-1.5 shadow-[3px_3px_0px_0px_#000000]">
         <div className="flex items-center gap-1.5 font-bold text-[#FF4D00]">
           <span className="w-2 h-2 bg-[#FF4D00] inline-block animate-pulse"></span>
           <span>EMPIRICAL ZERO-BIAS</span>
