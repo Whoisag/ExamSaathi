@@ -6,10 +6,11 @@ import { ChatMessage } from "@/data/mock";
 import { MarkdownMath } from "@/components/ui/MarkdownMath";
 import {
   Send, Bot, User, Loader2, Maximize2, Minimize2,
-  History, Plus, Sparkles, Copy, Check, Download, Palette,
+  History, Plus, Sparkles, Copy, Check, Download,
   Square, Pencil, FileText, X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { downloadStudyGuidePdf } from "@/lib/pdfGenerator";
 import {
   ChatHistoryPanel,
   ChatSession,
@@ -46,14 +47,31 @@ export function ChatInterface({
   const [historyOpen, setHistoryOpen] = useState(false);
   const [sessionId] = useState(generateSessionId);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [diagramModalOpen, setDiagramModalOpen] = useState(false);
-  const [customDiagramPrompt, setCustomDiagramPrompt] = useState("");
   const hasAutoSentRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // ── Global Listener for Downloadable PDF Events from MarkdownMath ───────
+  useEffect(() => {
+    const handlePdfDownloadEvent = (e: Event) => {
+      const customEvt = e as CustomEvent;
+      if (customEvt.detail) {
+        toast.success("Compiling official PDF study sheet...");
+        downloadStudyGuidePdf({
+          title: customEvt.detail.title || "Class 12 Study Guide",
+          chapter: customEvt.detail.chapter || chapter,
+          exam: customEvt.detail.exam || exam,
+          subject: customEvt.detail.subject || "Mathematics",
+          rawContent: messages.map(m => m.content).join("\n\n"),
+        });
+      }
+    };
+    window.addEventListener("examsaathi:download-pdf", handlePdfDownloadEvent);
+    return () => window.removeEventListener("examsaathi:download-pdf", handlePdfDownloadEvent);
+  }, [chapter, exam, messages]);
 
   // ── Auto-scroll ──────────────────────────────────────────────────────────
   const scrollToBottom = useCallback(() => {
@@ -252,14 +270,6 @@ export function ChatInterface({
     setInputText(content);
     inputRef.current?.focus();
     toast("Prompt loaded into editor. Edit and press Send.", { icon: "✏️" });
-  };
-
-  const handleGenerateCustomDiagram = () => {
-    if (!customDiagramPrompt.trim()) return;
-    const promptToSend = `Draw a detailed labeled scientific diagram of ${customDiagramPrompt.trim()} with key components, working principle, ray tracing or circuit path, and CBSE/JEE scoring tips.`;
-    setDiagramModalOpen(false);
-    setCustomDiagramPrompt("");
-    handleSendMessage(promptToSend);
   };
 
   const handleGeneratePdf = () => {
@@ -563,15 +573,6 @@ export function ChatInterface({
               <FileText className="w-4 h-4" />
             </button>
 
-            {/* Custom Diagram Generator Modal Button */}
-            <button
-              onClick={() => setDiagramModalOpen(true)}
-              title="Open Custom Diagram Generator"
-              className="w-8 h-8 border border-neutral-700 hover:border-[#FF4D00] hover:bg-neutral-900 flex items-center justify-center cursor-pointer transition-colors text-[#FF4D00]"
-            >
-              <Palette className="w-4 h-4" />
-            </button>
-
             {/* History */}
             <button
               onClick={() => setHistoryOpen(true)}
@@ -719,27 +720,13 @@ export function ChatInterface({
           <span className="text-neutral-500 font-bold self-center text-[10px] pl-1 whitespace-nowrap flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-[#FF4D00]" /> QUICK:
           </span>
-          {/* Draw Diagram Action */}
           <button
             type="button"
-            onClick={() => handleSendMessage(`Draw a detailed labeled diagram of ${chapter && chapter !== "General Strategy" ? chapter : "Compound Microscope ray optics"} with key labeled components, working principle, and CBSE/JEE scoring tips.`)}
+            onClick={() => handleSendMessage("make a pdf for inverse trignometric function class 12")}
             disabled={isSending}
-            className="bg-[#FF4D00] text-black border border-black px-3 py-1.5 whitespace-nowrap text-[11px] font-bold hover:bg-black hover:text-white transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000000]"
-            title="Generate a labeled scientific diagram"
+            className="bg-neutral-100 text-black border border-black px-3 py-1.5 whitespace-nowrap text-[11px] font-bold hover:bg-[#FF4D00] hover:text-black transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-1"
           >
-            <Palette className="w-3.5 h-3.5" />
-            <span>🎨 DRAW DIAGRAM</span>
-          </button>
-          {/* Custom Diagram Modal Trigger */}
-          <button
-            type="button"
-            onClick={() => setDiagramModalOpen(true)}
-            disabled={isSending}
-            className="bg-black text-[#FF4D00] border border-black px-3 py-1.5 whitespace-nowrap text-[11px] font-bold hover:bg-[#FF4D00] hover:text-black transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000000]"
-            title="Open custom diagram designer"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>📐 CUSTOM DIAGRAM</span>
+            <span>📄 Inverse Trigonometric PDF</span>
           </button>
           {suggestedPrompts.map((p, idx) => (
             <button
@@ -790,94 +777,6 @@ export function ChatInterface({
           )}
         </div>
       </div>
-
-      {/* ── Custom Diagram Generator Modal ──────────────────────────── */}
-      {diagramModalOpen && (
-        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
-          <div className="bg-white border-2 border-black w-full max-w-lg shadow-[8px_8px_0px_0px_#000000] overflow-hidden flex flex-col">
-            {/* Modal Header */}
-            <div className="border-b-2 border-black bg-black text-white p-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Palette className="w-5 h-5 text-[#FF4D00]" />
-                <h3 className="font-headline text-sm sm:text-base text-white tracking-tight">
-                  CUSTOM DIAGRAM &amp; SCHEMATIC GENERATOR
-                </h3>
-              </div>
-              <button
-                onClick={() => setDiagramModalOpen(false)}
-                className="p-1 hover:bg-neutral-800 text-white transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-5 space-y-4 font-sans text-xs">
-              <div>
-                <label className="block font-meta text-[11px] font-bold text-black uppercase mb-1.5">
-                  DESCRIBE ANY CUSTOM DIAGRAM TO GENERATE:
-                </label>
-                <textarea
-                  rows={3}
-                  value={customDiagramPrompt}
-                  onChange={(e) => setCustomDiagramPrompt(e.target.value)}
-                  placeholder="e.g. Concave mirror ray diagram with object at C, or Full-wave bridge rectifier with filter capacitor, or Galvanic cell with zinc-copper electrodes..."
-                  className="w-full p-3 border-2 border-black bg-neutral-50 text-black font-sans text-xs focus:outline-none focus:ring-2 focus:ring-[#FF4D00] shadow-[2px_2px_0px_0px_#000000]"
-                />
-              </div>
-
-              <div>
-                <span className="block font-meta text-[10px] font-bold text-neutral-500 uppercase tracking-wider mb-2">
-                  ONE-CLICK EXAM PRESETS:
-                </span>
-                <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
-                  {[
-                    "Compound Microscope Ray Optics",
-                    "Full-Wave Rectifier Circuit with Filter",
-                    "Galvanic Cell with Salt Bridge",
-                    "Bohr Model of Hydrogen Atom",
-                    "Wheatstone Bridge Balanced Condition",
-                    "Astronomical Telescope Ray Tracing",
-                    "Carnot Engine P-V Indicator Diagram",
-                    "Young Double Slit Interference Fringes",
-                    "AC Generator Rotating Coil Schematic",
-                    "Moving Coil Galvanometer Diagram",
-                  ].map((preset) => (
-                    <button
-                      key={preset}
-                      type="button"
-                      onClick={() => setCustomDiagramPrompt(preset)}
-                      className="px-2 py-1 bg-neutral-100 hover:bg-[#FF4D00] hover:text-black border border-neutral-300 font-meta text-[10px] font-bold transition-colors cursor-pointer text-left"
-                    >
-                      + {preset}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="border-t-2 border-black bg-neutral-100 p-3 flex items-center justify-between gap-3">
-              <button
-                type="button"
-                onClick={() => setDiagramModalOpen(false)}
-                className="px-4 py-2 border-2 border-black bg-white hover:bg-neutral-200 text-black font-headline text-xs transition-colors cursor-pointer"
-              >
-                CANCEL
-              </button>
-              <button
-                type="button"
-                onClick={handleGenerateCustomDiagram}
-                disabled={!customDiagramPrompt.trim() || isSending}
-                className="px-5 py-2 border-2 border-black bg-[#FF4D00] text-black hover:bg-black hover:text-white font-headline text-xs font-bold transition-all shadow-[2px_2px_0px_0px_#000000] cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>GENERATE IN CHAT</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

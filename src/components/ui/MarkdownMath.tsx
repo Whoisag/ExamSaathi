@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import katex from "katex";
+import { findScientificDiagram } from "@/lib/scientificDiagrams";
 
 interface MarkdownMathProps {
   content: string;
@@ -163,10 +164,116 @@ export function MarkdownMath({ content, className = "" }: MarkdownMathProps) {
         continue;
       }
 
+      // Downloadable PDF Card: :::pdf-download{...}:::
+      if (line.includes(":::pdf-download")) {
+        const match = line.match(/:::pdf-download(\{.*?\})?:::/);
+        let meta = { title: "Class 12 Revision Guide", chapter: "Chapter Revision", exam: "CBSE Class 12" };
+        if (match && match[1]) {
+          try {
+            meta = { ...meta, ...JSON.parse(match[1]) };
+          } catch {}
+        }
+        const jsonStr = escapeHtml(JSON.stringify(meta));
+        parsedLines.push(`
+          <div class="my-4 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] overflow-hidden">
+            <div class="bg-black text-white px-3.5 py-2.5 flex items-center justify-between border-b-2 border-black">
+              <span class="font-meta text-xs font-bold text-[#FF4D00] flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#FF4D00] animate-pulse"></span>
+                OFFICIAL REVISION CHEATSHEET (PDF)
+              </span>
+              <span class="font-meta text-[10px] uppercase font-bold bg-[#FF4D00] text-black px-2 py-0.5 border border-black">
+                READY FOR DOWNLOAD
+              </span>
+            </div>
+            <div class="p-4 bg-neutral-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h4 class="font-headline text-base text-black font-bold uppercase tracking-tight">${escapeHtml(meta.title)}</h4>
+                <p class="font-sans text-xs text-neutral-700 mt-1">
+                  Complete Class 12 Master Guide • Formulas • Principal Value Branches &amp; PYQs
+                </p>
+              </div>
+              <button
+                type="button"
+                onclick="window.dispatchEvent(new CustomEvent('examsaathi:download-pdf', { detail: ${jsonStr} }))"
+                class="cursor-pointer bg-[#FF4D00] hover:bg-black text-black hover:text-white px-4 py-2.5 border-2 border-black font-headline text-xs font-bold transition-all shadow-[2px_2px_0px_0px_#000000] hover:translate-y-0.5 hover:shadow-none shrink-0 flex items-center gap-2"
+              >
+                <span>📥 DOWNLOAD PDF</span>
+              </button>
+            </div>
+          </div>
+        `);
+        continue;
+      }
+
+      // Curated SVG Scientific Diagram: :::diagram{...}:::
+      if (line.includes(":::diagram")) {
+        const match = line.match(/:::diagram(\{.*?\})?:::/);
+        let id = "compound-microscope";
+        if (match && match[1]) {
+          try {
+            const parsed = JSON.parse(match[1]);
+            id = parsed.id || id;
+          } catch {}
+        }
+        const diag = findScientificDiagram(id);
+        if (diag) {
+          parsedLines.push(`
+            <figure class="my-4 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] overflow-hidden">
+              <div class="bg-black px-3 py-2 border-b-2 border-black flex items-center justify-between text-white">
+                <span class="font-meta text-[11px] uppercase font-bold text-[#FF4D00] flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-[#FF4D00] inline-block animate-pulse"></span>
+                  SCIENTIFIC SCHEMATIC // ${escapeHtml(diag.title)}
+                </span>
+                <span class="font-meta text-[10px] uppercase tracking-wider text-neutral-400 font-bold">
+                  VECTOR SVG
+                </span>
+              </div>
+              <div class="p-3 bg-white flex items-center justify-center overflow-x-auto">
+                ${diag.svg}
+              </div>
+              <figcaption class="px-3.5 py-2.5 border-t-2 border-black bg-neutral-50 font-sans text-xs text-neutral-800">
+                <div class="font-bold text-black mb-1">Key Components &amp; Construction:</div>
+                <ul class="list-disc pl-4 space-y-0.5 text-neutral-700">
+                  ${diag.parts.map(p => `<li>${escapeHtml(p)}</li>`).join("")}
+                </ul>
+              </figcaption>
+            </figure>
+          `);
+          continue;
+        }
+      }
+
       // Markdown Images: ![caption](url)
       if (line.includes("![") && line.includes("](")) {
         line = line.replace(/!\[(.*?)\]\((https?:\/\/[^\s\)]+)\)/g, (_, cap, u) => {
           const caption = cap || "Educational Scientific Diagram";
+          // If this matches any verified scientific diagram, render real vector SVG rather than psychedelic bubble art!
+          const diag = findScientificDiagram(caption + " " + u);
+          if (diag) {
+            return `
+              <figure class="my-4 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] overflow-hidden">
+                <div class="bg-black px-3 py-2 border-b-2 border-black flex items-center justify-between text-white">
+                  <span class="font-meta text-[11px] uppercase font-bold text-[#FF4D00] flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-[#FF4D00] inline-block animate-pulse"></span>
+                    SCIENTIFIC SCHEMATIC // ${escapeHtml(diag.title)}
+                  </span>
+                  <span class="font-meta text-[10px] uppercase tracking-wider text-neutral-400 font-bold">
+                    VECTOR SVG
+                  </span>
+                </div>
+                <div class="p-3 bg-white flex items-center justify-center overflow-x-auto">
+                  ${diag.svg}
+                </div>
+                <figcaption class="px-3.5 py-2.5 border-t-2 border-black bg-neutral-50 font-sans text-xs text-neutral-800">
+                  <div class="font-bold text-black mb-1">Key Components &amp; Construction:</div>
+                  <ul class="list-disc pl-4 space-y-0.5 text-neutral-700">
+                    ${diag.parts.map(p => `<li>${escapeHtml(p)}</li>`).join("")}
+                  </ul>
+                </figcaption>
+              </figure>
+            `;
+          }
+
           return `
             <figure class="my-4 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] overflow-hidden">
               <div class="bg-black px-3 py-2 border-b-2 border-black flex items-center justify-between text-white">

@@ -159,10 +159,28 @@ const CHAPTER_TOPIC_REGISTRY: Record<string, { topics: string[]; formulas: strin
     ],
     tips: "Over 80% of JEE Main definite integral questions yield instantly upon applying the King's property and adding equations.",
   },
+  "inverse trigonometric functions": {
+    topics: [
+      "Principal Value Branches (Domain and Range of $\\sin^{-1}x, \\cos^{-1}x, \\tan^{-1}x, \\cot^{-1}x, \\sec^{-1}x, \\text{cosec}^{-1}x$)",
+      "Self-Inverse Properties: $\\sin^{-1}(\\sin\\theta) = \\theta$ (only for $\\theta \\in [-\\pi/2, \\pi/2]$) and $\\cos^{-1}(\\cos\\theta) = \\theta$ (for $\\theta \\in [0, \\pi]$)",
+      "Negative Angle Identities: $\\sin^{-1}(-x) = -\\sin^{-1}(x)$, $\\tan^{-1}(-x) = -\\tan^{-1}(x)$ vs $\\cos^{-1}(-x) = \\pi - \\cos^{-1}(x)$",
+      "Complementary Angle Relations: $\\sin^{-1}x + \\cos^{-1}x = \\frac{\\pi}{2}$ for $x \\in [-1, 1]$",
+      "Arctangent Addition Formulas: $\\tan^{-1}x + \\tan^{-1}y = \\tan^{-1}\\left(\\frac{x + y}{1 - xy}\\right)$ for $xy < 1$",
+      "Double Angle Identities: $2\\tan^{-1}x = \\sin^{-1}\\left(\\frac{2x}{1+x^2}\\right) = \\cos^{-1}\\left(\\frac{1-x^2}{1+x^2}\\right) = \\tan^{-1}\\left(\\frac{2x}{1-x^2}\\right)$",
+    ],
+    formulas: [
+      "\\sin^{-1}x + \\cos^{-1}x = \\frac{\\pi}{2}, \\quad \\tan^{-1}x + \\cot^{-1}x = \\frac{\\pi}{2}, \\quad \\sec^{-1}x + \\text{cosec}^{-1}x = \\frac{\\pi}{2}",
+      "\\cos^{-1}(-x) = \\pi - \\cos^{-1}x, \\quad \\cot^{-1}(-x) = \\pi - \\cot^{-1}x, \\quad \\sec^{-1}(-x) = \\pi - \\sec^{-1}x",
+      "\\tan^{-1}x + \\tan^{-1}y = \\tan^{-1}\\left(\\frac{x + y}{1 - xy}\\right) \\quad (\\text{for } xy < 1)",
+      "2\\tan^{-1}x = \\sin^{-1}\\left(\\frac{2x}{1+x^2}\\right) \\quad (\\text{for } |x| \\le 1)",
+    ],
+    tips: "CBSE's most recurring trap is testing angles outside the principal branch, such as $\\sin^{-1}(\\sin(2\\pi/3)) = \\pi/3$ (not $2\\pi/3$) and $\\cos^{-1}(\\cos(7\\pi/6)) = 5\\pi/6$ (not $7\\pi/6$)!",
+  },
 };
 
 // Helper: Extract any mentioned chapter name from the user message
 function extractChapterName(text: string): string | null {
+  if (/inverse\s+trig/i.test(text)) return "Inverse Trigonometric Functions";
   const match = text.match(/(?:chapter|unit|topic|from|in|for|about)\s+([a-zA-Z0-9\s]{3,30})(?:\s+class|\s+chemistry|\s+physics|\s+math|\s+for|\s+cbse|\s+jee|$)/i);
   if (match && match[1]) {
     const candidate = match[1].trim();
@@ -189,14 +207,14 @@ CRITICAL INSTRUCTIONS:
 2. NEVER output internal monologues, reasoning transcripts, scratchpads, or headers like "Here's a thinking process:" or "1. Analyze User Input:".
 3. Structure your response with clean Markdown headings (###), bullet points, and LaTeX formulas.
 4. Active context: Target Exam: ${exam.toUpperCase()}, Module: ${detectedChapter}.${prepHubContext ? `\n\n## STUDENT'S CURRENT PREP STATUS (from their Prep Hub):\n${prepHubContext}\n\nIMPORTANT: When the student asks for a study plan, revision schedule, or "make a plan", use this data to:\n1. Prioritize weak topics with high marks impact first\n2. Schedule quick wins to build confidence\n3. Reference their actual accuracy rates and days since last revision\n4. Create a specific, personalized timetable with chapter names they are tracking\n` : ""}
-5. ON-DEMAND VISUAL DIAGRAMS & ILLUSTRATIONS:
-Whenever the student asks to "draw", "diagram", "illustrate", "show visually", or "generate an image" (e.g. for physics ray optics, circuits, meters, chemistry cells, orbital splitting, or math graphs):
-- You MUST synthesize a high-resolution educational diagram image by including a Markdown image tag:
-  ![Diagram: <Topic Title>](https://image.pollinations.ai/prompt/<URL-encoded detailed educational prompt, e.g. clean%202D%20scientific%20diagram%20of%20compound%20microscope%20ray%20optics%20labeled%20white%20background>?width=800&height=500&nologo=true)
-- Immediately underneath the image, break down:
-  • Key Component Labels (e.g. Objective, Eyepiece, Principal Axis, Focal Points)
-  • Working Principle & Ray/Current Tracing
-  • Essential Exam Scoring & Negative Marking Traps!`;
+5. DOWNLOADABLE PDF STUDY SHEETS:
+Whenever the student asks to "make a pdf", "generate a pdf", "download pdf", "create a pdf", or "pdf for <topic>" (e.g. "make a pdf for inverse trignometric function class 12"):
+- Provide a comprehensive, organized study breakdown in your response (Principal Value Branches, Formulas, Key Theorems, Step-by-Step Solved PYQs).
+- At the top of your response, ALWAYS include this exact downloadable PDF tag:
+  :::pdf-download{"title":"${detectedChapter} - Class 12 Master Guide","subject":"Mathematics","exam":"${exam.toUpperCase()}","chapter":"${detectedChapter}"}:::
+6. SCIENTIFIC DIAGRAMS:
+When asked for a diagram (e.g. compound microscope, full-wave rectifier, galvanic cell, wheatstone bridge, bohr atom, carnot cycle), use the verified schematic tag:
+  :::diagram{"id":"compound-microscope"}::: (or "full-wave-rectifier", "galvanic-cell")`;
 
     const formattedMessages: OpenRouterMessage[] = [
       { role: "system", content: systemPrompt },
@@ -243,6 +261,10 @@ Whenever the student asks to "draw", "diagram", "illustrate", "show visually", o
     }
 
     let fallbackText = "";
+
+    if (lastUserMessage.includes("pdf")) {
+      fallbackText += `:::pdf-download{"title":"${detectedChapter} - Class 12 Complete Master Guide","subject":"Mathematics","exam":"${exam.toUpperCase()}","chapter":"${detectedChapter}"}:::\n\n`;
+    }
 
     if (matchedChapterKey && CHAPTER_TOPIC_REGISTRY[matchedChapterKey]) {
       const info = CHAPTER_TOPIC_REGISTRY[matchedChapterKey];
