@@ -188,7 +188,15 @@ CRITICAL INSTRUCTIONS:
 1. Always directly answer what the user asked immediately. Output ONLY the final pedagogical answer.
 2. NEVER output internal monologues, reasoning transcripts, scratchpads, or headers like "Here's a thinking process:" or "1. Analyze User Input:".
 3. Structure your response with clean Markdown headings (###), bullet points, and LaTeX formulas.
-4. Active context: Target Exam: ${exam.toUpperCase()}, Module: ${detectedChapter}.${prepHubContext ? `\n\n## STUDENT'S CURRENT PREP STATUS (from their Prep Hub):\n${prepHubContext}\n\nIMPORTANT: When the student asks for a study plan, revision schedule, or "make a plan", use this data to:\n1. Prioritize weak topics with high marks impact first\n2. Schedule quick wins to build confidence\n3. Reference their actual accuracy rates and days since last revision\n4. Create a specific, personalized timetable with chapter names they are tracking\n` : ""}`;
+4. Active context: Target Exam: ${exam.toUpperCase()}, Module: ${detectedChapter}.${prepHubContext ? `\n\n## STUDENT'S CURRENT PREP STATUS (from their Prep Hub):\n${prepHubContext}\n\nIMPORTANT: When the student asks for a study plan, revision schedule, or "make a plan", use this data to:\n1. Prioritize weak topics with high marks impact first\n2. Schedule quick wins to build confidence\n3. Reference their actual accuracy rates and days since last revision\n4. Create a specific, personalized timetable with chapter names they are tracking\n` : ""}
+5. ON-DEMAND VISUAL DIAGRAMS & ILLUSTRATIONS:
+Whenever the student asks to "draw", "diagram", "illustrate", "show visually", or "generate an image" (e.g. for physics ray optics, circuits, meters, chemistry cells, orbital splitting, or math graphs):
+- You MUST synthesize a high-resolution educational diagram image by including a Markdown image tag:
+  ![Diagram: <Topic Title>](https://image.pollinations.ai/prompt/<URL-encoded detailed educational prompt, e.g. clean%202D%20scientific%20diagram%20of%20compound%20microscope%20ray%20optics%20labeled%20white%20background>?width=800&height=500&nologo=true)
+- Immediately underneath the image, break down:
+  • Key Component Labels (e.g. Objective, Eyepiece, Principal Axis, Focal Points)
+  • Working Principle & Ray/Current Tracing
+  • Essential Exam Scoring & Negative Marking Traps!`;
 
     const formattedMessages: OpenRouterMessage[] = [
       { role: "system", content: systemPrompt },

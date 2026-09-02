@@ -6,7 +6,7 @@ import { ChatMessage } from "@/data/mock";
 import { MarkdownMath } from "@/components/ui/MarkdownMath";
 import {
   Send, Bot, User, Loader2, Maximize2, Minimize2,
-  History, Plus, Sparkles, Copy, Check, Download,
+  History, Plus, Sparkles, Copy, Check, Download, Palette,
 } from "lucide-react";
 import {
   ChatHistoryPanel,
@@ -422,10 +422,21 @@ export function ChatInterface({
         </div>
 
         {/* ── Quick Prompts ────────────────────────────────────────────── */}
-        <div className="border-brutal-t p-2.5 bg-white overflow-x-auto flex gap-2 font-meta text-xs shrink-0">
+        <div className="border-brutal-t p-2.5 bg-white overflow-x-auto flex gap-2 font-meta text-xs shrink-0 items-center">
           <span className="text-neutral-500 font-bold self-center text-[10px] pl-1 whitespace-nowrap flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-[#FF4D00]" /> QUICK:
           </span>
+          {/* Draw Diagram Action */}
+          <button
+            type="button"
+            onClick={() => handleSendMessage(`Draw a detailed labeled diagram of ${chapter && chapter !== "General Strategy" ? chapter : "Compound Microscope ray optics"} with key labeled components, working principle, and CBSE/JEE scoring tips.`)}
+            disabled={isSending}
+            className="bg-[#FF4D00] text-black border border-black px-3 py-1.5 whitespace-nowrap text-[11px] font-bold hover:bg-black hover:text-white transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000000]"
+            title="Generate a labeled scientific diagram"
+          >
+            <Palette className="w-3.5 h-3.5" />
+            <span>🎨 DRAW DIAGRAM</span>
+          </button>
           {suggestedPrompts.map((p, idx) => (
             <button
               key={idx}

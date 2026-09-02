@@ -30,8 +30,14 @@ async function callGeminiPrimary(
   messages: OpenRouterMessage[],
   options: CallOpenRouterOptions = {}
 ): Promise<{ text: string; error?: string; provider: string }> {
-  const geminiKey = process.env.GEMINI_API_KEY;
-  if (!geminiKey || geminiKey.includes("placeholder") || geminiKey.startsWith("your-")) {
+  const geminiKeys = [
+    process.env.GEMINI_API_KEY,
+    process.env.GEMINI_API_KEY_SECONDARY,
+  ].filter(
+    (k): k is string => Boolean(k && !k.includes("placeholder") && !k.startsWith("your-"))
+  );
+
+  if (geminiKeys.length === 0) {
     return { text: "", error: "GEMINI_API_KEY_NOT_CONFIGURED", provider: "gemini" };
   }
 
@@ -85,27 +91,38 @@ async function callGeminiPrimary(
       (payload.generationConfig as Record<string, unknown>).responseMimeType = "application/json";
     }
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
+    let lastError = "";
+    // Key rotation pool: try each configured key in sequence
+    for (const geminiKey of geminiKeys) {
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
 
-    clearTimeout(timeoutId);
+        if (res.ok) {
+          clearTimeout(timeoutId);
+          const data = await res.json();
+          const candidatePart = data?.candidates?.[0]?.content?.parts?.find((p: any) => typeof p.text === "string");
+          const content = candidatePart?.text || "";
+          return { text: content, provider: "gemini" };
+        }
 
-    if (!res.ok) {
-      const errText = await res.text();
-      return { text: "", error: `Gemini HTTP ${res.status}: ${errText}`, provider: "gemini" };
+        const errText = await res.text();
+        lastError = `Gemini HTTP ${res.status}: ${errText}`;
+        console.warn(`[Gemini Rotation] Key returned status ${res.status}, failing over to next key...`);
+      } catch (keyErr) {
+        lastError = keyErr instanceof Error ? keyErr.message : String(keyErr);
+      }
     }
 
-    const data = await res.json();
-    const candidatePart = data?.candidates?.[0]?.content?.parts?.find((p: any) => typeof p.text === "string");
-    const content = candidatePart?.text || "";
-    return { text: content, provider: "gemini" };
+    clearTimeout(timeoutId);
+    return { text: "", error: lastError || "All Gemini keys failed", provider: "gemini" };
   } catch (err: unknown) {
     clearTimeout(timeoutId);
     const errorMsg = err instanceof Error ? err.message : String(err);

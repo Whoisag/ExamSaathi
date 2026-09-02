@@ -163,6 +163,35 @@ export function MarkdownMath({ content, className = "" }: MarkdownMathProps) {
         continue;
       }
 
+      // Markdown Images: ![caption](url)
+      if (line.includes("![") && line.includes("](")) {
+        line = line.replace(/!\[(.*?)\]\((https?:\/\/[^\s\)]+)\)/g, (_, cap, u) => {
+          const caption = cap || "Educational Scientific Diagram";
+          return `
+            <figure class="my-4 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] overflow-hidden">
+              <div class="bg-black px-3 py-2 border-b-2 border-black flex items-center justify-between text-white">
+                <span class="font-meta text-[11px] uppercase font-bold text-[#FF4D00] flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-[#FF4D00] inline-block animate-pulse"></span>
+                  VISUAL DIAGRAM // ${escapeHtml(caption)}
+                </span>
+                <a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="font-meta text-[10px] uppercase tracking-wider text-white hover:text-[#FF4D00] underline font-bold">
+                  VIEW FULL SIZE ↗
+                </a>
+              </div>
+              <div class="p-3 bg-neutral-100 flex items-center justify-center">
+                <img src="${escapeHtml(u)}" alt="${escapeHtml(caption)}" class="max-h-[420px] w-auto max-w-full object-contain border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000000]" loading="lazy" />
+              </div>
+              <figcaption class="px-3.5 py-2 border-t-2 border-black bg-white font-sans text-xs text-neutral-800 flex items-center justify-between gap-2">
+                <span class="font-medium">${escapeHtml(caption)}</span>
+                <a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="font-meta text-[10px] bg-[#FF4D00] text-black px-2 py-0.5 border border-black font-bold uppercase hover:bg-black hover:text-white transition-colors shrink-0">
+                  OPEN IMAGE
+                </a>
+              </figcaption>
+            </figure>
+          `;
+        });
+      }
+
       // Regular paragraph line
       parsedLines.push(`<p class="my-1 text-xs sm:text-sm leading-relaxed">${line}</p>`);
     }
