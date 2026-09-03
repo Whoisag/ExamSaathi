@@ -97,25 +97,46 @@ export function UpcomingExamsTimeline({
       {/* Timeline Cards */}
       <div className="space-y-4">
         {filteredExams.length === 0 ? (
-          <div className="bg-white border-2 border-black p-8 sm:p-12 text-center shadow-[4px_4px_0px_0px_#000000] space-y-3">
-            <div className="w-12 h-12 bg-[#FF4D00] border-2 border-black mx-auto flex items-center justify-center shadow-[2px_2px_0px_0px_#000000]">
-              <Calendar className="w-6 h-6 text-black" />
+          exams.length === 0 ? (
+            <div className="bg-white border-2 border-black p-8 sm:p-12 text-center shadow-[4px_4px_0px_0px_#000000] space-y-3">
+              <div className="w-12 h-12 bg-[#FF4D00] border-2 border-black mx-auto flex items-center justify-center shadow-[2px_2px_0px_0px_#000000]">
+                <Calendar className="w-6 h-6 text-black" />
+              </div>
+              <h4 className="font-headline text-lg sm:text-xl text-black">NO EXAMS SCHEDULED</h4>
+              <p className="font-sans text-xs text-neutral-600 max-w-md mx-auto">
+                Your exam schedule is currently clean. Add your upcoming school pre-boards, board papers, or coaching mock tests to track your live countdown and schedule revision.
+              </p>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={onOpenAddModal}
+                  className="px-5 py-2.5 bg-black text-white hover:bg-[#FF4D00] hover:text-black border-2 border-black font-meta text-xs font-bold transition-colors cursor-pointer inline-flex items-center gap-2 shadow-[3px_3px_0px_0px_#000000]"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>+ ADD YOUR FIRST EXAM / MOCK</span>
+                </button>
+              </div>
             </div>
-            <h4 className="font-headline text-lg sm:text-xl text-black">NO EXAMS SCHEDULED</h4>
-            <p className="font-sans text-xs text-neutral-600 max-w-md mx-auto">
-              Your exam schedule is currently clean. Add your upcoming school pre-boards, board papers, or coaching mock tests to track your live countdown and schedule revision.
-            </p>
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={onOpenAddModal}
-                className="px-5 py-2.5 bg-black text-white hover:bg-[#FF4D00] hover:text-black border-2 border-black font-meta text-xs font-bold transition-colors cursor-pointer inline-flex items-center gap-2 shadow-[3px_3px_0px_0px_#000000]"
-              >
-                <Plus className="w-4 h-4" />
-                <span>+ ADD YOUR FIRST EXAM / MOCK</span>
-              </button>
+          ) : (
+            <div className="bg-white border-2 border-black p-8 sm:p-10 text-center shadow-[4px_4px_0px_0px_#000000] space-y-3">
+              <div className="w-10 h-10 bg-neutral-200 border-2 border-black mx-auto flex items-center justify-center shadow-[2px_2px_0px_0px_#000000]">
+                <Calendar className="w-5 h-5 text-black" />
+              </div>
+              <h4 className="font-headline text-base sm:text-lg text-black">NO MATCHING EXAMS</h4>
+              <p className="font-sans text-xs text-neutral-600 max-w-sm mx-auto">
+                No scheduled exams match the selected filter category.
+              </p>
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilter("all")}
+                  className="px-4 py-2 bg-neutral-900 text-white hover:bg-[#FF4D00] hover:text-black border-2 border-black font-meta text-xs font-bold transition-colors cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
+                >
+                  SHOW ALL EXAMS
+                </button>
+              </div>
             </div>
-          </div>
+          )
         ) : (
           filteredExams.map((exam) => {
             const countdown = getCountdown(exam.startDate);

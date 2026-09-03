@@ -33,6 +33,11 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
   const heroInnerOpacity = useTransform(scrollYProgress, [0, 0.1, 0.6], [0, 0.4, 1]);
 
   useEffect(() => {
+    // Seed initial scroll state on mount (fixes CodeRabbit finding for restored scroll)
+    const initial = scrollYProgress.get();
+    setOpenPct(Math.min(100, Math.round((initial / 0.65) * 100)));
+    setIsFullyOpen(initial >= 0.65);
+
     return scrollYProgress.on("change", (latest) => {
       const pct = Math.min(100, Math.round((latest / 0.65) * 100));
       setOpenPct(pct);
@@ -269,7 +274,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
           className="w-1/2 h-full bg-[#FF4D00] relative border-r-2 border-black flex items-center justify-end"
         >
           <div className="absolute top-28 left-8 font-meta text-xs text-black font-bold hidden sm:block">
-            // PORTAL PANEL L-01 // NTA SHIFTS
+            {"// PORTAL PANEL L-01 // NTA SHIFTS"}
           </div>
           <div className="absolute bottom-28 left-8 font-meta text-[11px] text-black font-bold hidden sm:block">
             DATA HARVEST: 2010 — 2025
@@ -282,7 +287,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
           className="w-1/2 h-full bg-black relative border-l-2 border-neutral-800 flex items-center justify-start"
         >
           <div className="absolute top-28 right-8 font-meta text-xs text-neutral-400 font-bold hidden sm:block">
-            // PORTAL PANEL R-02 // PREDICTIVE AUDIT
+            {"// PORTAL PANEL R-02 // PREDICTIVE AUDIT"}
           </div>
           <div className="absolute bottom-28 right-8 font-meta text-[11px] text-neutral-400 font-bold hidden sm:block">
             RECURRENCE ENGINE: POISSON
