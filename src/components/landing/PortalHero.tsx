@@ -22,21 +22,21 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
   });
 
   // Proportional transforms linked directly to scroll percentage:
-  // From 0 to 0.7: panels open smoothly with scroll
-  // Beyond 0.7: panels are completely off-screen, hero is fully visible
-  // When scroll reaches 1.0 (end of 200vh), user naturally continues scrolling down the page
-  const leftPanelX = useTransform(scrollYProgress, [0, 0.7], ["0%", "-100%"]);
-  const rightPanelX = useTransform(scrollYProgress, [0, 0.7], ["0%", "100%"]);
-  const examWordmarkX = useTransform(scrollYProgress, [0, 0.7], ["0vw", "-100vw"]);
-  const saathiWordmarkX = useTransform(scrollYProgress, [0, 0.7], ["0vw", "100vw"]);
-  const wordmarkOpacity = useTransform(scrollYProgress, [0, 0.45, 0.7], [1, 0.7, 0]);
-  const heroInnerOpacity = useTransform(scrollYProgress, [0, 0.1, 0.65], [0.15, 0.5, 1]);
+  // From 0 to 0.65: panels open smoothly with scroll
+  // Beyond 0.65: panels are completely off-screen, hero is fully visible
+  // When scroll reaches 1.0 (end of track), user naturally continues scrolling down the page
+  const leftPanelX = useTransform(scrollYProgress, [0, 0.65], ["0%", "-100%"]);
+  const rightPanelX = useTransform(scrollYProgress, [0, 0.65], ["0%", "100%"]);
+  const examWordmarkX = useTransform(scrollYProgress, [0, 0.65], ["0vw", "-100vw"]);
+  const saathiWordmarkX = useTransform(scrollYProgress, [0, 0.65], ["0vw", "100vw"]);
+  const wordmarkOpacity = useTransform(scrollYProgress, [0, 0.35, 0.65], [1, 0.7, 0]);
+  const heroInnerOpacity = useTransform(scrollYProgress, [0, 0.1, 0.6], [0, 0.4, 1]);
 
   useEffect(() => {
     return scrollYProgress.on("change", (latest) => {
-      const pct = Math.min(100, Math.round((latest / 0.7) * 100));
+      const pct = Math.min(100, Math.round((latest / 0.65) * 100));
       setOpenPct(pct);
-      setIsFullyOpen(latest >= 0.7);
+      setIsFullyOpen(latest >= 0.65);
     });
   }, [scrollYProgress]);
 
@@ -167,67 +167,12 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         </div>
       </div>
 
-      {/* TWO SOLID PARTING PANELS: Left #FF4D00, Right #000000 (SOLID, NEVER TRANSPARENT) */}
-      <div className="absolute inset-0 pointer-events-none z-20 flex overflow-hidden">
-        {/* Left Panel: Solid Orange #FF4D00 */}
-        <motion.div
-          style={{ x: leftPanelX }}
-          className="w-1/2 h-full bg-[#FF4D00] relative border-r-2 border-black flex items-center justify-end"
-        >
-          <div className="absolute top-28 left-8 font-meta text-xs text-black font-bold hidden sm:block">
-            // PORTAL PANEL L-01 // NTA SHIFTS
-          </div>
-          <div className="absolute bottom-28 left-8 font-meta text-[11px] text-black font-bold hidden sm:block">
-            DATA HARVEST: 2010 — 2025
-          </div>
-        </motion.div>
-
-        {/* Right Panel: Solid Pitch Black #000000 */}
-        <motion.div
-          style={{ x: rightPanelX }}
-          className="w-1/2 h-full bg-black relative border-l-2 border-black flex items-center justify-start"
-        >
-          <div className="absolute top-28 right-8 font-meta text-xs text-neutral-400 font-bold hidden sm:block">
-            // PORTAL PANEL R-02 // PREDICTIVE AUDIT
-          </div>
-          <div className="absolute bottom-28 right-8 font-meta text-[11px] text-neutral-400 font-bold hidden sm:block">
-            RECURRENCE ENGINE: POISSON
-          </div>
-        </motion.div>
-      </div>
-
-      {/* DYNAMIC SPLIT WORDMARK: "EXAM" & "SAATHI" */}
-      {/* Closed: Centered at seam. Opens proportionally with scroll! */}
-      <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center overflow-hidden">
-        {/* Left half: "EXAM" */}
-        <motion.div
-          style={{
-            x: examWordmarkX,
-            opacity: wordmarkOpacity,
-          }}
-          className="w-1/2 text-right pr-1 sm:pr-2 font-headline text-[12vw] sm:text-[10.5vw] md:text-[9.5vw] lg:text-[8.5vw] leading-[0.85] select-none whitespace-nowrap text-black"
-        >
-          EXAM
-        </motion.div>
-
-        {/* Right half: "SAATHI" */}
-        <motion.div
-          style={{
-            x: saathiWordmarkX,
-            opacity: wordmarkOpacity,
-          }}
-          className="w-1/2 text-left pl-1 sm:pl-2 font-headline text-[12vw] sm:text-[10.5vw] md:text-[9.5vw] lg:text-[8.5vw] leading-[0.85] select-none whitespace-nowrap text-white"
-        >
-          SAATHI
-        </motion.div>
-      </div>
-
-      {/* HERO INTERACTIVE CONTENT (Revealed as panels open proportionally) */}
+      {/* LAYER 1: HERO INTERACTIVE CONTENT (Underneath panels, revealed as panels part) */}
       <motion.div
         style={{
           opacity: heroInnerOpacity,
         }}
-        className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-32 sm:pt-40 md:pt-44 pb-8 sm:pb-10 flex flex-col items-center justify-center text-center my-auto pointer-events-auto"
+        className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-32 sm:pt-40 md:pt-44 pb-8 sm:pb-10 flex flex-col items-center justify-center text-center my-auto pointer-events-auto"
       >
         <div className="space-y-4 sm:space-y-5 max-w-3xl mx-auto flex flex-col items-center">
           {/* Exam Saathi in Orange and White */}
@@ -313,8 +258,65 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         </div>
       </motion.div>
 
-      {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR */}
-      <div className="relative z-30 max-w-7xl mx-auto w-full px-4 sm:px-8 py-4 sm:py-6 flex items-center justify-between border-t-2 border-neutral-800 bg-transparent">
+      {/* LAYER 2: TWO 100% SOLID PARTING PANELS (In front of hero content, solid orange & pitch black) */}
+      <div
+        className="absolute inset-0 z-20 flex overflow-hidden"
+        style={{ pointerEvents: isFullyOpen ? "none" : "auto" }}
+      >
+        {/* Left Panel: 100% Solid Orange #FF4D00 */}
+        <motion.div
+          style={{ x: leftPanelX }}
+          className="w-1/2 h-full bg-[#FF4D00] relative border-r-2 border-black flex items-center justify-end"
+        >
+          <div className="absolute top-28 left-8 font-meta text-xs text-black font-bold hidden sm:block">
+            // PORTAL PANEL L-01 // NTA SHIFTS
+          </div>
+          <div className="absolute bottom-28 left-8 font-meta text-[11px] text-black font-bold hidden sm:block">
+            DATA HARVEST: 2010 — 2025
+          </div>
+        </motion.div>
+
+        {/* Right Panel: 100% Solid Pitch Black #000000 */}
+        <motion.div
+          style={{ x: rightPanelX }}
+          className="w-1/2 h-full bg-black relative border-l-2 border-neutral-800 flex items-center justify-start"
+        >
+          <div className="absolute top-28 right-8 font-meta text-xs text-neutral-400 font-bold hidden sm:block">
+            // PORTAL PANEL R-02 // PREDICTIVE AUDIT
+          </div>
+          <div className="absolute bottom-28 right-8 font-meta text-[11px] text-neutral-400 font-bold hidden sm:block">
+            RECURRENCE ENGINE: POISSON
+          </div>
+        </motion.div>
+      </div>
+
+      {/* LAYER 3: DYNAMIC SPLIT WORDMARK: "EXAM" & "SAATHI" (Centered on solid panels) */}
+      <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center overflow-hidden">
+        {/* Left half: "EXAM" */}
+        <motion.div
+          style={{
+            x: examWordmarkX,
+            opacity: wordmarkOpacity,
+          }}
+          className="w-1/2 text-right pr-1 sm:pr-2 font-headline text-[12vw] sm:text-[10.5vw] md:text-[9.5vw] lg:text-[8.5vw] leading-[0.85] select-none whitespace-nowrap text-black"
+        >
+          EXAM
+        </motion.div>
+
+        {/* Right half: "SAATHI" */}
+        <motion.div
+          style={{
+            x: saathiWordmarkX,
+            opacity: wordmarkOpacity,
+          }}
+          className="w-1/2 text-left pl-1 sm:pl-2 font-headline text-[12vw] sm:text-[10.5vw] md:text-[9.5vw] lg:text-[8.5vw] leading-[0.85] select-none whitespace-nowrap text-white"
+        >
+          SAATHI
+        </motion.div>
+      </div>
+
+      {/* LAYER 4: BOTTOM HERO BAR & ROTATING SCROLL INDICATOR */}
+      <div className="relative z-40 max-w-7xl mx-auto w-full px-4 sm:px-8 py-4 sm:py-6 flex items-center justify-between border-t-2 border-neutral-800 bg-transparent">
         <div className="font-meta text-xs flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
           <span className="text-[#FF4D00] font-bold">
             // INTERACTIVE PORTAL

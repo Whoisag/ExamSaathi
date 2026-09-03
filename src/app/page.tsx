@@ -22,20 +22,16 @@ export default function LandingPage() {
   const [aiPreviewOpen, setAiPreviewOpen] = React.useState(false);
   const [selectedServiceTitle, setSelectedServiceTitle] = React.useState("");
 
-  // Handle auth redirect if code is present in URL or user is already logged in
+  // Handle auth redirect only if callback code is present in URL
   React.useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       if (code) {
         window.location.href = `/auth/callback?code=${encodeURIComponent(code)}&next=/my-dashboard`;
-        return;
       }
     }
-    if (user) {
-      router.push("/my-dashboard");
-    }
-  }, [user, router]);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -138,12 +134,21 @@ export default function LandingPage() {
 
           {/* Auth & Mobile Toggle */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Link
-              href="/login"
-              className="inline-block bg-white text-black px-4 py-2 border-brutal font-meta text-xs font-bold hover:bg-[#FF4D00] hover:text-black transition-colors"
-            >
-              LOGIN
-            </Link>
+            {user ? (
+              <Link
+                href="/my-dashboard"
+                className="inline-block bg-[#FF4D00] text-black px-4 py-2 border-brutal font-meta text-xs font-bold hover:bg-white transition-colors"
+              >
+                DASHBOARD →
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="inline-block bg-white text-black px-4 py-2 border-brutal font-meta text-xs font-bold hover:bg-[#FF4D00] hover:text-black transition-colors"
+              >
+                LOGIN
+              </Link>
+            )}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
