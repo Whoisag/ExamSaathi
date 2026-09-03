@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function DashboardPlannerRedirect() {
+function PlannerRedirectContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -18,3 +18,18 @@ export default function DashboardPlannerRedirect() {
     </div>
   );
 }
+
+export default function DashboardPlannerRedirect() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FF4D00] flex items-center justify-center font-headline text-black text-xl">
+          Redirecting to Exam Planner...
+        </div>
+      }
+    >
+      <PlannerRedirectContent />
+    </Suspense>
+  );
+}
+
