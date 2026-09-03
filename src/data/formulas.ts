@@ -1056,11 +1056,41 @@ export const MASTER_FORMULA_DATABASE: MasterFormulaItem[] = [
   }
 ];
 
+export const CLASS_11_CHAPTERS = new Set<string>([
+  // Physics (Class 11 - JEE only)
+  "Units, Dimensions & Error Analysis",
+  "Kinematics: 1D & 2D Motion",
+  "Laws of Motion & Friction",
+  "Work, Energy & Power",
+  "System of Particles & Rotational Motion",
+  "Gravitation & Satellite Dynamics",
+  "Mechanical Properties of Solids & Fluids",
+  "Thermodynamics & Kinetic Theory",
+  "Oscillations & Waves",
+
+  // Chemistry (Class 11 - JEE only)
+  "Basic Concepts of Chemistry (Mole Concept)",
+  "Atomic Structure & Quantum Mechanics",
+  "Chemical Bonding & Molecular Structure",
+  "Chemical Thermodynamics & Thermochemistry",
+  "Chemical & Ionic Equilibrium",
+
+  // Mathematics (Class 11 - JEE only)
+  "Complex Numbers & Quadratic Equations",
+  "Conic Sections (Parabola, Ellipse, Hyperbola)",
+]);
+
 export function getFormulasBySubjectAndExam(subject: string, examSlug: string): MasterFormulaItem[] {
   const normSub = subject.toLowerCase();
   let filtered = MASTER_FORMULA_DATABASE.filter((f) => f.subject.toLowerCase() === normSub);
   if (filtered.length === 0) {
     filtered = MASTER_FORMULA_DATABASE;
   }
+
+  // If target is CBSE Class 12 Boards, strictly filter to Class 12 syllabus only!
+  if (examSlug === "cbse-12") {
+    filtered = filtered.filter((f) => !CLASS_11_CHAPTERS.has(f.chapter));
+  }
+
   return filtered;
 }

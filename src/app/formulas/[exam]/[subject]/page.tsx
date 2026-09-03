@@ -25,6 +25,11 @@ import {
   Check,
 } from "lucide-react";
 
+const FORMULA_EXAM_TABS: { id: ExamId; shortName: string; scope: string }[] = [
+  { id: "jee-main", shortName: "JEE MAIN 2026", scope: "Class 11 + 12 Complete" },
+  { id: "cbse-12", shortName: "CBSE CLASS 12 BOARDS", scope: "Class 12 Only" },
+];
+
 export default function FormulasSubjectPage() {
   const params = useParams();
   const router = useRouter();
@@ -142,7 +147,11 @@ export default function FormulasSubjectPage() {
       currentExam={examId}
       currentSubject={matchedSubject}
       title={`${exam.shortName} • ${matchedSubject} Master Formula Sheet`}
-      subtitle="High-yield formulas with variable breakdowns, application constraints, and negative-marking traps."
+      subtitle={
+        examId === "cbse-12"
+          ? "Official Class 12 Board examination syllabus formulas (Class 11 excluded) with variable breakdowns & derivation steps."
+          : "Complete high-yield Class 11 & 12 formulas with variable breakdowns, boundary rules, and negative-marking traps."
+      }
       breadcrumbs={[
         { label: exam.shortName, href: "/" },
         { label: "Formulas", href: `/formulas/${examId}/${matchedSubject.toLowerCase()}` },
@@ -187,6 +196,39 @@ export default function FormulasSubjectPage() {
           </div>
         </div>
 
+        {/* Exam Switcher Bar (Hidden in Print) */}
+        <div className="grid grid-cols-2 bg-black text-white p-1.5 border-2 border-black shadow-[4px_4px_0px_0px_#000000] no-print">
+          {FORMULA_EXAM_TABS.map((tab) => {
+            const isSelected = examId === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => {
+                  localStorage.setItem("examsaathi_target_exam", tab.id);
+                  router.push(`/formulas/${tab.id}/${matchedSubject.toLowerCase()}`);
+                }}
+                className={`px-4 sm:px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wider uppercase whitespace-nowrap transition-all text-center flex items-center justify-center gap-2 cursor-pointer ${
+                  isSelected
+                    ? "bg-[#FF4D00] text-black shadow-[2px_2px_0px_0px_#FFFFFF]"
+                    : "text-neutral-400 hover:text-white hover:bg-neutral-900"
+                }`}
+              >
+                <span>{tab.shortName}</span>
+                <span
+                  className={`text-[9px] font-meta px-1.5 py-0.5 border hidden sm:inline-block ${
+                    isSelected
+                      ? "bg-black text-[#FF4D00] border-black font-bold"
+                      : "bg-neutral-800 text-neutral-400 border-neutral-700"
+                  }`}
+                >
+                  {tab.scope}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* Subject Quick Switcher Bar (Hidden in Print) */}
         <div className="bg-black text-white p-3 border-2 border-black flex items-center justify-between gap-3 shadow-[4px_4px_0px_0px_#000000] no-print">
           <div className="flex items-center gap-2 overflow-x-auto">
@@ -210,7 +252,7 @@ export default function FormulasSubjectPage() {
           </div>
 
           <div className="font-meta text-xs text-[#FF4D00] font-bold pr-2 hidden sm:block">
-            TOTAL: {filteredFormulas.length} FORMULAS
+            TOTAL: {filteredFormulas.length} FORMULAS {examId === "cbse-12" ? "(CLASS 12 ONLY)" : "(CLASS 11 + 12)"}
           </div>
         </div>
 
