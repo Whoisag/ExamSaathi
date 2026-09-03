@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "en-US"
+early_access: true
+
+reviews:
+  profile: "assertive" # Rigorous inspection for architectural correctness, static builds, and bugs
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: true
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+
+path_filters:
+  - "!**/.next/**"
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+  - "!package-lock.json"
+
+path_instructions:
+  - path: "src/app/**/*.tsx"
+    instructions: |
+      - Check Next.js App Router conventions (server vs client components).
+      - CRITICAL: Any component using `useSearchParams()` must be wrapped in a `<Suspense>` boundary to prevent Next.js static prerendering build failures.
+      - Ensure proper metadata and error boundaries are implemented.
+  - path: "src/components/**/*.tsx"
+    instructions: |
+      - Verify React 18/19 patterns and clean hook dependencies.
+      - Check Framer Motion animations for performance, willChange optimization, and prefers-reduced-motion support.
+      - Maintain ExamSaathi's Neo-brutalist design system (black 2px borders, #FF4D00 orange accents, crisp drop shadows).
+  - path: "src/components/formulas/**/*.tsx"
+    instructions: |
+      - Validate mathematical KaTeX formula rendering and ensure no unescaped LaTeX symbols cause runtime rendering exceptions.
+  - path: "src/app/api/**/*.ts"
+    instructions: |
+      - Check for proper error handling, HTTP status codes, and input validation.
+      - Verify streaming responses (e.g. AI assistant, Gemini API) have fallback error handling.
+
+tools:
+  eslint:
+    enabled: true
+  gitleaks:
+    enabled: true
+  semgrep:
+    enabled: true
+
+chat:
+  auto_reply: true
