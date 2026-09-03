@@ -14,6 +14,7 @@ import {
   Layers,
   Check,
   Target,
+  CalendarDays,
 } from "lucide-react";
 import { EXAMS, ExamId } from "@/data/mock";
 
@@ -65,9 +66,11 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
     if (pathname.startsWith("/formulas")) {
       const targetSub = EXAMS[examKey]?.subjects[0]?.toLowerCase() || "physics";
       router.push(`/formulas/${examKey}/${targetSub}`);
-    } else if (pathname.startsWith("/dashboard/") && !pathname.startsWith("/dashboard/exams") && !pathname.startsWith("/dashboard/practice")) {
+    } else if (pathname.startsWith("/dashboard/") && !pathname.startsWith("/dashboard/exams") && !pathname.startsWith("/dashboard/practice") && !pathname.startsWith("/dashboard/planner")) {
       const targetSub = EXAMS[examKey]?.subjects[0]?.toLowerCase() || "physics";
       router.push(`/dashboard/${examKey}/${targetSub}`);
+    } else if (pathname.startsWith("/planner") || pathname.startsWith("/dashboard/planner")) {
+      router.push(`/planner?exam=${examKey}`);
     } else if (pathname.startsWith("/my-dashboard")) {
       router.push(`/my-dashboard?exam=${examKey}`);
     } else if (pathname.startsWith("/dashboard/practice")) {
@@ -82,6 +85,11 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
       label: "Exam Chapter Wise Analysis",
       href: "/dashboard/exams",
       icon: Layers,
+    },
+    {
+      label: "Exam Planner & Calendar",
+      href: `/planner?exam=${currentExam}`,
+      icon: CalendarDays,
     },
     {
       label: "Practice Questions",
@@ -263,7 +271,8 @@ export function Sidebar({ currentExam = "jee-main", currentSubject = "Physics" }
             pathname === itemBasePath ||
             (itemBasePath !== "/" && pathname.startsWith(itemBasePath)) ||
             (item.label === "Formula Sheets" && pathname.startsWith("/formulas")) ||
-            (item.label === "Practice Questions" && pathname.startsWith("/dashboard/practice"));
+            (item.label === "Practice Questions" && pathname.startsWith("/dashboard/practice")) ||
+            (item.label === "Exam Planner & Calendar" && (pathname.startsWith("/planner") || pathname.startsWith("/dashboard/planner")));
 
           return (
             <motion.div key={item.label} variants={slideUpVariants} className="relative">
