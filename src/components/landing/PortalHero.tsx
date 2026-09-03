@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, animate } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
 import { AntigravityH3 } from "@/components/ui/AntigravityH3";
 
@@ -12,250 +12,58 @@ interface PortalHeroProps {
 
 export function PortalHero({ onExploreClick }: PortalHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
-  const openProgress = useMotionValue(0);
-  const [statusText, setStatusText] = useState("STANDBY (SCROLL TO OPEN)");
+  const [openPct, setOpenPct] = useState(0);
   const [isFullyOpen, setIsFullyOpen] = useState(false);
 
-  const isUnlockedRef = useRef(false);
-  const targetProgressRef = useRef(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const touchStartYRef = useRef(0);
+  // Track the scroll progress of the hero section (0 to 1 as user scrolls down 200vh)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end end"],
+  });
 
-  // Proportional transforms linked directly to openProgress:
-  // "if the user scrolls down little bit it should open little bit"
-  const leftPanelX = useTransform(openProgress, [0, 1], ["0%", "-100%"]);
-  const rightPanelX = useTransform(openProgress, [0, 1], ["0%", "100%"]);
-  const examWordmarkX = useTransform(openProgress, [0, 1], ["0vw", "-100vw"]);
-  const saathiWordmarkX = useTransform(openProgress, [0, 1], ["0vw", "100vw"]);
-  const wordmarkOpacity = useTransform(openProgress, [0, 0.7, 1], [1, 0.7, 0]);
-  const heroInnerOpacity = useTransform(openProgress, [0, 0.15, 1], [0, 0.35, 1]);
-
-  // Scroll-linked fade out / fade in when scrolling past the hero
-  const { scrollY } = useScroll();
-  const heroContentOpacity = useTransform(scrollY, [0, 260, 480], [1, 1, 0]);
-  const heroContentY = useTransform(scrollY, [0, 260, 480], [0, 0, -45]);
-  const heroContentScale = useTransform(scrollY, [0, 260, 480], [1, 1, 0.94]);
-
-  // Schedules automatic closure after 2 seconds:
-  // "and after it is opened it closes automatically after 2 secs"
-  const scheduleAutoClose = (label = "FULLY OPEN (AUTOCLOSES IN 2S)") => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    setStatusText(label);
-    timerRef.current = setTimeout(() => {
-      setStatusText("AUTOCLOSING...");
-      animate(openProgress, 0, {
-        duration: 0.85,
-        ease: [0.2, 0.8, 0.3, 1],
-        onComplete: () => {
-          setIsFullyOpen(false);
-          targetProgressRef.current = 0;
-          setStatusText("STANDBY (SCROLL DOWN TO EXPLORE)");
-        },
-      });
-      timerRef.current = null;
-    }, 2000);
-  };
+  // Proportional transforms linked directly to scroll percentage:
+  // From 0 to 0.7: panels open smoothly with scroll
+  // Beyond 0.7: panels are completely off-screen, hero is fully visible
+  // When scroll reaches 1.0 (end of 200vh), user naturally continues scrolling down the page
+  const leftPanelX = useTransform(scrollYProgress, [0, 0.7], ["0%", "-100%"]);
+  const rightPanelX = useTransform(scrollYProgress, [0, 0.7], ["0%", "100%"]);
+  const examWordmarkX = useTransform(scrollYProgress, [0, 0.7], ["0vw", "-100vw"]);
+  const saathiWordmarkX = useTransform(scrollYProgress, [0, 0.7], ["0vw", "100vw"]);
+  const wordmarkOpacity = useTransform(scrollYProgress, [0, 0.45, 0.7], [1, 0.7, 0]);
+  const heroInnerOpacity = useTransform(scrollYProgress, [0, 0.1, 0.65], [0.15, 0.5, 1]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.location.search.includes("parted=true")) {
-        openProgress.set(1);
-        targetProgressRef.current = 1;
-        setIsFullyOpen(true);
-        isUnlockedRef.current = true;
-        scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
-      } else if (window.scrollY > 10) {
-        // If user refreshed while scrolled down, do not lock
-        isUnlockedRef.current = true;
-      }
-    }
-  }, [openProgress]);
+    return scrollYProgress.on("change", (latest) => {
+      const pct = Math.min(100, Math.round((latest / 0.7) * 100));
+      setOpenPct(pct);
+      setIsFullyOpen(latest >= 0.7);
+    });
+  }, [scrollYProgress]);
 
-  useEffect(() => {
-    // 1. Mouse wheel handler:
-    // "when the user uses the scroller in the mouse the panels opens with every scroll of the scroller of the mouse and after its open then only the user can scroll down he landing page to see everyting else in the landing page"
-    const handleWheel = (e: WheelEvent) => {
-      // If user has already unlocked or is scrolled down the page, let standard scrolling happen
-      if (isUnlockedRef.current || window.scrollY > 5) {
-        return;
-      }
-
-      let delta = e.deltaY;
-      if (e.deltaMode === 1) delta *= 40;
-      else if (e.deltaMode === 2) delta *= 800;
-
-      if (delta > 0) {
-        // Scrolling downward: open panels with every scroll of the scroller!
-        e.preventDefault();
-
-        // Increment progress proportionally
-        const increment = Math.abs(delta) * 0.0028;
-        const next = Math.min(1, targetProgressRef.current + increment);
-        targetProgressRef.current = next;
-        openProgress.set(next);
-
-        if (next >= 0.98) {
-          targetProgressRef.current = 1;
-          openProgress.set(1);
-          setIsFullyOpen(true);
-          isUnlockedRef.current = true; // Unlock landing page scroll!
-          scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
-        } else {
-          setIsFullyOpen(false);
-          setStatusText(`PARTING (${Math.round(next * 100)}%)`);
-        }
-      } else {
-        // Scrolling upward while at top: prevent bounce and do not close prematurely
-        // "if the user scrolls back the panel shouldnt close it will only close automatically after 2 secs"
-        e.preventDefault();
-      }
-    };
-
-    // 2. Touch gesture handler for mobile:
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        touchStartYRef.current = e.touches[0].clientY;
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (isUnlockedRef.current || window.scrollY > 5) {
-        return;
-      }
-
-      if (e.touches.length > 0) {
-        const currentY = e.touches[0].clientY;
-        const delta = touchStartYRef.current - currentY; // positive when swiping up / scrolling down
-
-        if (delta > 0) {
-          e.preventDefault();
-          const increment = delta * 0.0035;
-          const next = Math.min(1, targetProgressRef.current + increment);
-          targetProgressRef.current = next;
-          openProgress.set(next);
-          touchStartYRef.current = currentY;
-
-          if (next >= 0.98) {
-            targetProgressRef.current = 1;
-            openProgress.set(1);
-            setIsFullyOpen(true);
-            isUnlockedRef.current = true; // Unlock landing page scroll!
-            scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
-          } else {
-            setIsFullyOpen(false);
-            setStatusText(`PARTING (${Math.round(next * 100)}%)`);
-          }
-        }
-      }
-    };
-
-    // 3. Keyboard handler (DownArrow, PageDown, Space):
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (isUnlockedRef.current || window.scrollY > 5) {
-        return;
-      }
-
-      if (["ArrowDown", "PageDown", " "].includes(e.key)) {
-        e.preventDefault();
-        const next = Math.min(1, targetProgressRef.current + 0.34);
-        targetProgressRef.current = next;
-        openProgress.set(next);
-
-        if (next >= 0.98) {
-          targetProgressRef.current = 1;
-          openProgress.set(1);
-          setIsFullyOpen(true);
-          isUnlockedRef.current = true;
-          scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
-        } else {
-          setIsFullyOpen(false);
-          setStatusText(`PARTING (${Math.round(next * 100)}%)`);
-        }
-      }
-    };
-
-    // 4. Scroll listener: enforce scroll lock until fully open, and re-arm when back at top
-    const handleScroll = () => {
-      if (!isUnlockedRef.current && window.scrollY > 0) {
-        window.scrollTo(0, 0);
-        return;
-      }
-
-      if (
-        window.scrollY <= 5 &&
-        isUnlockedRef.current &&
-        openProgress.get() === 0 &&
-        !timerRef.current
-      ) {
-        isUnlockedRef.current = false;
-        targetProgressRef.current = 0;
-        setStatusText("STANDBY (SCROLL DOWN TO PART)");
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    document.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      document.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("scroll", handleScroll);
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [openProgress]);
-
-  // Click on circular indicator toggles open or close
+  // Click on circular indicator toggles open or scrolls down to the next section
   const toggleParting = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-
-    if (openProgress.get() < 0.5) {
-      targetProgressRef.current = 1;
-      isUnlockedRef.current = true;
-      setIsFullyOpen(true);
-      setStatusText("FULLY OPEN (AUTOCLOSES IN 2S)");
-      animate(openProgress, 1, {
-        duration: 0.7,
-        ease: [0.2, 0.8, 0.3, 1],
-        onComplete: () => {
-          scheduleAutoClose("FULLY OPEN (AUTOCLOSES IN 2S)");
-        },
-      });
+    if (!heroRef.current) return;
+    if (isFullyOpen) {
+      const rect = heroRef.current.getBoundingClientRect();
+      const targetY = window.scrollY + rect.height;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
     } else {
-      targetProgressRef.current = 0;
-      setStatusText("AUTOCLOSING...");
-      animate(openProgress, 0, {
-        duration: 0.85,
-        ease: [0.2, 0.8, 0.3, 1],
-        onComplete: () => {
-          setIsFullyOpen(false);
-          setStatusText("STANDBY (SCROLL DOWN TO PART)");
-        },
-      });
+      const targetY = window.scrollY + window.innerHeight * 0.8;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
     }
   };
+
+  const statusText = isFullyOpen
+    ? "FULLY OPEN // SCROLL DOWN TO EXPLORE"
+    : `PARTING (${openPct}%)`;
 
   return (
     <div
       ref={heroRef}
-      className="relative w-full min-h-screen overflow-hidden bg-black select-none flex flex-col justify-between border-brutal-b"
-      style={{ perspective: 1200 }}
+      className="relative w-full h-[200vh] bg-black select-none"
     >
+      {/* Pinned Viewport Hero Section */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-black flex flex-col justify-between border-brutal-b">
       {/* FULL-BLEED BACKGROUND VISUALIZATION (Revealed when panels part) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[#0a0a0a]">
@@ -421,14 +229,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         }}
         className="relative z-25 w-full max-w-4xl mx-auto px-4 sm:px-8 pt-32 sm:pt-40 md:pt-44 pb-8 sm:pb-10 flex flex-col items-center justify-center text-center my-auto pointer-events-auto"
       >
-        <motion.div
-          style={{
-            opacity: heroContentOpacity,
-            y: heroContentY,
-            scale: heroContentScale,
-          }}
-          className="space-y-4 sm:space-y-5 max-w-3xl mx-auto flex flex-col items-center"
-        >
+        <div className="space-y-4 sm:space-y-5 max-w-3xl mx-auto flex flex-col items-center">
           {/* Exam Saathi in Orange and White */}
           <h1 className="font-headline text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[0.9] select-none">
             <span className="text-[#FF4D00]">EXAM </span>
@@ -509,7 +310,7 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
               MAE 0.48 QS // SPEARMAN RHO 0.85
             </span>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* BOTTOM HERO BAR & ROTATING SCROLL INDICATOR */}
@@ -553,5 +354,6 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
         </div>
       </div>
     </div>
+  </div>
   );
 }

@@ -52,7 +52,10 @@ function PlannerPageContent() {
     try {
       const savedExams = localStorage.getItem("examsaathi_planned_exams");
       if (savedExams) {
-        setCustomExams(JSON.parse(savedExams));
+        const parsed = JSON.parse(savedExams);
+        const filtered = Array.isArray(parsed) ? parsed.filter((e: PlannedExam) => !e.id.startsWith("off-")) : [];
+        setCustomExams(filtered);
+        localStorage.setItem("examsaathi_planned_exams", JSON.stringify(filtered));
       }
       const savedStatuses = localStorage.getItem("examsaathi_chapter_statuses");
       if (savedStatuses) {
@@ -147,11 +150,11 @@ function PlannerPageContent() {
     const upcoming = [...allExams]
       .filter((e) => e.startDate >= todayStr)
       .sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
-    return upcoming || allExams[0];
+    return upcoming || allExams[0] || null;
   }, [allExams]);
 
   const daysToNextExam = useMemo(() => {
-    if (!nextMajorExam) return 0;
+    if (!nextMajorExam) return null;
     const diff = new Date(nextMajorExam.startDate).getTime() - new Date().getTime();
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
   }, [nextMajorExam]);
@@ -243,21 +246,23 @@ function PlannerPageContent() {
                 // NEXT UPCOMING EXAM
               </span>
               <div className="font-headline text-xl sm:text-2xl text-black truncate">
-                {nextMajorExam.title}
+                {nextMajorExam ? nextMajorExam.title : "No Exam Scheduled"}
               </div>
               <p className="font-meta text-[11px] text-neutral-600 mt-0.5">
-                {new Date(nextMajorExam.startDate).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
+                {nextMajorExam
+                  ? new Date(nextMajorExam.startDate).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "Add your first milestone"}
               </p>
             </div>
             <div className="pt-3 mt-2 border-t border-neutral-100 flex items-center justify-between">
               <span className="font-meta text-xs text-[#FF4D00] font-bold">
-                T-minus {daysToNextExam} Days
+                {daysToNextExam !== null ? `T-minus ${daysToNextExam} Days` : "Clean Slate"}
               </span>
-              <span className="w-2 h-2 rounded-full bg-[#FF4D00] animate-ping"></span>
+              {daysToNextExam !== null && <span className="w-2 h-2 rounded-full bg-[#FF4D00] animate-ping"></span>}
             </div>
           </div>
 
