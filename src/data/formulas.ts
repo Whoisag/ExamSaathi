@@ -198,7 +198,7 @@ export const MASTER_FORMULA_DATABASE: MasterFormulaItem[] = [
     subject: "Physics",
     name: "Gauss's Law & Electric Flux from Symmetrical Surfaces",
     chapter: "Electric Charges and Fields",
-    latex: "\\Phi = \\oint \\vec{E} \\cdot d\\vec{A} = \\frac{q_{\\text{enclosed}}}{\\varepsilon_0}, \\quad E_{\\text{wire}} = \\frac{\\lambda}{2\\pi\\varepsilon_0 r}, \\quad E_{\\text{sheet}} = \\frac{\\sigma}{2\\varepsilon_0}",
+    latex: "\\begin{gathered} \\Phi = \\oint \\vec{E} \\cdot d\\vec{A} = \\frac{q_{\\text{enclosed}}}{\\varepsilon_0} \\\\[5pt] E_{\\text{wire}} = \\frac{\\lambda}{2\\pi\\varepsilon_0 r}, \\quad E_{\\text{sheet}} = \\frac{\\sigma}{2\\varepsilon_0} \\end{gathered}",
     variables: [
       { symbol: "\\Phi", meaning: "Total electric flux through closed Gaussian surface ($\\text{N}\\cdot\\text{m}^2/\\text{C}$)" },
       { symbol: "q_{\\text{enclosed}}", meaning: "Net algebraic charge inside the Gaussian boundary" },

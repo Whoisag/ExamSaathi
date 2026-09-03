@@ -144,7 +144,7 @@ export function FormulaCard({
           </div>
 
           {/* KaTeX Main Formula Display */}
-          <div className="bg-neutral-50 border-2 border-black p-3 sm:p-4 text-center overflow-x-auto my-2 shadow-[2px_2px_0px_0px_#000000] relative">
+          <div className="bg-neutral-50 border-2 border-black p-3 sm:p-4 text-center overflow-x-auto my-2 shadow-[2px_2px_0px_0px_#000000] relative formula-scroll">
             {shouldMask ? (
               <div className="py-4 flex flex-col items-center justify-center gap-2">
                 <div className="filter blur-md select-none opacity-40">
@@ -164,9 +164,10 @@ export function FormulaCard({
                 {isActiveRecall && (
                   <button
                     onClick={() => setIsRevealed(false)}
-                    className="mt-2 font-meta text-[10px] text-neutral-500 hover:text-black underline flex items-center gap-1 mx-auto"
+                    className="mt-2.5 font-meta text-[10px] px-2 py-0.5 border border-neutral-300 bg-white text-neutral-700 hover:bg-black hover:text-white hover:border-black transition-colors flex items-center gap-1.5 mx-auto cursor-pointer font-bold shadow-[1px_1px_0px_0px_#000000]"
                   >
-                    <EyeOff className="w-3 h-3" /> Hide again
+                    <EyeOff className="w-3 h-3 text-[#FF4D00]" />
+                    <span>Hide again</span>
                   </button>
                 )}
               </div>
@@ -177,18 +178,19 @@ export function FormulaCard({
           {formula.variables && formula.variables.length > 0 && (
             <div className="space-y-1.5 pt-1">
               <span className="font-meta text-[10px] font-bold text-neutral-500 uppercase tracking-wider block">
-                // VARIABLES & CONSTANTS
+                // VARIABLES &amp; CONSTANTS
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono">
+              <div className="flex flex-col gap-1.5 text-xs">
                 {formula.variables.map((v, i) => (
                   <div
                     key={i}
-                    className="flex items-start gap-1.5 bg-neutral-50 px-2 py-1 border border-neutral-300 text-black text-[11px]"
+                    className="flex items-start gap-2 bg-neutral-50 px-2.5 py-1.5 border border-neutral-200 text-black text-xs font-sans"
                   >
-                    <span className="font-bold text-[#FF4D00] shrink-0 font-headline">
-                      {v.symbol}:
+                    <span className="font-bold text-[#FF4D00] shrink-0 inline-flex items-center text-xs">
+                      <KaTeXMath math={v.symbol.startsWith("$") ? v.symbol : `$${v.symbol}$`} />
+                      <span className="text-black ml-1 font-bold">:</span>
                     </span>
-                    <span className="text-neutral-800 leading-tight">
+                    <span className="text-neutral-800 leading-relaxed break-normal flex-1">
                       <MarkdownMath content={v.meaning} />
                     </span>
                   </div>
