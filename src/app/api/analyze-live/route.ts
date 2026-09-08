@@ -36,7 +36,10 @@ export interface LiveAnalysisResponse {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { examSlug, chapterSlug, chapterName } = body;
+    const rawExamSlug = body.examSlug || body.exam || "jee-main";
+    const examSlug = typeof rawExamSlug === "string" ? rawExamSlug.toLowerCase() : "jee-main";
+    const chapterSlug = body.chapterSlug || body.chapter || "";
+    const chapterName = body.chapterName || chapterSlug || "Core Chapter";
 
     const examTitle =
       examSlug === "cbse-12"

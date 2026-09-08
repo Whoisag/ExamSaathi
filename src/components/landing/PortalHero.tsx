@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { AntigravityH3 } from "@/components/ui/AntigravityH3";
 
 interface PortalHeroProps {
@@ -211,13 +211,6 @@ export function PortalHero({ onExploreClick }: PortalHeroProps) {
             >
               <span>CREATE A NEW ACCOUNT</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </Link>
-            <Link
-              href="/analyzer/jee-main/modern-physics"
-              className="bg-black text-white px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-white font-headline text-sm sm:text-base md:text-lg hover:bg-[#FF4D00] hover:text-black hover:border-black transition-all inline-flex items-center justify-center gap-3 shadow-[4px_4px_0px_0px_#FF4D00] active:translate-y-0.5"
-            >
-              <span>SAMPLE ANALYZER</span>
-              <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
           </div>
 

@@ -3,7 +3,7 @@
 import React from "react";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { AlertCircle, ArrowRight, ShieldAlert, Sparkles, Loader2, RefreshCw } from "lucide-react";
+import { AlertCircle, ArrowRight, ShieldAlert, Sparkles } from "lucide-react";
 
 interface WeakSpotItem {
   id: string;
@@ -61,32 +61,6 @@ export function WeakSpots({
           <p className="font-meta text-xs text-neutral-500 mt-0.5">
             Chapters with low mock accuracy where questions are virtually guaranteed
           </p>
-        </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
-          {onReanalyze && (
-            <button
-              type="button"
-              onClick={onReanalyze}
-              disabled={isAnalyzing}
-              className="font-meta text-[10px] font-bold px-2.5 py-1 bg-white hover:bg-neutral-100 text-black border border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-y-[1px] hover:shadow-none transition-all flex items-center gap-1 cursor-pointer disabled:opacity-60"
-              title="Run live Gemini diagnostic on current topic confidence"
-            >
-              {isAnalyzing ? (
-                <Loader2 className="w-3 h-3 animate-spin text-[#FF4D00]" />
-              ) : (
-                <RefreshCw className="w-3 h-3 text-black" />
-              )}
-              <span>{isAnalyzing ? "ANALYZING..." : "RE-ANALYZE"}</span>
-            </button>
-          )}
-
-          <a
-            href="/assistant?prepHub=1&mode=remediate"
-            className="font-meta text-[10px] font-bold px-2.5 py-1 bg-[#FF4D00] text-black border border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-y-[1px] hover:shadow-none transition-all flex items-center gap-1 cursor-pointer"
-          >
-            <Sparkles className="w-3 h-3 text-black" />
-            <span>AI REMEDIATE ALL</span>
-          </a>
         </div>
       </div>
 

@@ -819,7 +819,7 @@ export function generateIcsCalendar(exams: PlannedExam[]): string {
     return dateStr.replace(/-/g, "");
   };
 
-  let ics = [
+  const ics = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//ExamSaathi//Academic Planner//EN",

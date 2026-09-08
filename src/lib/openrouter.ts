@@ -279,7 +279,7 @@ export function cleanAiResponse(text: string): string {
   if (!text) return "";
 
   // 1. Remove standard XML-style think tags
-  let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+  const cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
 
   // 2. Remove thinking process prefix if followed by the actual answer
   const thinkMarkerRegex = /^(?:Here['\u2019\u0027]?s a thinking process:?|Thinking Process:?|\*+Thinking Process\*+:?)/i;

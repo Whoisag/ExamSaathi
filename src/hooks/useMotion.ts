@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 import type { Variants } from "framer-motion";
 
 export function useMotion() {
-  const [shouldAnimate, setShouldAnimate] = useState(true);
+  const [shouldAnimate, setShouldAnimate] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+    return true;
+  });
+
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setShouldAnimate(!mq.matches);
     const handler = () => setShouldAnimate(!mq.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);

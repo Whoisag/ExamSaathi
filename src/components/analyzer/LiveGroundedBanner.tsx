@@ -27,14 +27,14 @@ export function LiveGroundedBanner({
     <div className="border-2 border-black bg-white p-5 shadow-[4px_4px_0px_0px_#000000] relative transition-all">
       {/* Top Action Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-4">
-        <div className="flex items-start sm:items-center gap-3">
+        <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
           <div className={`w-9 h-9 flex items-center justify-center flex-shrink-0 border-2 border-black ${
             isLiveGrounded ? "bg-[#FF4D00] text-black" : "bg-neutral-100 text-neutral-700"
           }`}>
             <Globe className={`w-5 h-5 ${isSyncing ? "animate-spin" : ""}`} />
           </div>
 
-          <div>
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-headline text-base text-black">
                 {isLiveGrounded ? "LIVE WEB-GROUNDED STANDARDS ACTIVE" : "EMPIRICAL HISTORICAL DATASET ACTIVE"}
@@ -56,7 +56,7 @@ export function LiveGroundedBanner({
         </div>
 
         {/* Sync / Reset Buttons */}
-        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap flex-shrink-0">
           {isLiveGrounded && (
             <button
               onClick={onResetBaseline}
@@ -87,20 +87,20 @@ export function LiveGroundedBanner({
 
       {/* Live Grounding Audit Details Accordion/Card */}
       {isLiveGrounded && liveData && (
-        <div className="mt-4 pt-2 space-y-3">
+        <div className="mt-4 pt-3 border-t-2 border-black space-y-3">
           {/* Syllabus Compliance Alert */}
-          <div className="bg-[#f0fdf4] border-2 border-green-700 p-3.5 flex items-start gap-3">
+          <div className="bg-[#f0fdf4] border-2 border-green-700 p-4 flex items-start gap-3 shadow-[2px_2px_0px_0px_#15803d]">
             <ShieldCheck className="w-5 h-5 text-green-700 flex-shrink-0 mt-0.5" />
-            <div className="space-y-1 text-xs">
-              <div className="font-headline text-green-950 font-bold flex items-center gap-2">
+            <div className="space-y-1.5 text-xs min-w-0 flex-1">
+              <div className="font-headline text-green-950 font-bold flex items-center gap-2 flex-wrap">
                 <span>OFFICIAL SYLLABUS COMPLIANCE AUDIT</span>
-                <span className="bg-green-700 text-white px-1.5 py-0.2 font-meta text-[10px]">VERIFIED 100%</span>
+                <span className="bg-green-700 text-white px-2 py-0.5 font-meta text-[10px] tracking-wider">VERIFIED 100%</span>
               </div>
-              <p className="text-green-900 font-sans leading-relaxed">
+              <p className="text-green-900 font-sans leading-relaxed text-xs sm:text-sm">
                 {liveData.syllabusAudit.complianceNotice}
               </p>
-              {liveData.syllabusAudit.deletedTopicsExcluded.length > 0 && (
-                <div className="text-neutral-700 pt-1 font-meta text-[11px]">
+              {liveData.syllabusAudit.deletedTopicsExcluded && liveData.syllabusAudit.deletedTopicsExcluded.length > 0 && (
+                <div className="text-neutral-800 pt-1.5 font-meta text-[11px] border-t border-green-200 mt-2">
                   <span className="font-bold text-red-700">🚫 Excluded Deleted Topics:</span>{" "}
                   {liveData.syllabusAudit.deletedTopicsExcluded.join(", ")}
                 </div>
@@ -109,28 +109,38 @@ export function LiveGroundedBanner({
           </div>
 
           {/* Recent Shift Trend Insights */}
-          <div className="bg-neutral-50 border border-neutral-300 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <div>
-              <span className="font-meta font-bold text-neutral-500 text-[10px] block">
-                RECENT EXAM SHIFT FOCUS SUMMARY
-              </span>
-              <p className="text-black font-medium leading-relaxed mt-0.5">
+          <div className="bg-neutral-50 border-2 border-black p-4 space-y-3 shadow-[2px_2px_0px_0px_#000000]">
+            <div className="w-full">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="inline-block w-2.5 h-2.5 bg-[#FF4D00] border border-black"></span>
+                <span className="font-meta font-bold text-black text-xs tracking-wider uppercase">
+                  RECENT EXAM SHIFT FOCUS SUMMARY
+                </span>
+              </div>
+              <p className="text-neutral-900 font-sans font-medium leading-relaxed text-xs sm:text-sm bg-white p-3 border border-neutral-300">
                 {liveData.recentTrendSummary}
               </p>
             </div>
             
             {/* Citations Badges */}
-            <div className="flex items-center gap-1.5 flex-wrap flex-shrink-0 font-meta text-[10px]">
-              {liveData.webCitations.map((cite, i) => (
-                <span
-                  key={i}
-                  className="bg-white border border-neutral-300 text-neutral-700 px-2 py-0.5 flex items-center gap-1"
-                >
-                  <CheckCircle2 className="w-3 h-3 text-green-600" />
-                  {cite}
+            {liveData.webCitations && liveData.webCitations.length > 0 && (
+              <div className="pt-2 border-t border-neutral-200">
+                <span className="font-meta font-bold text-neutral-500 text-[10px] tracking-wider uppercase block mb-1.5">
+                  // VERIFIED CURRICULUM SOURCES & CITATIONS
                 </span>
-              ))}
-            </div>
+                <div className="flex items-center gap-2 flex-wrap font-meta text-[11px]">
+                  {liveData.webCitations.map((cite, i) => (
+                    <span
+                      key={i}
+                      className="bg-white border-2 border-neutral-800 text-neutral-800 px-2.5 py-1 flex items-center gap-1.5 shadow-[1px_1px_0px_0px_#000000] font-bold"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5 text-green-600 flex-shrink-0" />
+                      <span>{cite}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

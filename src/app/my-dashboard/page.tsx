@@ -15,6 +15,7 @@ import {
   WeakSpotItem,
   QuickWinItem,
 } from "@/data/mock";
+import Link from "next/link";
 import {
   Target,
   Trophy,
@@ -24,11 +25,10 @@ import {
   Sparkles,
   Globe,
   Loader2,
-  FileText,
   ArrowUpRight,
+  RefreshCw,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { downloadStudyGuidePdf } from "@/lib/pdfGenerator";
 import toast from "react-hot-toast";
 
 const SUBJECTS = ["All", "Physics", "Chemistry", "Mathematics"];
@@ -237,23 +237,6 @@ function MyDashboardContent() {
       actionSlot={
         <div className="flex items-center gap-2 flex-wrap">
           <button
-            type="button"
-            onClick={() => {
-              toast.success(`Compiling official ${currentExam.toUpperCase()} syllabus cheatsheet...`);
-              downloadStudyGuidePdf({
-                title: `${currentExam === "cbse-12" ? "CBSE Class 12 Boards" : "JEE Main 2026"} — Complete Syllabus Study Guide`,
-                subject: selectedSubject === "All" ? "PCM Sciences" : selectedSubject,
-                exam: currentExam.toUpperCase(),
-                chapter: "Personalized Prep Hub",
-              });
-            }}
-            className="flex items-center gap-1.5 bg-black text-[#FF4D00] p-2 sm:px-3 border-2 border-black text-xs font-meta font-bold shadow-[2px_2px_0px_0px_#000000] hover:bg-[#FF4D00] hover:text-black hover:translate-y-[1px] hover:shadow-none transition-all cursor-pointer"
-            title="Download full revision cheatsheet (PDF)"
-          >
-            <FileText className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">1-CLICK</span> PDF
-          </button>
-          <button
             onClick={() => router.push(`/assistant?exam=${currentExam}&prepHub=1`)}
             className="flex items-center gap-1.5 bg-[#FF4D00] p-2 sm:px-3 border-2 border-black text-xs font-meta font-bold shadow-[2px_2px_0px_0px_#000000] text-black hover:bg-black hover:text-white hover:translate-y-[1px] hover:shadow-none transition-all cursor-pointer"
           >
@@ -408,8 +391,8 @@ function MyDashboardContent() {
               })}
             </div>
 
-            {/* Web Analysis Toggle Placed Above High-ROI Section */}
-            <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+            {/* Action Bar: Web Analysis Toggle + Re-Analyze + AI Remediate All */}
+            <div className="flex items-center gap-2 self-start sm:self-auto shrink-0 flex-wrap">
               <button
                 type="button"
                 onClick={() => handleToggleWebAnalysis(!webAnalysisEnabled)}
@@ -429,6 +412,30 @@ function MyDashboardContent() {
                 <span>WEB ANALYSIS: {webAnalysisEnabled ? "ON" : "OFF"}</span>
                 <span className={`w-2 h-2 rounded-full ${webAnalysisEnabled ? "bg-[#FF4D00] animate-pulse" : "bg-neutral-300"}`} />
               </button>
+
+              <button
+                type="button"
+                onClick={() => runGeminiAnalysis(webAnalysisEnabled, selectedSubject)}
+                disabled={isAnalyzing}
+                className="font-meta text-xs font-bold px-3 py-2 bg-white hover:bg-neutral-100 text-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-y-[1px] hover:shadow-none transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-60 whitespace-nowrap"
+                title="Run live Gemini diagnostic on current topic confidence"
+              >
+                {isAnalyzing ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#FF4D00]" />
+                ) : (
+                  <RefreshCw className="w-3.5 h-3.5 text-black" />
+                )}
+                <span>{isAnalyzing ? "ANALYZING..." : "RE-ANALYZE"}</span>
+              </button>
+
+              <Link
+                href="/assistant?prepHub=1&mode=remediate"
+                className="font-meta text-xs font-bold px-3 py-2 bg-[#FF4D00] text-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-y-[1px] hover:shadow-none transition-all flex items-center gap-1.5 cursor-pointer hover:bg-white whitespace-nowrap"
+                title="AI Remediate All Weak Spots in Assistant"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-black" />
+                <span>AI REMEDIATE ALL</span>
+              </Link>
             </div>
           </motion.div>
 
