@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.ExamSaathi" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/brand_orange</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/brand_black</item>
+        <item name="android:windowBackground">@color/brand_orange</item>
+        <item name="android:statusBarColor">@color/brand_orange</item>
+        <item name="android:navigationBarColor">@color/brand_black</item>
+    </style>
+</resources>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ExamSaathi — Offline Guide</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; }
+    body { background: #FFFFFF; color: #000000; padding: 16px; padding-bottom: 60px; line-height: 1.5; }
+    .header { background: #000000; color: #FFFFFF; padding: 16px; border: 3px solid #000000; box-shadow: 4px 4px 0px #FF4D00; margin-bottom: 20px; }
+    .header h1 { font-size: 24px; font-weight: 900; color: #FF4D00; letter-spacing: 0.5px; }
+    .header p { font-size: 11px; opacity: 0.85; margin-top: 4px; text-transform: uppercase; }
+    .badge { display: inline-block; background: #FF4D00; color: #000; font-weight: bold; font-size: 10px; padding: 2px 8px; border: 1px solid #000; margin-bottom: 12px; }
+    .card { background: #FFFFFF; border: 2px solid #000000; box-shadow: 3px 3px 0px #000000; padding: 14px; margin-bottom: 16px; }
+    .card h2 { font-size: 15px; font-weight: 800; border-bottom: 2px solid #000; padding-bottom: 6px; margin-bottom: 10px; }
+    .formula-row { background: #F4F4F5; border-left: 4px solid #FF4D00; padding: 8px 10px; margin-bottom: 8px; font-size: 12px; }
+    .formula-name { font-weight: bold; color: #000; }
+    .formula-eq { font-family: monospace; font-size: 13px; font-weight: bold; color: #FF4D00; background: #000; padding: 3px 6px; display: inline-block; margin-top: 4px; }
+    .btn { display: block; width: 100%; padding: 14px; text-align: center; font-size: 13px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: 2px solid #000; box-shadow: 3px 3px 0px #000; transition: transform 0.1s; text-decoration: none; }
+    .btn-orange { background: #FF4D00; color: #000000; margin-bottom: 12px; }
+    .btn-black { background: #000000; color: #FFFFFF; }
+    .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px #000; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge">OFFLINE EMERGENCY CHEATSHEET</div>
+    <h1>EXAM साथी</h1>
+    <p>Predictive PYQ Intelligence • Offline Mode Active</p>
+  </div>
+
+  <button onclick="AndroidApp.retryOnline()" class="btn btn-orange">
+    ⚡ RETRY ONLINE CONNECTION
+  </button>
+
+  <div class="card">
+    <h2>🎯 High-Yield Modern Physics (Guaranteed Marks)</h2>
+    <div class="formula-row">
+      <div class="formula-name">De Broglie Wavelength:</div>
+      <div class="formula-eq">&lambda; = h / p = h / &radic;(2mqV)</div>
+      <div style="font-size: 10px; color: #555; margin-top: 2px;">For Electron: &lambda; = 12.27 / &radic;V &Aring;</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-name">Einstein's Photoelectric Equation:</div>
+      <div class="formula-eq">K_max = h&nu; - &Phi; = e &middot; V_0</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-name">Bohr Orbital Energy &amp; Radius:</div>
+      <div class="formula-eq">E_n = -13.6 &times; (Z&sup2; / n&sup2;) eV</div>
+      <div style="font-size: 10px; color: #555; margin-top: 2px;">Radius: r_n = 0.529 &times; (n&sup2; / Z) &Aring;</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🧪 High-Yield Electrochemistry &amp; Solutions</h2>
+    <div class="formula-row">
+      <div class="formula-name">Nernst Equation at 298 K:</div>
+      <div class="formula-eq">E_cell = E&deg;_cell - (0.0591 / n) log Q</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-name">Elevation in Boiling Point:</div>
+      <div class="formula-eq">&Delta;T_b = i &middot; K_b &middot; m</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-name">Van 't Hoff Factor (Dissociation):</div>
+      <div class="formula-eq">i = 1 + (n - 1)&alpha;</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📐 Mathematics 5-Marker Checklist</h2>
+    <div class="formula-row">
+      <div class="formula-name">Skew Lines Shortest Distance:</div>
+      <div class="formula-eq">d = |(a&sub2; - a&sub1;) &middot; (b&sub1; &times; b&sub2;)| / |b&sub1; &times; b&sub2;|</div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-name">Matrix Inversion Method:</div>
+      <div class="formula-eq">A&middot;X = B &rArr; X = A&sup1;&middot;B = (adj A / |A|)&middot;B</div>
+    </div>
+  </div>
+
+  <button onclick="AndroidApp.changeServerUrl()" class="btn btn-black">
+    ⚙️ CONFIGURE CUSTOM SERVER IP
+  </button>
+
+</body>
+</html>

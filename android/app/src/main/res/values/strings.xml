@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ExamSaathi</string>
+    <string name="app_tagline">Exam साथी • Predictive PYQ Intelligence &amp; AI Tutor</string>
+    <string name="default_server_url">https://examsaathi.app</string>
+    <string name="offline_title">OFFLINE / UNREACHABLE</string>
+    <string name="offline_message">Cannot connect to the ExamSaathi server. Check your network or customize the host address.</string>
+    <string name="btn_retry">RETRY CONNECTION</string>
+    <string name="btn_offline_guide">OFFLINE REVISION GUIDE</string>
+    <string name="btn_change_server">CONFIG SERVER IP</string>
+    <string name="server_dialog_title">ExamSaathi Server Config</string>
+    <string name="server_dialog_message">Enter your Netlify URL or local network IP (e.g. http://192.168.1.X:3000):</string>
+    <string name="btn_save">SAVE &amp; RELOAD</string>
+    <string name="btn_cancel">CANCEL</string>
+    <string name="btn_reset_default">RESET DEFAULT</string>
+    <string name="toast_back_exit">Press back again to exit ExamSaathi</string>
+</resources>

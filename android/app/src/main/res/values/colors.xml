@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF4D00</color>
+    <color name="colorPrimaryDark">#CC3D00</color>
+    <color name="colorAccent">#000000</color>
+    <color name="brand_orange">#FF4D00</color>
+    <color name="brand_black">#000000</color>
+    <color name="brand_white">#FFFFFF</color>
+    <color name="surface_gray">#F4F4F5</color>
+    <color name="border_dark">#000000</color>
+    <color name="text_primary">#0A0A0A</color>
+    <color name="text_muted">#737373</color>
+</resources>

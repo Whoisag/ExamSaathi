@@ -202,6 +202,15 @@ export default function LandingPage() {
                   <span>[METHODOLOGY & WHITE PAPER]</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
+                <a
+                  href="/downloads/ExamSaathi.apk"
+                  download="ExamSaathi.apk"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 bg-neutral-900 border border-neutral-800 text-[#FF4D00] hover:bg-[#FF4D00] hover:text-black transition-colors flex items-center justify-between font-bold"
+                >
+                  <span>[GET ANDROID APK]</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
               </div>
               <div className="pt-2 border-t border-neutral-800 flex items-center gap-2">
                 <Link
@@ -532,6 +541,14 @@ export default function LandingPage() {
             </a>
             <a href="#intelligence-stack" className="hover:text-[#FF4D00] transition-colors">
               [METHODOLOGY]
+            </a>
+            <a
+              href="/downloads/ExamSaathi.apk"
+              download="ExamSaathi.apk"
+              className="text-[#FF4D00] hover:text-white transition-colors font-bold"
+              title="Download Android Mobile App (APK)"
+            >
+              [GET ANDROID APK]
             </a>
           </div>
 

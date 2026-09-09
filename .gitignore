@@ -45,3 +45,10 @@ screenshots_audit
 audit_routes.mjs
 public/*_verify.png
 public/*coming_soon*.png
+
+# android build artifacts
+android/build/
+android/release.keystore
+*.keystore
+*.idsig
+android/ExamSaathi.apk
